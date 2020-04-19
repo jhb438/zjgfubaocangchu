@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>信息查看</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <script src="../../Scripts/JsAndCss.Model.js" type="text/javascript"></script>
+    <style>
+        .infoTitle {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            border-bottom: 1px dashed #3398E5;
+            margin: 10px;
+            padding: 10px;
+        }
+
+        .infoDate {
+            text-align: center;
+            font-size: 14px;
+            color: blue;
+        }
+
+        .infoContent {
+            min-height: 300px;
+            color: #333;
+            font-size: 16px !important;
+            line-height: 27px;
+            margin:20px;
+        }
+
+        #ulAttachList {
+            list-style-type: none;
+            line-height: 30px;
+            margin-left: 40px;
+        }
+
+            #ulAttachList li a {
+                color: red;
+            }
+    </style>
+</head>
+<body>
+    <form lay-filter="layform" class="layui-form">
+        <input type="hidden" id="attachGuid" name="attachGuid" readonly />
+        <div class="layui-form-pane">
+            <p class="infoTitle"><input type="text" id="title" name="title" readonly style="border-style:none;width: 70%;text-align: center" /></p>
+        </div>
+        <div class="layui-form">
+            <p class="infoDate">发布时间：<input type="text" id="infoDate" name="infoDate" readonly style="border-style:none " />发布人：<input type="text" id="createUserName" name="createUserName" readonly style="border-style:none " /></p>
+        </div>
+        <div class="infoContent">
+
+        </div>
+        <hr color="#2B84C8" style="margin-top: 30px; margin: 10px;">
+        <div class="attachContainer">
+            <span style="margin-left:40px;font-weight: 600;">附件下载：</span>
+            <ul id="ulAttachList"></ul>
+        </div>
+    </form>
+    <script>
+        var rowGuid = getURLParameter("rowGuid");
+        layui.use(['form'], function () {
+            var form = layui.form;
+            SendAjax("/sys/informationinfo/getDetailByGuid", { rowGuid: rowGuid }, function (res) {
+                if (res.code == "0") {
+
+                    form.val("layform", res.data);
+                    form.render();
+
+                    $(".infoContent").html(res.data.content.replace("<img", "<img width=100% "));
+                    $(".infoContent").addClass("infoContent");
+                }
+            });
+            SendAjax("/sys/frameAttach/getAttachList", { guid: $("#attachGuid").val() }, function (res) {
+                if (res.code = '0' && res.data.length > 0) {
+                    for (var i = 0; i < res.data.length; i++) {
+                        var mdata = res.data;
+                        var last = mdata[i].contentType.substr('1', mdata[i].contentType.length);
+                        $('#ulAttachList').append("<li><a href=" + mdata[i].url + " download=" + mdata[i].attachName + ">" + mdata[i].attachName + "</a></li>");
+                    }
+
+                }
+            });
+        })
+
+       
+    </script>
+</body>
+</html>

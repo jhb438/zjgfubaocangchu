@@ -1,0 +1,557 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
+    <title>交通局综合执法指挥平台</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link href="Content/uploadify/uploadify.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Scripts/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="Scripts/layuiadmin/style/admin.css" media="all">
+    <link href="Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+
+    <script src="Scripts/jquery-1.11.3.min.js"></script>
+    <script src="Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="Scripts/jquery.uploadify.min.js"></script>
+    <script src="Scripts/layuiadmin/layui/layui.js"></script>
+    <script src="Scripts/global.js"></script>
+    <script src="Scripts/echarts.min.js"></script>
+    <script src="Scripts/utils.js"></script>
+</head>
+<style>
+    .main {
+        background-image: url(Content/images/bak.png);
+        -moz-background-size: 100% 100%;
+        min-height: 100%;
+        background-size: contain;
+        background-repeat: round;
+        position: absolute;
+        width: 100%;
+    }
+
+    .mainDiv {
+      
+        height: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 40px;
+        margin-bottom:40px
+    }
+
+    li {
+        list-style: disc;
+        margin-top: 8px;
+        color: rgb(0,255,255);
+    }
+
+        li a {
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+            li a:hover {
+                color: red;
+                font-size: 15px;
+            }
+
+    #uls {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        margin-left: 15px;
+    }
+
+    #ulStyle li {
+        color: red;
+    }
+
+    #ulStyle {
+        margin-top: 15px;
+        margin-bottom: 15px;
+            margin-left: 15px;
+    }
+
+    .hero-ul-firstItem {
+        width: 55%;
+        vertical-align: middle;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+    }
+
+    .hero-ul-li-lastItem {
+        width: 40%;
+        display: inline-block;
+        text-align: right;
+        margin-right:10px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 1px;
+    }
+
+    .biaoti_span {
+        color: white;
+        position: absolute;
+       
+        left: 25px;
+        font-size: 16px;
+    }
+
+    .firMenu {
+        height: 50%;
+    }
+
+    .secMenu {
+        height: 50%;
+    }
+
+    .firMenu_f {
+        width: 25%;
+        height: 100%;
+        float: left;
+    }
+
+    ul.listico {
+        margin: 0 auto;
+        width: 100%;
+        overflow: hidden;
+    }
+
+        ul.listico li {
+            float: left;
+            width: 87px;
+            padding: 12px 20px 10px 17px;
+            list-style: none;
+            height: 63px;
+        }
+
+            ul.listico li a {
+                display: block;
+                padding-top: 0px;
+                height: 32px;
+                line-height: 32px;
+                text-align: center;
+            }
+
+
+                ul.listico li a img {
+                    width: 50px;
+                    display: block;
+                    position: relative;
+                    left: 17px;
+                }
+</style>
+<body>
+    <!-- 主体内容 -->
+    <div class="main" id="vueConfig">
+        <div class="mainDiv">
+            <div style="margin: 10px 30px;width: 95%;height: 700px;">
+                <div style="height: 50%;width: 100%;">
+                    <div style="width: 38%;height: 100%;float: left;">
+                       
+                        <div style="border-radius: 13px;overflow-y: auto; margin-top: 7px;height: 100%;padding: 0px 5px 0px 30px;border: 1px solid rgb(25,77,151);">
+
+                            <div style="width: 100%;height: 40px;position: relative;">
+                                <div style="position: absolute;top: 20px;width:100%">
+                                    <img src="Content/images/圆角矩形 3.png" />
+                                    <span class="biaoti_span">
+                                        公告栏
+                                    </span>
+                                </div>
+
+                                
+                            </div>
+
+                            <ul id="uls">
+                                <li v-for="item in noticesInfo" :key="item.rowId">
+                                    <a @click="getDetail(item)">
+                                        <span class="hero-ul-firstItem">{{item.title}}</span><span class="hero-ul-li-lastItem">{{item.infoDate}}</span>
+                                    </a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="width:60%;height: 100%;float: right;">
+                      
+                        <div style="border-radius: 13px;width:49%;border: 1px solid rgb(25,77,151);height: 100%;margin-top: 7px;float: left;">
+                            <div style="margin-left: 35px;height: 40px;position: relative;">
+                                <div style="position: absolute;top: 20px;width:100%">
+                                    <img src="Content/images/黄色.png" style="width:7px" />
+                                    <span class="biaoti_span">
+                                        案件类型分析
+                                    </span>
+                                </div>
+
+                               
+                            </div>
+
+                            <div id="ajlxfx" class="echartsDiv" style="width:90%;height:80%">
+
+                            </div>
+
+                        </div>
+                        <div style="border-radius: 13px;width:49%;border: 1px solid rgb(25,77,151);height: 100%;margin-top: 7px;float: right;">
+                            <div style="margin-left: 35px;height: 40px;position: relative;">
+                                <div style="position: absolute;top: 20px;width:100%">
+                                    <img src="Content/images/绿色.png" style="width:7px" />
+                                    <span class="biaoti_span">
+                                        设备在线率
+                                    </span>
+                                </div>
+
+                              
+                            </div>
+
+                            <div id="sbzxl" class="echartsDiv" style="width:90%;height:80%">
+
+                            </div>
+                        </div>
+                     
+                    </div>
+                </div>
+                <div style="height: 49%;width: 100%;margin-top: 20px;">
+
+                    <div style="width: 38%;height: 100%;float: left;">
+                      
+                        <div style="border-radius: 13px;overflow-y: auto; margin-top: 7px;height: 100%;padding: 0px 5px 0px 30px;border: 1px solid rgb(25,77,151);">
+
+                            <div style="width: 100%;height: 40px;position: relative;">
+                                <div style="position: absolute;top: 20px;width:100%">
+                                    <img src="Content/images/告警.png" style="width:7px" />
+                                    <span class="biaoti_span">
+                                        告警区
+                                    </span>
+                                </div>
+
+                               
+                            </div>
+
+                            <ul id="ulStyle">
+                                <li v-for="item in warninginfo" :key="item.rowId">
+                                    <a @click="getWarningList()">
+                                        <span class="hero-ul-firstItem">{{item.title}}</span><span class="hero-ul-li-lastItem">{{item.createTime}}</span>
+                                    </a>
+                                </li>
+                               
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="width:60%;height: 100%;float: right;">
+
+                        <div style="border-radius: 13px;margin-top: 7px;height: 100%;padding: 0px 5px 0px 30px;border: 1px solid rgb(25,77,151);">
+
+                            <div style="width: 100%;height: 40px;position: relative;">
+                                <div style="position: absolute;top: 20px;width:100%">
+                                    <img src="Content/images/告警.png" style="width:7px" />
+                                    <span class="biaoti_span" >
+                                        每月案件数
+                                    </span>
+                                </div>
+
+                             
+                            </div>
+
+                            <div id="myajs" class="echartsDiv" style="width:100%;height:100%;margin-top:-20px;">
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+ 	<script type="text/javascript" src="Scripts/vue.js"></script>
+ 	<script>
+ 		//创建vue实例化对象
+        var vm = new Vue({
+            el: '#vueConfig',
+            data: {
+                noticesInfo:[],
+                warninginfo:[]
+            },
+            created:function(){
+            	this.getNotice();//获取通知公告
+            	this.getWarninginfo();//获取告警信息
+            },
+            methods:{
+            	getNotice:function(){
+            		let self = this;
+            		 //每月案件数
+		            SendAjax("/sys/informationinfo/listData2", { page:1,limit:10 }, function (res) {
+		                if (res.code == "0") {
+		                    self.noticesInfo = res.data
+		                }
+		            }, 'true', 'get');
+            	},
+            	getWarninginfo:function(){
+            		let self = this;
+            	    //每月案件数
+            		let gongHao=window.localStorage.getItem("gongHao");
+            		let roleName = window.localStorage.getItem("roleName");
+            		let loginId = "";
+            		if (roleName != "管理员" && roleName != "执法人员") {
+            		    loginId=window.localStorage.getItem("m_loginId");
+            		}
+ 
+            		SendAjax("/sys/jtwarninginfo/listData", { page: 1, limit: 10, gongHao: gongHao, roleName: roleName, loginId: loginId }, function (res) {
+		                if (res.code == "0") {
+		                    self.warninginfo = res.data
+		                }
+		            }, 'true', 'get');
+            	},
+            	getDetail:function(e){
+            		OpenWin('/static/pages/informationinfo/infoDetail.html?rowGuid='+e.rowGuid, 1000, 600, '信息查看')
+            	},
+            	getWarningList:function(){
+            		OpenWin('/static/pages/jtWarninginfo/jtwarninginfo_list.html', 1000, 600, '告警列表')
+            	}
+            }
+        })
+ 	</script>
+    <script type="text/javascript">
+        var gongHao = window.localStorage.getItem("gongHao");
+        var roleName = window.localStorage.getItem("roleName");
+        var loginId = "";
+        if (roleName != "管理员" && roleName != "执法人员") {
+            loginId = window.localStorage.getItem("m_loginId");
+        }
+        $(function () {
+          
+            caseNumMonth();
+            caseTypeAnalysis();
+            deviceStatus();
+        })
+      
+        function caseNumMonth() {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart_caseNumMonth = echarts.init(document.getElementById('myajs'));
+
+            // 指定图表的配置项和数据
+            var option_caseNumMonth = {
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    x: 'center',
+                    data: ['每月案件个数'],
+                    textStyle: {    //图例文字的样式
+                        color: '#FFFFFF',
+                        fontWeight: 'bolder',
+                        fontSize: 15
+                    }
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['1月', '2月', '3月', '4月', ' 5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                        axisLine: { show: true, lineStyle: { color: "#FFFFFF" } },
+                        axisLabel: {
+                            interval: 0,
+                            //rotate: 40
+                        },
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        axisLine: { show: true, lineStyle: { color: "#FFFFFF" } }
+                    }
+                ],
+                series: [
+                    {
+                        name: '案件个数',
+                        type: 'line',
+                        data: [56, 47, 68, 61, 52, 59, 54, 63, 56, 47, 68, 61],
+                        symbolSize: 5,  //设置折现圆点的大小
+                        color: ['#5fca28']
+                    },
+                    {
+                        name: '案件个数',
+                        type: 'bar',
+                        data: [56, 47, 68, 61, 52, 59, 54, 63, 56, 47, 68, 61],
+                        color: ['#40f1e5']
+                    },
+
+                ]
+            };
+
+
+
+            var months = new Array();
+            for (var i = 1; i <= 12; i++) {
+
+                months.push(i);
+            }
+
+            //每月案件数
+            SendAjax("/sys/tongji/getCaseNumMonth", { months: months, gongHao: gongHao, roleName: roleName, loginId: loginId }, function (res) {
+                if (res.code == "0") {
+                    arrays = [];
+                    for (var i = 0; i < res.data.length ; i++) {
+                        arrays.push(res.data[i].num);
+                     
+                    }
+                    option_caseNumMonth.series[0].data = arrays;
+                    option_caseNumMonth.series[1].data = arrays;
+                 
+
+                    myChart_caseNumMonth.setOption(option_caseNumMonth);
+                }
+            }, 'true', 'post');
+        }
+
+        // 案件类型
+        function caseTypeAnalysis()
+        {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart_casetype = echarts.init(document.getElementById('ajlxfx'));
+            // 案件类型
+            var option_casetype = {
+                legend: {
+                    x: 'center',
+                    y: 'bottom',
+                    data: [],
+                    textStyle: {
+                        fontSize: 15,
+                        fontWeight: 'bolder',
+                        color: '#FFFFFF'          // 主标题文字颜色
+                    },
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                calculable: true,
+                series: [
+                    {
+                        name: "案件类型占比",
+                        type: 'pie',
+                        radius: [30, 90],
+                        center: ['50%', '50%'],
+                        color: ['#d74e67', '#0092ff', '#eba954', '#989CFF', '#11C88C', '#31F1D6', ' #f17677'],
+                        roseType: 'radius',
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            }
+                        },
+                        data: [
+                            { value: 435, name: '民政残联' },
+                            { value: 679, name: '社保就业' },
+
+                        ]
+                    }
+                ]
+            };
+
+            
+            ////案件类型
+            SendAjax("/sys/tongji/caseTypeAnalysis", { gongHao: gongHao, roleName: roleName, loginId: loginId }, function (res) {
+                if (res.code == "0") {
+                    arrays = [];
+                    nameArrays = [];
+                    for (var i = 0; i < res.data.length ; i++) {
+                        arrays.push({ value: res.data[i].num, name: res.data[i].name });
+                        nameArrays.push(res.data[i].name);
+                    }
+                    option_casetype.series[0].data = arrays;
+                    option_casetype.legend.data = nameArrays;
+
+                    myChart_casetype.setOption(option_casetype);
+                }
+            }, 'true', 'post');
+        }
+
+        //在线率
+        function deviceStatus()
+        {
+            var myChart_deviceStatus = echarts.init(document.getElementById('sbzxl'));
+
+            // 在线率
+            var option_deviceStatus = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}: {c} ({d}%)'
+                },
+
+                title: [{
+                    text: "",
+                    left: '60%',
+                    top: '35%',
+                    textAlign: 'center',
+                    textBaseline: 'middle',
+                    textStyle: {
+                        color: '#4EDFF5',
+                        fontWeight: 'normal',
+                        fontSize: 14
+                    }
+                }, {
+                    text: "",
+                    left: '60%',
+                    top: '54%',
+                    textAlign: 'center',
+                    textBaseline: 'middle',
+                    textStyle: {
+                        color: '#FFFFFF',
+                        fontWeight: 'normal',
+                        fontSize: 32
+                    }
+                }],
+                series: [{
+                    name: "",
+                    color: ['#d74e67', '#0092ff', '#eba954', '#989CFF'],
+                    hoverAnimation: false, //设置饼图默认的展开样式
+                    radius: [30, 80],
+                    type: 'pie',
+                    selectedMode: 'single',
+                    selectedOffset: 16, //选中是扇区偏移量
+                    clockwise: true,
+                    startAngle: 90,
+                    label: {
+                        normal: {
+                        }
+                    },
+                    data: []
+                }]
+
+
+            };
+
+            //设备在线率
+            SendAjax("/sys/jtdeviceinfo/getOnLineUserCount", { gongHao: gongHao, roleName: roleName, loginId: loginId }, function (res) {
+                if (res.code == "0") {
+                    var zx = res.data.split('/')[0];
+                    var zj = res.data.split('/')[1];
+                    var lx = parseInt(zj) - parseInt(zx);
+                    var nameArrays = [];
+                    arrays = ["在线设备", "离线设备"];
+
+                    nameArrays.push({ value: zx, name: arrays[0] });
+                    nameArrays.push({ value: lx, name: arrays[1] });
+
+                    option_deviceStatus.series[0].data = nameArrays;
+
+
+                    myChart_deviceStatus.setOption(option_deviceStatus);
+                }
+            }, 'true', 'post');
+        }
+     
+       
+      
+    </script>
+
+</body>
+</html>

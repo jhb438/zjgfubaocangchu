@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.zjgfbcc.dao.mysql.Frame_CodeValueDao">
+
+    <resultMap id="Frame_CodeValue" type="com.basic.zjgfbcc.entity.Frame_CodeValue">
+        <result property="rowId" column="row_id"></result>
+        <result property="rowGuid" column="row_guid"></result>
+        <result property="itemValue" column="item_value"></result>
+        <result property="itemText" column="item_text"></result>
+        <result property="sortSq" column="sort_sq"></result>
+        <result property="codeGuid" column="code_guid"></result>
+        <association property="rowGuid" column="row_guid" javaType="com.basic.zjgfbcc.entity.Frame_Codes">
+            <id property="rowId" column="row_id"></id>
+            <result property="rowGuid" column="row_guid"></result>
+        </association>
+    </resultMap>
+
+    <!--获取代码参数列表-->
+    <select id="getCodeValue" resultType="com.basic.zjgfbcc.entity.Frame_CodeValue">
+        select * from frame_codevalue t
+        <include refid="where_clause"/>
+        <choose>
+            <when test="parentGuid != null and parentGuid !=''">
+                and t.parentGuid =#{parentGuid}
+            </when>
+            <otherwise>
+                and t.parentGuid=''
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by t.sort_sq desc,row_id
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!--查询代码关联字段-->
+    <select id="getCodesToValue" resultType="com.basic.zjgfbcc.entity.Frame_CodeValue">
+        select * from frame_codevalue  where code_guid=#{codeGuid}
+
+    </select>
+
+	<select id="getCodeValueByName" resultType="com.basic.zjgfbcc.entity.Frame_CodeValue">
+	    select * from frame_codevalue where code_guid = #{ruid}
+	</select>
+
+    <select id="GetCodeTreeItem" resultType="com.basic.zjgfbcc.entity.Frame_CodeValue">
+        select t.row_Id,t.item_value,t.item_text,t.sort_sq from frame_codevalue t
+        inner join frame_codes t2 on t.code_guid=t2.row_guid
+        where t2.code_name=#{codeName}
+
+    </select>
+    
+    <!-- 获取参数类别数量 -->
+    <select id="getCount" resultType="int">
+        select count(*) from frame_codevalue t
+        <include refid="where_clause"/>
+    </select>
+	
+   <select id="getCodeByValue" resultType="com.basic.zjgfbcc.entity.Frame_CodeValue">
+        select * from frame_codevalue where code_guid = #{codeGuid}
+    </select>
+
+    <!--增加参数类别 -->
+    <insert id="insertCodeValue" parameterType="com.basic.zjgfbcc.entity.Frame_CodeValue" useGeneratedKeys="true"
+            keyProperty="row_id">
+		insert into frame_codevalue (
+			  `row_id`,
+			  `row_guid`,
+			  `item_value`,
+			  `item_text`,
+			  `sort_sq`,
+			  `parentGuid`,
+			   `code_guid`,
+			    `codeLevel`
+		) values (
+			  #{rowId},
+			  #{rowGuid},
+			  #{itemValue},
+			  #{itemText},
+			  #{sortSq},
+			  #{parentGuid},
+			   #{codeGuid},
+			     #{codeLevel}
+		);
+	</insert>
+
+    <!--更新参数类别-->
+    <update id="updateCodeValue" parameterType="com.basic.zjgfbcc.entity.Frame_CodeValue">
+        update frame_codevalue
+        <set>
+            <if test="rowId != null">`row_id` = #{rowId},</if>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid},</if>
+            <if test="itemValue != null">`item_value` = #{itemValue},</if>
+            <if test="itemText != null">`item_text` = #{itemText},</if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq},</if>
+            <if test="codeGuid != null">`code_guid` = #{codeGuid},</if>
+            <if test="parentGuid != null">`parentGuid` = #{parentGuid},</if>
+            <if test="codeGuid != null">`codeLevel` = #{codeLevel}</if>
+        </set>
+        where row_guid = #{rowGuid}
+    </update>
+
+    <!--批量删除参数类别-->
+    <delete id="deleteCodeValue" parameterType="java.lang.Integer">
+        delete from frame_codevalue where row_guid in
+        <foreach collection="array" item="rowGuid" open="(" separator="," close=")">
+            #{rowGuid}
+        </foreach>
+    </delete>
+
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId  != null and rowId  != ''">and t.row_id = #{rowId }</if>
+            <if test="rowGuid  != null and rowGuid  != ''">and t.row_guid = #{rowGuid }</if>
+            <if test="itemValue != null and itemValue !=''">and t.item_value = #{itemValue}</if>
+            <if test="itemText != null and itemText !=''">and t.item_text like concat('%',#{itemText},'%')</if>
+            <if test="sortSq != null and sortSq !=''">and t.sort_sq= #{sortSq}</if>
+            <if test="codeGuid != null and codeGuid !=''">and t.code_guid =#{codeGuid}</if>
+
+
+        </where>
+    </sql>
+
+    <!--获取下级代码个数-->
+    <select id="getSubCount" resultType="int">
+       select count(1) from frame_codevalue where code_guid=#{codeGuid} and codeLevel like concat(#{codeLevel},'%')
+    </select>
+
+    <select id="getCodesValueByGuid" resultType="com.basic.zjgfbcc.entity.Frame_CodeValue">
+        select * from frame_codevalue where 1=1 and code_guid=#{codeGuid} and parentGuid=#{codeLevel}
+    </select>
+
+    <select id="getDetailByGuid" resultType="com.basic.zjgfbcc.entity.Frame_CodeValue">
+		select *  from frame_codevalue where 1=1 and row_guid=#{rowGuid}
+	</select>
+
+    <!--获取相应层级代码项-->
+    <select id="getCodeValueByLevel" resultType="com.basic.zjgfbcc.entity.Frame_CodeValue">
+        SELECT * FROM frame_codevalue where 1=1 and code_guid=#{codeGuid} and LENGTH(codeLevel)=#{codeLevel}
+    </select>
+
+    <!--根据名称获取信息-->
+    <select id="getCodeInfoByName" resultType="com.basic.zjgfbcc.entity.Frame_CodeValue">
+        SELECT * FROM frame_codevalue where 1=1 and item_text=#{itemText}
+    </select>
+
+    <!--根据父级rowGuid查询子级标题-->
+    <select id="getSonByFather" resultType="com.basic.zjgfbcc.entity.Frame_CodeValue">
+        SELECT * FROM frame_codevalue where parentGuid in (
+            select codeLevel from frame_codevalue where row_guid=#{fatherItemText}
+            ) and item_text =#{sonItemText}
+    </select>
+</mapper>

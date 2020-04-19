@@ -1,0 +1,48 @@
+﻿
+html,body{margin: 0;padding: 0;height: 100%;width: 100%;}
+.map{height: 100%;width: 100%;}
+
+/* 优化layui的部分样式 */
+.layui-form {padding-top:10px;padding-right:20px;}
+.layui-btn {width:93px !important;}
+.layui-table[lay-even] tr:nth-child(even){background-color:#ffffff !important;}
+.layui-table tbody tr:hover,.layui-table-hover{background-color:#ffffff !important}
+.layui-table tbody td:hover{background-color:#D7DEF0 !important}
+.layui-layout-admin .layui-body { bottom:0 }
+.layui-body {left:233px !important;}
+.layui-header {background-color: #4BC0E0!important;line-height:60px;}
+.layui-header img{margin-left:10px;margin-right:30px;}
+.layui-header .sound{margin-left:30px;margin-right:20px;float:left;line-height:60px;margin-top:15px;}
+.layui-header span{ color:white;font-size:16px;margin-left:20px;width:700px;}
+/* layui轮播插件 */
+.layui-carousel,.layui-carousel > [carousel-item] > * {background-color:transparent !important;}
+.layui-carousel > [carousel-item]:before {content:none !important;}
+
+.expEditor { width:665px !important;height:260px !important;}
+.tdfloor{width:80px;text-align:center}
+
+/* index左侧部分 */
+.leftbg { background-image:url(../images/left_bg.png);background-repeat:repeat;margin-top:2px;width:233px !important;text-align:center }
+.leftlogo { margin-top:2px;width:233px;}
+.imgsplit {width:100%}
+.left_top{position:absolute;top:60;width:100%;height:130px;text-align:center;}
+.left_middle{position: absolute!important;position: relative;top:150px !important;top:0;/*bottom:130px;*/width:233px;height:auto!important;height:100%;text-align:center;overflow: auto;}
+.left_bottom{position:absolute;bottom:0;width:100%;height:120px;text-align:center;}
+
+/* 天气预报 */
+.spanDate {font-weight:bold;font-size:22px;color:#545E72;margin-right:20px;}
+.spanWeekDay {font-weight:bold;font-size:18px;color:#545E72;margin-right:30px;}
+.tblWeather {width:100%;margin-top:10px;}
+.tblWeather tr {line-height: 33px; color: #545E72;font-weight:bold;font-size:16px}
+.tblWeather img {width:40px;margin-left:10px}
+
+
+/* 轮播信息发布 */
+.infoCategory {font-family:'Microsoft YaHei';font-size:20px;font-weight:bold;color:#4F596E;text-align:left;background-image:url(../images/bar.png);background-repeat:no-repeat;height:30px;padding-left:20px;padding-top:5px;}
+.infoContent {font-family:'Microsoft YaHei';font-size:13px;color:#4F596E;line-height:25px;padding:5px;padding-left:10px;text-align:left}
+.ulInfolist {width:100%; list-style-type:none;font-family:'Microsoft YaHei';font-size:14px;color:#4F596E;line-height:10px;padding:5px;padding-left:10px;text-align:left }
+.ulInfolist li { float:left;border-bottom:1px dashed #cccccc;width:86%;min-height:30px;line-height:30px; }
+.tzgg {width:500px !important;float:left}
+.infoTitle { font-size:30px;text-align:center }
+.infoDate {text-align:center;padding:10px;font-size:14px;}
+.info_Content {font-size:18px;line-height:30px;padding:20px;}

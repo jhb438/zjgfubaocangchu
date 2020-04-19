@@ -1,0 +1,28 @@
+﻿
+html, body{padding: 0; margin: 0;}
+
+.map{width: 100%; height: 100%; background: #ccc; position: absolute;}
+
+.contextmenu{margin: 3px 0px 0px 0px;position: absolute; right: 0em; bottom: 0em; background-color: rgba(255,255,255,.8); padding: 2px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; z-index: 1;}
+.contextmenu ul{margin: 0px; padding: 0px; line-height: 20px; width: 100%; text-align: center;}
+.contextmenu ul li{padding: 5px 3px; margin: 0px; line-height: 20px; list-style: none; width: 80px; border-bottom: solid 0px #000;}
+.contextmenu ul li:hover{background-color: rgba(255,255,255,1); -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;}
+.contextmenu ul li.last{padding: 5px 3px; margin: 0px; line-height: 20px; list-style: none; border: none;}
+.contextmenu ul li img{width: 18px; height: 18px; cursor: pointer;}
+
+.tools{margin: 3px 0px 0px 0px; position: absolute; left: 0.5em; top: 5em; background-color: rgba(255,255,255,.8); padding: 2px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; z-index: 1;}
+.tools ul{margin: 0px; padding: 0px; line-height: 20px; width: 100%; text-align: center;}
+.tools ul li{padding: 5px 3px; margin: 0px; line-height: 20px; list-style: none; border-bottom: solid 1px #000;}
+.tools ul li:hover{background-color: rgba(255,255,255,1); -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;}
+.tools ul li.last{padding: 5px 3px; margin: 0px; line-height: 20px; list-style: none; border: none;}
+.tools ul li img{width: 18px; height: 18px; cursor: pointer;}
+
+.leftTree{width:250px !important}
+.leftTree #nav{ height: 30px;width: 100%; margin-top: 10px;}
+.leftTree #nav ul{list-style: none; width: 220px;margin: 0 auto;}
+.leftTree #nav li{ display: inline;line-height: 30px;float: left; background-color: #1E9FFF;color: white;width: 100%;text-align: center;cursor: pointer;}
+.leftTree #nav .on_th{ background: #077bd2 !important;}
+.leftTree .search_div{   width: 220px;height: 30px;line-height: 30px;border-bottom: 1px solid #adafaf;margin:0 auto;}
+.leftTree .search_div .search_ipt{ display: inline-block;width: 188px;height: 30px;line-height: 30px;border: none;}
+.leftTree .search_div .i_search{ display: inline-block;width: 14px; height: 14px;vertical-align: middle;background: url(../../../Content/images/icon_search_n.png) no-repeat;cursor: pointer;}
+.rightMap{  width: 100%; height: 100%; background: #ccc;position: absolute;}

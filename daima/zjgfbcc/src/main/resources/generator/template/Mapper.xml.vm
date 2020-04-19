@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="${package}.dao.mysql.${className}Dao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="${package}.entity.${className}" id="${classname}Map">
+#foreach($column in $columns)
+        <result property="${column.attrname}" column="${column.columnName}"/>
+#end
+    </resultMap>
+
+	<select id="getList" resultType="${package}.entity.${className}">
+		select * from ${tableName} t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by row_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from ${tableName} t  <include refid="where_clause" />
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+#foreach($column in $columns)
+            <if test="${column.attrname} != null and ${column.attrname} != ''"> and t.${column.columnName} = #{${column.attrname}} </if>
+    		<if test="${column.attrname}Vague != null and ${column.attrname}Vague != ''"> and t.${column.columnName} like concat('%',#{${column.attrname}Vague},'%') </if>
+#end
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="${package}.entity.${className}"#if($pk.extra == 'auto_increment') useGeneratedKeys="true" keyProperty="$pk.attrname"#end>
+		insert into ${tableName}
+		(
+		    `row_guid`,
+			`create_time`,
+			`del_flag`,
+			`sort_sq`,
+#foreach($column in $columns)
+#if($column.columnName != $pk.columnName || $pk.extra != 'auto_increment')
+			`$column.columnName`#if($velocityCount != $columns.size()), #end
+
+#end			
+#end
+		)
+		values
+		(
+		    #{rowGuid},
+			#{createTime},
+			#{delFlag},
+			#{sortSq},
+#foreach($column in $columns)
+#if($column.columnName != $pk.columnName || $pk.extra != 'auto_increment')
+			#{$column.attrname}#if($velocityCount != $columns.size()), #end
+
+#end			
+#end
+		)
+	</insert>
+	 
+	<update id="update" parameterType="${package}.entity.${className}">
+		update ${tableName} 
+		<set>
+            <if test="createTime != null">`create_time` = #{createTime}, </if>
+            <if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+#foreach($column in $columns)
+#if($column.columnName != $pk.columnName)
+			<if test="$column.attrname != null">`$column.columnName` = #{$column.attrname}#if($velocityCount != $columns.size()), #end</if>
+#end
+#end
+		</set>
+        where row_guid = #{rowGuid}
+	</update>
+	
+	<delete id="deleteBatch">
+		delete from ${tableName}  where row_guid in
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+    <select id="getDetailByGuid" resultType="${package}.entity.${className}">
+        select * from ${tableName} where row_guid =#{rowGuid} and del_flag =0
+    </select>
+
+    <select id="getDetailByPara" resultType="${package}.entity.${className}">
+        select * from ${tableName} where ${para}=#{value} and del_flag =0
+    </select>
+
+    <select id="getQueryList" resultType="${package}.entity.${className}">
+        select * from ${tableName} t <include refid="where_clause" />
+        order by row_id desc
+    </select>
+
+</mapper>

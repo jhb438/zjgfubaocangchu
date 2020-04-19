@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <script src="../../Scripts/JsAndCss.Model.js" type="text/javascript"></script>
+    <link href="../../Content/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+
+</head>
+<body>
+
+    <form action="/sys/modular/updateModule" class="layui-form layui-form-pane" data-ajax="true" data-ajax-method="post" data-ajax-success="afterSuccess" id="CreateModule" method="post" lay-filter="layform">
+        <div class="layui-container" style="margin-top:20px">
+            <div class="layui-row">
+                <div class="layui-col-xs6">
+                    <div class="layui-form-item ">
+                        <label class="layui-form-label">模块名称<font color="red">*</font></label>
+                        <div class="layui-input-block">
+                            <input type="text" name="moduleName" id="moduleName" lay-verify="required" placeholder="请输入模块名" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs6">
+                    <div class="layui-form-item ">
+                        <label class="layui-form-label">上级模块<font style="color:red">*</font></label>
+                        <div class="layui-input-block">
+                            <input type="text" name="pmoduleName" lay-verify="required" id="pmoduleName" readonly placeholder="请选择上级目录"
+                                   autocomplete="off" class="layui-input" onclick="selectModule()">
+                            <input type="hidden" name="pmoduleCode" id="pmoduleCode">
+                            <input type="hidden" name="rowGuid" />
+                            <input type="hidden" name="moduleCode" />
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs6">
+                    <div class="layui-form-item ">
+                        <label class="layui-form-label">模块地址<font color="red">*</font></label>
+                        <div class="layui-input-block">
+                            <input type="text" name="moduleAddr" id="moduleAddr"  placeholder="请输入模块地址" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs6">
+                    <div class="layui-form-item ">
+                        <label class="layui-form-label">目标框架</label>
+                        <div class="layui-input-block">
+                            <select name="target" id="target">
+                                <option value="框架">框架</option>
+                                <option value="新窗口">新窗口</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs6">
+                    <div class="layui-form-item ">
+                        <label class="layui-form-label">小图标</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="smallIcon" id="smallIcon" readonly placeholder="请选择图标" autocomplete="off" onclick="selectIcon()" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-col-xs6">
+                    <div class="layui-form-item ">
+                        <label class="layui-form-label">排序号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="sortSq" id="sortSq" placeholder="请输入排序号" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align:center;margin-top:20px">
+
+            <button class="layui-btn" lay-submit="">保存</button>
+            <input type="button" value="关闭" class="layui-btn layui-btn-normal" onclick="closeWin()" />
+
+        </div>
+    </form>
+
+
+    <script>
+        layui.use(['form'], function () {
+            var form = layui.form;
+            var rowGuid = getURLParameter("rowGuid");
+            SendAjax("/sys/modular/getDetailByGuid", { rowGuid: rowGuid }, function (res) {
+                if (res.code == "0") {
+
+                    //layform 即 class="layui-form" 所在元素对应的 lay-filter="" 对应的值
+                    form.val("layform", res.data);
+                    form.render();
+
+                    if ($("#pmoduleName").val() == "") {
+                        $("#pmoduleName").val("根目录");
+                    }
+                }
+            });
+        })
+        function selectModule() {
+            OpenWin('/static/pages/module/moduleChoice.html', 300, 500, '选择模块', refreshGrid)
+        }
+
+        function refreshGrid() {
+            if (top.RetValue != "" && top.RetValue != null) {
+                $("#pmoduleName").val(top.RetValue.split('/')[0]);
+                $("#pmoduleCode").val(top.RetValue.split('/')[1]);
+                top.RetValue = "";
+            }
+        }
+
+        function selectIcon() {
+            OpenWin('/static/pages/module/moduleIcon.html', 500, 400, '选择图标', refreshIcon)
+        }
+
+        function refreshIcon() {
+            if (top.RetValue != "" && top.RetValue != null) {
+                $("#smallIcon").val(top.RetValue);
+
+
+            }
+        }
+
+        function afterSuccess(data) {
+            if (data.code == "0") {
+                top.messageAlert("提醒", "保存成功", "info", function () {
+                    top.closePanel(window.name, true);
+                });
+            }
+            else {
+                top.messageAlert("提醒", data.msg, "error");
+            }
+        }
+        
+        function closeWin(){
+        	top.closePanel(window.name, false);
+        }
+
+    </script>
+
+
+</body>
+
+
+</html>

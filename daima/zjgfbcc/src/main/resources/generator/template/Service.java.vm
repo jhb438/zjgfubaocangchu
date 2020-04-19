@@ -1,0 +1,36 @@
+package ${package}.service;
+
+import ${package}.entity.${className};
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * ${comments}
+ * 
+ * @author 
+ * @date ${datetime}
+ */
+public interface ${className}Service {
+	
+	List<${className}> getList(Map<String, Object> map);
+
+    List<${className}> getQueryList(Map<String, Object> map);
+	
+	int getCount(Map<String, Object> map);
+	
+	void save(${className} ${classname});
+	
+	void update(${className} ${classname});
+	
+	void deleteBatch(String[] rowGuids);
+	${className} getDetailByGuid(String rowGuid);
+
+    /**
+     * 根据指定参数和值查询一条记录
+     * @param para  参数
+     * @param value  参数值
+     * @return
+	 */
+     ${className} getDetailByPara(String para,String value);
+}

@@ -1,0 +1,132 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="X-UA-Compatible" content="IE =Edge,chrome =1">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit" />
+    <title>张家港孚宝仓储管理后台</title>
+    <link href="Content/login.css" rel="stylesheet" />
+
+</head>
+
+<body class="login">
+    <div class="main">
+        <table cellpadding="0" cellspacing="0" border="0" id="tblForm">
+            <tr>
+                <td class="dl_03">
+                    <span class="spantitle">张家港孚宝仓储管理后台</span>
+                </td>
+                <td class="dl_04" colspan="2"></td>
+            </tr>
+            <tr>
+                <td class="dl_05"></td>
+                <td class="dl_06" valign="middle" align="center">
+                    <form action="#" method="post" onsubmit="return false" class="layui-form">
+                        <table cellpadding="3" cellspacing="3" border="0">
+                            <tr height="22">
+                                <td>
+                                    <input type="text" id="loginId" name="loginId" class="txtbg username required" placeholder="请输入用户名" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top: 20px;">
+                                    <input type="password" id="password" name="password" class="txtbg password required" placeholder="请输入密码" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="padding-top: 20px;">
+                                    <input type="submit" class="btnbg btnlogin" value="登&nbsp;录" lay-submit lay-filter="formDemo" />
+                                    
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </td>
+                <td class="dl_07"></td>
+            </tr>
+            <tr>
+                <td class="dl_08">
+                </td>
+                <td class="dl_09" colspan="2">
+                   
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+
+<script src="Scripts/jquery-1.11.3.min.js"></script>
+<script src="Scripts/layuiadmin/layui/layui.js"></script>
+<script src="Scripts/global.js"></script>
+
+<script>
+
+
+
+    layui.use(['form', 'layer'], function () {
+        var form = layui.form;
+        var layer = layui.layer;
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            if ($('#loginId').val() == '') {
+                layer.tips('账号不能为空', '#loginId', { tips: [2, 'rgb(219, 189, 77)'] });
+                return false;
+            }
+            if ($('#password').val() == '') {
+                layer.tips('密码不能为空', '#password', { tips: [2, 'rgb(219, 189, 77)'] })
+                return false;
+            }
+
+         
+            $.ajax({
+                url: window.serverUrl + '/sys/login',
+                method: 'post',
+                data: data.field,
+                dataType: 'JSON',
+                success: function (res) {
+                    if (res.code == 0) {
+                        //获取token，并存储在localstorage
+                        //console.log(res.data.user)
+
+                        window.localStorage.setItem('m_token', res.data.token);
+                        window.localStorage.setItem('m_user_rowGuid', res.data.userRowGuid);
+                        window.localStorage.setItem('m_user_userName', res.data.userName);
+                        window.localStorage.setItem('m_sex', res.data.sex);
+                        window.localStorage.setItem('m_mobile', res.data.mobile);
+                        window.localStorage.setItem('m_deptGuid', res.data.deptGuid);
+                        window.localStorage.setItem('m_deptName', res.data.deptName);
+                        window.localStorage.setItem('m_loginId', res.data.loginId);
+                        window.localStorage.setItem('oucode', res.data.oucode);
+                        window.localStorage.setItem('roleName', res.data.roleName);
+                        window.localStorage.setItem('gongHao', res.data.gongHao);
+                
+                     
+                        location.href = "index.html";
+                        
+                        
+                    }
+                    else
+                        layer.msg(res.msg);
+                },
+                error: function (data) {
+                    if (data.status == 0) {
+                    }
+                }
+            });
+
+        });
+    });
+    $(document).ready(function () {
+
+        $("#tblForm").css("left", ($(window).width() / 2 - $("#tblForm").width() / 2) + "px").
+        css("top", ($(window).height() / 2 - $("#tblForm").height() / 2) + "px");
+        $("#tblForm").css("display", "");
+    });
+
+
+</script>
+</html>

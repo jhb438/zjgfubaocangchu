@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html style="height: 100%;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
+    <title>信息列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <script src="../../Scripts/JsAndCss.Model.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <div class="layui-layout">
+        <div id="toolBar">
+            <input type="hidden" id="PDeptCode" />
+            <table style="width:100%">
+                <tr>
+                    <td>
+                        <table style="width:100%">
+                            <tr>
+                                <td style="width:450px;padding:5px" class="TB_01">
+                                    <div>
+                                        <form action="/sys/codes/insertCodes" class="layui-form" data-ajax="true" data-ajax-method="post" data-ajax-success="afterSuccess" id="CreateRole" method="post">
+                                            <label>代码名称:</label>
+                                            <input name="codeName" id="codeName" class="layui-input" style="width:180px;display:inline-block">
+                                            <div style="width:130px;display:inline-block">
+                                                <select name="codeMask">
+                                                    <option value="一维代码">一维代码</option>
+                                                    <option value="多维代码">多维代码</option>
+                                                </select>
+                                            </div>
+
+                                            <button class="layui-btn layui-btn-sm" lay-submit="">添加</button>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td class="TB_01" style=" padding:5px">
+                                    <label>代码名称:</label>
+                                    <input type="text" id="txtName" name="txtName" class="layui-input" style="width:200px;display:inline-block">
+                                    <input type="button" value="查询" onclick="search()" class="layui-btn layui-btn-sm layui-btn-normal" />
+                                </td>
+                                <td align="right" class="TB_01" style=" padding:5px">
+                                    <input type="button" value="保存修改" onclick="saveRow()" class="layui-btn layui-btn-sm" />
+                                    &nbsp;
+                                    <input type="button" value="删除选中" onclick="deleteRow()" class="layui-btn layui-btn-sm layui-btn-danger" />
+                                    &nbsp;&nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <table id="easyuiTable"></table>
+    </div>
+
+
+
+    <script>
+
+
+        layui.use("form")
+        var table;//将table暴露出来
+        layui.use(["table"], function () {
+            table = layui.table;
+            initData({ codeName: "" });
+        })
+        function initData(where) {
+            table.render({
+                id: 'layuiTable',//固定写法
+                elem: '#easyuiTable',//固定写法
+                height: 'full-' + ($("#toolBar").height()),//固定写法
+                method: 'get',//固定写法
+                remoteSort: true,
+                initSort: { field: "row_id", type: "desc" },
+                url: window.serverUrl + '/sys/codes/getCodes', //数据接口
+                page: true, //开启分页
+                limit: 20,//每页显示行数
+                where: where,
+                cols: [[ //表头
+                    { type: 'checkbox', fixed: 'left', },
+                    {
+                        field: 'codeName', title: '代码名称', sort: true, minWidth: 200, align: "center", templet: function (d) {
+                            return '<input type="text" id="Name_' + d.rowId + '" value="' + d.codeName + '" class="layui-input"/>';
+                        }
+                    },
+                    { field: 'codeMask', title: '属性', sort: true, width: 150, align: 'center' },
+                    {
+                        field: 'SortSQ', title: '排序', sort: true, align: "center", width: 80, templet: function (d) {
+                            return '<input type="text" id="Sort_' + d.rowId + '" value="' + d.sortSq + '"  class="layui-input"/>';
+                        }
+                    },
+                    {
+                        title: '管理', width: 80, align: "center", templet: function (d) {
+                            return '<a href="javascript:void(0);" onclick="SetCodeValue(\'' + d.codeMask + '\',\'' + d.rowGuid + '\')" class="layui-btn layui-btn-xs">设置</a>';
+                        }
+                    }
+                ]
+                ]
+            });
+        }
+
+        //刷新
+        function refreshGrid() {
+            table.reload('layuiTable');
+        }
+
+        function afterSuccess(data) {
+            if (data.code == "0") {
+                top.messageAlert("提醒", "添加成功", "info", function () {
+                    refreshGrid();
+                });
+            }
+            else {
+                top.messageAlert("提醒", data.msg, "error");
+            }
+        }
+
+        //查询
+        function search() {
+            initData({ codeName: $("#txtName").val() });
+        }
+
+        //删除选定
+        function deleteRow() {
+            var rows = table.checkStatus('layuiTable').data;//获取选中行
+            if (!rows || rows.length == 0) {
+                top.layuiMsg("请选择要删除的记录!")
+                return;
+            }
+            top.layuiConfirm("确定要删除该记录?", {}, function () {
+                var RowGuids = new Array();
+                for (var i = 0; i < rows.length; i++) {
+                    RowGuids.push(rows[i].rowGuid);
+                }
+
+                SendAjax("/sys/codes/deleteCodes", { "rowGuids": RowGuids }, function (data) {
+                    if (data.code == "0") {
+                        top.messageAlert("提醒", "删除成功", "info", function () {
+                            refreshGrid();
+                        });
+                    } else {
+                        top.messageAlert("提醒", data.Message, "error");
+                    }
+                });
+            });
+        }
+
+        //保存修改
+        function saveRow() {
+            var rows = table.checkStatus('layuiTable').data;//获取选中行
+            if (!rows || rows.length == 0) {
+                top.layuiMsg("请选择要保存的记录!")
+                return;
+            }
+            var arrRowGuids = new Array();
+            var arrCodeNames = new Array();
+            var arrSortSqs = new Array();
+
+            for (var i = 0; i < rows.length; i++) {
+
+                arrRowGuids.push(rows[i].rowGuid);
+                arrCodeNames.push($("#Name_" + rows[i].rowId).val());
+                arrSortSqs.push($("#Sort_" + rows[i].rowId).val());
+            }
+
+            SendAjax("/sys/codes/saveRows", { arrRowGuids: arrRowGuids, arrCodeNames: arrCodeNames, arrSortSqs: arrSortSqs }, function (data) {
+                if (data.code == "0") {
+                    top.messageAlert("提醒", "保存成功", "info", function () {
+                        refreshGrid();
+                    });
+                } else {
+                    top.messageAlert("提醒", "保存失败", "error");
+                }
+            });
+
+        }
+
+        function SetCodeValue(para, codeGuid) {
+            if (para === "一维代码") {
+                OpenWin('/static/pages/codes/SingleIndex.html?codeGuid=' + codeGuid, 800, 500, '设置', refreshGrid);
+            } else {
+                window.location.href = '/static/pages/codes/MultiIndex.html?codeGuid=' + codeGuid;
+            }
+        }
+
+
+
+
+    </script>
+
+
+</body>
+</html>

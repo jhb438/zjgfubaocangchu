@@ -1,0 +1,101 @@
+package ${package}.controller;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import com.basic.zjgfbcc.common.utils.DateUtil;
+import com.basic.zjgfbcc.common.utils.LayuiUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import javax.servlet.http.HttpServletRequest;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+import com.basic.zjgfbcc.common.customclass.PassToken;
+import ${package}.entity.${className};
+import ${package}.service.${className}Service;
+import ${package}.common.utils.PageUtils;
+import ${package}.common.utils.Query;
+import ${package}.common.utils.R;
+
+
+/**
+ * ${comments}
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Api(value = "")
+@RestController
+@CrossOrigin
+@RequestMapping("sys/${pathName}")
+public class ${className}Controller {
+	@Autowired
+	private ${className}Service ${classname}Service;
+	
+	/**
+	 * 列表数据
+	 */
+	@PassToken
+	@ApiOperation(value="")
+    @ResponseBody
+	@RequestMapping(value="/listData",produces="application/json;charset=utf-8",method=RequestMethod.GET)
+	public LayuiUtil listData(@RequestParam Map<String, Object> params){
+		//查询列表数据
+        Query query = new Query(params);
+		List<${className}> ${classname}List = ${classname}Service.getList(query);
+		int total = ${classname}Service.getCount(query);
+		PageUtils pageUtil = new PageUtils(${classname}List, total, query.getLimit(), query.getPage());
+		return LayuiUtil.data(pageUtil.getTotalCount(), pageUtil.getList());
+	}
+
+    /**
+     * 新增
+     **/
+    @ApiOperation(value="")
+    @ResponseBody
+    @RequestMapping(value="/add",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+    public R add(${className} ${classname}){
+		${classname}Service.save(${classname});
+        return R.ok();  
+    }
+
+	/**
+	 * 修改
+	 */
+	@ApiOperation(value="")
+    @ResponseBody
+	@RequestMapping(value="/update", produces = "application/json; charset=utf-8", method=RequestMethod.POST)
+	public R update(${className} ${classname}){
+		${classname}Service.update(${classname});
+		return R.ok();
+	}
+
+	/**
+	 * 删除
+	 */
+    @ApiOperation(value="")
+	@ResponseBody
+	@RequestMapping(value="/delete",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R delete(@RequestParam(value="rowGuids[]") String[] rowGuids){
+		${classname}Service.deleteBatch(rowGuids);
+		return R.ok();
+	}
+
+    /**
+     * 通过rowGuid获取一条记录
+     * @param rowGuid
+     * @return
+     */
+    @PassToken
+    @ApiOperation(value="通过rowGuid获取一条记录")
+    @ResponseBody
+    @RequestMapping(value="/getDetailByGuid",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+    public R getDetailByGuid(@RequestParam String rowGuid){
+		${className} model = ${classname}Service.getDetailByGuid(rowGuid);
+        return R.ok().put("data",model);
+    }
+	
+}

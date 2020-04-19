@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.zjgfbcc.dao.mysql.InformationCategoryDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+	<resultMap type="com.basic.zjgfbcc.entity.InformationCategory" id="informationCategoryMap">
+		<result property="rowId" column="row_id"/>
+		<result property="rowGuid" column="row_guid"/>
+		<result property="createTime" column="create_time"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="sortSq" column="sort_sq"/>
+		<result property="categoryCode" column="category_code"/>
+		<result property="categoryName" column="category_name"/>
+		<result property="isSingle" column="is_single"/>
+		<result property="isNeedAudit" column="is_needAudit"/>
+		<result property="description" column="description"/>
+		<result property="pcategoryCode" column="pcategory_code"/>
+	</resultMap>
+
+	<select id="getList" resultType="com.basic.zjgfbcc.entity.InformationCategory">
+		select * from Information_Category t <include refid="where_clause" />
+		<choose>
+			<when test="pcategoryCode != null and pcategoryCode != ''">
+				and t.pcategory_Code=#{pcategoryCode}
+			</when>
+			<otherwise>
+				and t.pcategory_Code=''
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by sort_sq desc,row_id asc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<!-- 查询所有栏目 -->
+	<select id="getAllList" resultType="com.basic.zjgfbcc.entity.InformationCategory">
+	    select * from Information_Category where pcategory_code = '' and del_flag = 0
+	</select>
+
+	<!-- 查询对应栏目 -->
+	<select id="getCategoryByGuid" resultType="com.basic.zjgfbcc.entity.InformationCategory">
+	    select * from Information_Category i
+	    left join Information_Info_Category t
+	    on i.row_guid = t.category_guid where t.info_guid = #{categoryGuid}
+	</select>
+
+	<!-- 查询所有父节点 -->
+	<select id="findTopTrees" resultType="com.basic.zjgfbcc.entity.InformationCategory">
+	    select * from Information_Category where pcategory_code = #{pcategoryCode} and del_flag = 0
+	</select>
+
+	<select id="findTopTreesByGuid" resultType="com.basic.zjgfbcc.entity.InformationCategory">
+		 select * from Information_Category where 1=1 and del_flag = 0
+				and pcategory_code =
+				(select category_code from Information_Category where row_guid=#{rowGuid})
+
+
+	</select>
+
+	<!-- 根据父节点查询 -->
+	<select id="getByPCategoryCode" resultType="com.basic.zjgfbcc.entity.InformationCategory">
+	    select * from Information_Category where pcategory_code = #{value} and del_flag = 0
+	</select>
+
+	<select id="getCount" resultType="int">
+		select count(*) from Information_Category t  <include refid="where_clause" />
+	</select>
+
+	<!-- 搜索数据区域 -->
+	<sql id="where_clause">
+		<where>
+			1=1
+			<if test="categoryCode != null and categoryCode != ''"> and t.category_code = #{categoryCode} </if>
+			<if test="categoryCodeVague != null and categoryCodeVague != ''"> and t.category_code like concat('%',#{categoryCodeVague},'%') </if>
+			<if test="categoryName != null and categoryName != ''"> and t.category_name = #{categoryName} </if>
+			<if test="categoryNameVague != null and categoryNameVague != ''"> and t.category_name like concat('%',#{categoryNameVague},'%') </if>
+			<if test="isSingle != null and isSingle != ''"> and t.is_single = #{isSingle} </if>
+			<if test="isSingleVague != null and isSingleVague != ''"> and t.is_single like concat('%',#{isSingleVague},'%') </if>
+			<if test="isNeedAudit != null and isNeedAudit != ''"> and t.is_needAudit = #{isNeedAudit} </if>
+			<if test="isNeedAuditVague != null and isNeedAuditVague != ''"> and t.is_needAudit like concat('%',#{isNeedAuditVague},'%') </if>
+			<if test="description != null and description != ''"> and t.description = #{description} </if>
+			<if test="descriptionVague != null and descriptionVague != ''"> and t.description like concat('%',#{descriptionVague},'%') </if>
+
+			and t.del_flag = 0
+		</where>
+	</sql>
+
+	<insert id="save" parameterType="com.basic.zjgfbcc.entity.InformationCategory" useGeneratedKeys="true" keyProperty="rowId">
+		insert into Information_Category
+		(
+			`row_guid`, 
+			`create_time`, 
+			`sort_sq`, 
+			`category_code`, 
+			`category_name`, 
+			`is_single`, 
+			`is_needAudit`, 
+			`description`, 
+			`pcategory_code`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{sortSq}, 
+			#{categoryCode}, 
+			#{categoryName}, 
+			#{isSingle}, 
+			#{isNeedAudit}, 
+			#{description}, 
+			#{pcategoryCode}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.basic.zjgfbcc.entity.InformationCategory">
+		update Information_Category
+		<set>
+			<if test="categoryCode != null">`category_code` = #{categoryCode}, </if>
+			<if test="categoryName != null">`category_name` = #{categoryName}, </if>
+			<if test="isSingle != null">`is_single` = #{isSingle}, </if>
+			<if test="isNeedAudit != null">`is_needAudit` = #{isNeedAudit}, </if>
+			<if test="description != null">`description` = #{description}, </if>
+			<if test="pcategoryCode != null">`pcategory_code` = #{pcategoryCode},</if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}</if>
+		</set>
+		where row_guid = #{rowGuid}
+	</update>
+
+	<delete id="deleteBatch">
+		update   Information_Category set del_flag=1  where row_guid in
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+	<select id="getNextCateGoryCode" resultType="String">
+		select category_code from information_category where pcategory_code=#{pcategoryCode} and del_flag=0  order by row_id desc LIMIT 1
+	</select>
+
+	<select id="getDetailByGuid" resultType="com.basic.zjgfbcc.entity.InformationCategory">
+		select * from information_category  where 1=1 and row_guid=#{rowGuid}
+	</select>
+
+</mapper>

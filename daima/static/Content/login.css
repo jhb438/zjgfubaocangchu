@@ -1,0 +1,17 @@
+﻿*{padding: 0px;margin: 0px;}
+html, body{height: 100%;width: 100%;overflow: hidden;position: absolute;}
+#tblForm{position: absolute; background: url(login/logininfo.png) no-repeat;}
+td{font-size: 12pt;}
+.btnbg{display: inline-block;height: 42px;width: 100%;margin-top: 20px;line-height: 30px;padding: 0 28px;background-color: #4185e8;color: #fff;white-space: nowrap;text-align: center;border: none;border-radius: 2px;cursor: pointer;opacity: .9;filter: alpha(opacity=90);font-size: 16px;}
+.txtbg{width: 250px;height: 22px;border-right: solid 0px #83A9D0;border-top: solid 0px #83A9D0;border-left: solid 0px #83A9D0;border-bottom: solid 1px #83A9D0;float: none;}
+.username{background: url(login/LoginID.png) no-repeat;background-position: 10px;padding-left: 38px;height: 38px;line-height: 38px;border: 1px solid #e6e6e6;background-color: #fff;border-radius: 2px;width: 230px;}
+.password{background: url(login/password.png) no-repeat;background-position: 10px;padding-left: 38px;height: 38px;line-height: 38px;border: 1px solid #e6e6e6;background-color: #fff;border-radius: 2px;width: 230px;}
+.dl_03{width: 635px;height: 203px;}
+.dl_04{width: 363px;height: 203px;}
+.dl_05{width: 473px;height: 183px;}
+.dl_06{width: 400px;height: 183px;}
+.dl_07{width: 125px;height: 183px;}
+.dl_08{width: 635px;height: 150px;}
+.dl_09{width: 362px;height: 150px;background-repeat: no-repeat;}
+.main{height: 100%;width: 100%;vertical-align: middle;text-align: center;background-image: url(login/bg.png);}
+.spantitle{color: white;font-size: 46px;font-weight: 700;font-family: 'Microsoft JhengHei';}

@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>新增部门</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <script src="../../Scripts/JsAndCss.Model.js" type="text/javascript"></script>
+    <style>
+        .layui-form-item {
+            margin-bottom: 0px;
+        }
+
+        .layui-input, .layui-textarea {
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+
+    <form action="/sys/dept/updateDept" class="layui-form" data-ajax="true" data-ajax-method="post" data-ajax-success="afterSuccess" id="updateDept" method="post" lay-filter="layform">
+        <input type="hidden" id="rowGuid" name="rowGuid" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门名称<font color="red">*</font></label>
+            <div class="layui-input-inline">
+                <input type="text" name="deptName" id="deptName" lay-verify="required" placeholder="请输入部门名称" lay-
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门简称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="shortName" id="shortName" placeholder="请输入部门简称"
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label  ">上级部门<font color="red">*</font></label>
+            <div class="layui-input-inline">
+                <input type="text" name="pdeptName" id="pdeptName" style="cursor:pointer" lay-verify="required" readonly placeholder="请选择部门" autocomplete="off"
+                       class="layui-input" onclick="selectDept()">
+                <input type="text" name="pdeptCode" id="pdeptCode" style="display: none;">
+                <input type="hidden" name="deptCode" />
+                <input type="hidden" name="rowId" />
+
+            </div>
+        </div>
+        <div class="layui-form-item ">
+            <label class="layui-form-label ">部门编号<font color="red">*</font></label>
+            <div class="layui-input-inline">
+                <input type="text" name="oucode" id="oucode" placeholder="请输入部门编号" lay-verify="required"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系电话</label>
+            <div class="layui-input-inline">
+                <input type="text" name="tel" id="tel" placeholder="请输入联系电话" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系地址</label>
+            <div class="layui-input-inline">
+                <input type="text" name="address" id="address" placeholder="请输入联系地址" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="sortSq" id="sortSq" placeholder="请输入传真" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item ">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-inline">
+                <textarea name="description" id="description" placeholder="请输入备注" class="layui-input"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-button" style="text-align:center">
+            <div class="layui-input-inline">
+                <button class="layui-btn layui-btn-normal confirm" lay-submit lay-filter="formDemo">立即提交</button>
+            </div>
+        </div>
+
+    </form>
+
+
+    <script>
+
+
+        layui.use(['form'], function () {
+            var form = layui.form;
+            var rowGuid = getURLParameter("rowGuid");
+            SendAjax("/sys/dept/getDetailByGuid", { rowGuid: rowGuid }, function (res) {
+                if (res.code == "0") {
+
+                    //layform 即 class="layui-form" 所在元素对应的 lay-filter="" 对应的值
+                    form.val("layform", res.data);
+                    form.render();
+
+                    if ($("#pdeptName").val() == "") {
+                        $("#pdeptName").val("根目录");
+                    }
+                }
+            });
+        })
+
+        function selectDept() {
+            OpenWin('/static/pages/dept/deptChoice.html', 300, 500, '选择部门', refreshGrid)
+        }
+
+        function refreshGrid() {
+            if (top.RetValue != "" && top.RetValue != null) {
+                $("#pdeptName").val(top.RetValue.split('/')[0]);
+                $("#pdeptCode").val(top.RetValue.split('/')[1]);
+                top.RetValue = "";
+            }
+        }
+
+        function afterSuccess(data) {
+            if (data.code == "0") {
+                top.messageAlert("提醒", "提交成功", "info", function () {
+                    top.closePanel(window.name, true);
+                });
+            }
+            else {
+                top.messageAlert("提醒", data.msg, "error");
+            }
+        }
+
+
+
+    </script>
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.zjgfbcc.dao.mysql.Frame_ModuleDao">
+
+    <!-- 查询模块列表 -->
+    <select id="selectFrameModuleList" resultType="com.basic.zjgfbcc.entity.Frame_Module">
+        select * from frame_module t
+        <include refid="where_clause"/>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!-- 查询模块数量 -->
+    <select id="getCount" resultType="int">
+        select count(*) from frame_module t
+        <include refid="where_clause"/>
+    </select>
+
+    <!-- 新增模块  -->
+    <insert id="insertFrameModule" parameterType="com.basic.zjgfbcc.entity.Frame_Module" useGeneratedKeys="true"
+            keyProperty="row_id">
+        insert into frame_module (
+			  `row_id`,
+			  `row_guid`,
+			  `del_flag`,
+			  `create_time`,
+			  `module_name`,
+			  `module_code`,
+			  `pmodule_code`,
+			  `has_child`,
+			  `module_addr`,
+			  `small_icon`,
+			  `big_icon`,
+			  `target`,
+			  `is_visible`,
+			  `sort_sq`
+		) values (
+			  #{rowId},
+			  #{rowGuid},
+			  #{delFlag},
+			  #{createTime},
+			  #{moduleName},
+			  #{moduleCode},
+			  #{pmoduleCode},
+			  #{hasChild},
+			  #{moduleAddr},
+			  #{smallIcon},
+			  #{bigIcon},
+			  #{target},
+			  #{isVisible},
+			  #{sortSq}
+		);
+    </insert>
+
+    <!-- 更新数据 -->
+    <update id="updateFrameModule" parameterType="com.basic.zjgfbcc.entity.Frame_Module">
+        update frame_module
+        <set>
+
+            <if test="delFlag != null">`del_flag` = #{delFlag},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="moduleName != null">`module_name` = #{moduleName},</if>
+            <if test="moduleCode != null">`module_code` = #{moduleCode},</if>
+            <if test="pmoduleCode != null">`pmodule_code` = #{pmoduleCode},</if>
+            <if test="hasChild != null">`has_child` = #{hasChild},</if>
+            <if test="moduleAddr != null">`module_addr` = #{moduleAddr},</if>
+            <if test="smallIcon != null">`small_icon` = #{smallIcon},</if>
+            <if test="bigIcon != null">`big_icon` = #{bigIcon},</if>
+            <if test="target != null">`target` = #{target},</if>
+            <if test="isVisible != null">`is_visible` = #{isVisible},</if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq}</if>
+        </set>
+        where row_guid = #{rowGuid}
+    </update>
+
+    <!-- 批量删除  -->
+    <delete id="deleteFrameModuleById">
+        update frame_module set `del_flag` = 1 where row_guid in
+        <foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+            #{rowGuid}
+        </foreach>
+    </delete>
+    <!-- 删除所有子集模块  -->
+    <delete id="deleteAllChild">
+        update frame_module set `del_flag` = 1 where pmodule_code like concat('',#{moduleCode},'%')
+    </delete>
+
+    <!-- 查询所有父节点 -->
+    <select id="findModules" resultType="com.basic.zjgfbcc.entity.Frame_Module">
+	    select * from frame_module where pmodule_code = '' and del_flag = 0
+	</select>
+	
+    <select id="getDetailByMenuName" resultType="com.basic.zjgfbcc.entity.Frame_Module">
+        select * from frame_module where module_name = #{value} and del_flag = 0 LIMIT 1
+    </select>
+
+    <!-- 根据父节点查询 -->
+    <select id="getByPmoduleCode" resultType="com.basic.zjgfbcc.entity.Frame_Module">
+	    select * from frame_module where pmodule_code = #{value} and del_flag = 0
+	</select>
+
+    <!--根据父节点编号查询-->
+    <select id="getByModuleCode" resultType="java.lang.String">
+		select module_name from frame_module where module_code=#{moduleCode} and del_flag = 0
+	</select>
+    <!--根据modulecode查找子集-->
+    <select id="getSubModules" resultType="com.basic.zjgfbcc.entity.Frame_Module">
+        select * from frame_module where del_flag=0 and is_visible=1 and pmodule_code=#{moduleCode}
+        order by sort_sq desc,row_id desc
+    </select>
+
+    <sql id="where_clause">
+        <where>
+            1=1
+
+            <if test="moduleName != null and moduleName != ''">and t.module_name like concat('%',#{moduleName},'%')</if>
+            <if test="moduleCode != null and moduleCode != ''">and  t.pmodule_code =#{moduleCode}
+            </if>
+            <if test="pmoduleCode != null ">and t.pmodule_code = #{pmoduleCode}</if>
+            <if test="hasChild != null and hasChild != ''">and t.has_child = #{hasChild}</if>
+            <if test="moduleAddr != null and moduleAddr != ''">and t.module_addr = #{moduleAddr}</if>
+            <if test="smallIcon != null and smallIcon != ''">and t.small_icon = #{smallIcon}</if>
+            <if test="bigIcon != null and bigIcon != ''">and t.big_icon = #{bigIcon}</if>
+            <if test="target != null and target != ''">and t.target = #{target}</if>
+            <if test="isVisible != null and isVisible != ''">and t.is_visible = #{isVisible}</if>
+
+            and t.del_flag = 0
+        </where>
+    </sql>
+
+    <!--获取用户对应的菜单-->
+    <select id="GetSubMenu" resultType="com.basic.zjgfbcc.entity.Frame_Module">
+            select DISTINCT frame_module.* from frame_moduleright,frame_module,frame_user,frame_role_user
+where frame_moduleright.module_guid=frame_module.row_guid
+and frame_moduleright.allow_to=frame_role_user.role_guid
+and frame_role_user.user_guid=frame_user.row_guid
+and pmodule_code=#{pModuleCode}
+and frame_user.row_guid=#{userGuid} and is_visible=1 and frame_module.del_flag=0
+order by frame_module.sort_sq desc,frame_module.row_id desc
+    </select>
+
+    <select id="getDetailByGuid" resultType="com.basic.zjgfbcc.entity.Frame_Module">
+		select *,(select module_name from frame_module where module_code=a.pmodule_code)pmoduleName
+		 from frame_module a where 1=1 and a.del_flag=0 and a.row_guid=#{rowGuid}
+	</select>
+</mapper>

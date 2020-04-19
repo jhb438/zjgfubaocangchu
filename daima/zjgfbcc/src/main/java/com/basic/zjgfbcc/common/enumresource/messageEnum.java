@@ -1,0 +1,31 @@
+package com.basic.zjgfbcc.common.enumresource;
+
+import com.basic.zjgfbcc.common.utils.EnumMessage;
+
+/**
+ * 是否接单枚举
+* <p>Title: ReceiveOrderEnum</p>  
+* <p>Description: </p>  
+* @author hero
+ */
+public enum messageEnum implements EnumMessage{
+	HASNEW(1,"有新消息");
+	
+	private final int code;
+    private final String value;
+    private messageEnum(int code, String value) {
+        this.code = code;
+        this.value = value;
+    }
+	@Override
+	public int getCode() {
+		// TODO Auto-generated method stub
+		return code;
+	}
+
+	@Override
+	public String getValue() {
+		// TODO Auto-generated method stub
+		return value;
+	}
+}

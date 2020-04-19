@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.zjgfbcc.dao.mysql.Frame_DeptDao">
+
+    <resultMap type="com.basic.zjgfbcc.entity.Frame_Dept" id="Frame_Dept">
+        <result property="rowId"    column="row_id"    />
+        <result property="rowGuid"    column="row_guid"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deptCode"    column="dept_code"    />
+        <result property="pdeptCode"    column="pdept_code"    />
+        <result property="hasChild"    column="has_child"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="shortName"    column="short_name"    />
+        <result property="oucode"    column="oucode"    />
+        <result property="sortSq"    column="sort_sq"    />
+        <result property="tel"    column="tel"    />
+        <result property="fax"    column="fax"    />
+        <result property="address"    column="address"    />
+        <result property="description"    column="description"    />
+    </resultMap>
+    
+	<!-- 查询部门列表 -->
+    <select id="selectFrameDeptList" resultType="com.basic.zjgfbcc.entity.Frame_Dept">
+        select * from frame_dept t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by sort_sq desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+    </select>
+    
+    <!-- 查询部门数量 -->
+    <select id="getCount" resultType="int">
+        select count(*) from frame_dept t <include refid="where_clause" />
+    </select>
+    
+    <!-- 查询指定部门下的所有设备 -->
+    <select id="getDeviceByDeptGuid" resultType="com.basic.zjgfbcc.entity.Frame_User">
+        select f.* from frame_user f left join frame_dept d on f.dept_guid = d.row_guid
+        where d.row_guid = #{deptGuid} and f.del_flag=0 and uid is not null
+    </select>
+
+     <select id="getUsersByDeptGuid" resultType="com.basic.zjgfbcc.entity.Frame_User">
+        select f.* from frame_user f left join frame_dept d on f.dept_guid = d.row_guid
+        where d.row_guid = #{value} and f.del_flag=0
+    </select>
+    
+     <select id="selectFrameDeptByName" resultType="com.basic.zjgfbcc.entity.Frame_Dept">
+         select * from frame_dept where dept_name = #{value}
+     </select>
+     
+     <select id="getDeptGuidByName" resultType="string">
+         select row_guid from frame_dept where dept_name = #{value} 
+     </select>
+
+    <!-- 新增部门  -->
+    <insert id="insertFrameDept" parameterType="com.basic.zjgfbcc.entity.Frame_Dept" useGeneratedKeys="true" keyProperty="row_id">
+        insert into frame_dept (
+			  `row_id`,
+			  `row_guid`,
+			  `del_flag`,
+			  `create_time`,
+			  `dept_code`,
+			  `pdept_code`,
+			  `has_child`,
+			  `dept_name`,
+			  `short_name`,
+			  `oucode`,
+			  `sort_sq`, 
+			  `tel`,
+			  `fax`,
+			  `address`,
+			  `description`,
+			    `dkey`,
+			    codeLevel
+		) values (
+			  #{rowId},
+			  #{rowGuid},
+			  #{delFlag},
+			  #{createTime},
+			  #{deptCode},
+			  #{pdeptCode},
+			  #{hasChild},
+			  #{deptName},
+			  #{shortName},
+			  #{oucode},
+			  #{sortSq},
+			  #{tel},
+			  #{fax},
+			  #{address},
+			  #{description},
+			   #{dkey},
+			    #{codeLevel}
+		);
+    </insert>
+    
+     <!-- 更新数据 -->
+	<update id="updateFrameDept" parameterType="com.basic.zjgfbcc.entity.Frame_Dept">
+		update frame_dept
+		<set>
+			<if test="rowId != null">`row_id` = #{rowId}, </if>
+			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="deptCode != null">`dept_code` = #{deptCode}, </if>
+			<if test="pdeptCode != null">`pdept_code` = #{pdeptCode}, </if>
+			<if test="hasChild != null">`has_child` = #{hasChild}, </if>
+			<if test="deptName != null">`dept_name` = #{deptName}, </if>
+			<if test="shortName != null">`short_name` = #{shortName}, </if>
+			<if test="oucode != null">`oucode` = #{oucode}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="tel != null">`tel` = #{tel}, </if>
+			<if test="fax != null">`fax` = #{fax}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="description != null">`description` = #{description},</if>
+			<if test="dkey != null">`dkey` = #{dkey},</if>
+			<if test="codeLevel != null">`codeLevel` = #{codeLevel}</if>
+		</set>
+		where row_id = #{rowId}
+	</update>
+	
+	<update id="updateByDeptCode" parameterType="com.basic.zjgfbcc.entity.Frame_Dept">
+	    update frame_dept
+		<set>
+			<if test="rowId != null">`row_id` = #{rowId}, </if>
+			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="deptCode != null">`dept_code` = #{deptCode}, </if>
+			<if test="pdeptCode != null">`pdept_code` = #{pdeptCode}, </if>
+			<if test="hasChild != null">`has_child` = #{hasChild}, </if>
+			<if test="deptName != null">`dept_name` = #{deptName}, </if>
+			<if test="shortName != null">`short_name` = #{shortName}, </if>
+			<if test="oucode != null">`oucode` = #{oucode}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="tel != null">`tel` = #{tel}, </if>
+			<if test="fax != null">`fax` = #{fax}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="description != null">`description` = #{description},</if>
+			<if test="dkey != null">`dkey` = #{dkey},</if>
+			<if test="codeLevel != null">`codeLevel` = #{codeLevel}</if>
+		</set>
+		where dept_code = #{deptCode}
+	</update>
+
+	<!-- 更新数据 -->
+	<update id="updateDeptByDeptName" parameterType="com.basic.zjgfbcc.entity.Frame_Dept">
+		update frame_dept
+		<set>
+			<if test="rowId != null">`row_id` = #{rowId}, </if>
+			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="deptCode != null">`dept_code` = #{deptCode}, </if>
+			<if test="pdeptCode != null">`pdept_code` = #{pdeptCode}, </if>
+			<if test="hasChild != null">`has_child` = #{hasChild}, </if>
+			<if test="deptName != null">`dept_name` = #{deptName}, </if>
+			<if test="shortName != null">`short_name` = #{shortName}, </if>
+			<if test="oucode != null">`oucode` = #{oucode}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="tel != null">`tel` = #{tel}, </if>
+			<if test="fax != null">`fax` = #{fax}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="description != null">`description` = #{description},</if>
+			<if test="dkey != null">`dkey` = #{dkey},</if>
+			<if test="codeLevel != null">`codeLevel` = #{codeLevel}</if>
+		</set>
+		where dept_name = #{deptName}
+	</update>
+
+    <!--批量更新pdeptcode-->
+	<update id="updatePDetCode">
+		update frame_dept set pdept_code=#{newPDeptCode} where pdept_code=#{oldPDeptCode}
+	</update>
+    
+	<!-- 批量删除  -->
+	<delete id="deleteFrameDeptById">
+		delete from  frame_dept  where row_guid in
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+	<!-- 物理删除指定部门  -->
+	<delete id="deleteFrameDept">
+		delete from frame_dept where row_id<![CDATA[ <> ]]>1
+	</delete>
+	
+	<!-- 查询所有父节点 -->
+	<select id="findTopDepts" resultType="com.basic.zjgfbcc.entity.Frame_Dept">
+	    select * from frame_dept where pdept_code = '' and del_flag = 0
+	</select>
+	<!-- 查询指定部门下面子部门 -->
+    <select id="getDeptTreeDeptCode" resultType="com.basic.zjgfbcc.entity.Frame_Dept">
+		select * from frame_dept where 1=1 and del_flag = 0
+		and pdept_code=#{deptcode} order by sort_sq,row_id desc
+	</select>
+	<!-- 查询指定部门下面子部门 -->
+	<select id="getAllDeptTreeByDeptCode" resultType="com.basic.zjgfbcc.entity.Frame_Dept">
+        select * from frame_dept where 1=1 and del_flag = 0
+		and pdept_code like concat('',#{deptcode},'%');
+	</select>
+	<select id="findNewTopDepts" resultType="com.basic.zjgfbcc.entity.Frame_Dept">
+	    select * from frame_dept where pdept_code = #{value} and del_flag = 0
+	</select>
+	
+	<!-- 根据部门编号查询 -->
+	<select id="getByDeptCode" resultType="com.basic.zjgfbcc.entity.Frame_Dept">
+	    select * from frame_dept where dept_code = #{deptCode} and del_flag = 0
+	</select>
+
+	<!--根据guid查询部门名称-->
+	<select id="getDeptNameByGuid" resultType="java.lang.String">
+		select dept_name from frame_dept where row_guid=#{rowGuid} and del_flag = 0
+	</select>
+
+	<!-- 根据父节点查询 -->
+	<select id="getByPdeptCode" resultType="com.basic.zjgfbcc.entity.Frame_Dept">
+	    select * from frame_dept where pdept_code = #{value} and del_flag = 0
+	</select>
+	
+	<!-- 验证重复性 -->
+	<select id="checkDept" resultType="int">
+	    select count(*) from frame_dept t<include refid="where_clause2" />
+	</select>
+	
+	<select id="selectFrameDeptById" resultType="com.basic.zjgfbcc.entity.Frame_Dept">
+	    select * from frame_dept where row_id = #{value}
+	</select>
+	
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="deptName != null and deptName != ''"> and t.dept_name like concat('%',#{deptName},'%') </if>
+            <if test="shortName != null and shortName != ''"> and t.short_name = #{shortName} </if>
+            <if test="oucode != null and oucode != ''"> and t.oucode = #{oucode} </if>
+            <if test="pdeptCode != null and pdeptCode != ''"> and t.pdept_code = #{pdeptCode} </if>
+            <if test="tel != null and tel != ''"> and t.tel = #{tel} </if>
+            <if test="fax != null and fax != ''"> and t.fax = #{fax} </if>
+            <if test="address != null and address != ''"> and t.address = #{address} </if>
+            <if test="description != null and description != ''"> and t.description = #{description} </if>
+        	and t.del_flag = 0
+        </where>
+    </sql>
+
+	<sql id="where_clause2">
+		<where>
+			1=1
+			<if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+			<if test="rowGuid != null and rowGuid != ''"> and t.row_guid != #{rowGuid} </if>
+			<if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+			<if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+			<if test="deptCode != null and deptCode != ''"> and t.dept_code = #{deptCode} </if>
+			<if test="pdeptCode != null and pdeptCode != ''"> and t.pdept_code = #{pdeptCode} </if>
+			<if test="hasChild != null and hasChild != ''"> and t.has_child = #{hasChild} </if>
+			<if test="deptName != null and deptName != ''"> and t.dept_name like concat('%',#{deptName},'%') </if>
+			<if test="deptNameValue != null and deptNameValue != ''"> and t.dept_name = #{deptNameValue}</if>
+			<if test="shortName != null and shortName != ''"> and t.short_name = #{shortName} </if>
+			<if test="oucode != null and oucode != ''"> and t.oucode = #{oucode} </if>
+			<if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+			<if test="tel != null and tel != ''"> and t.tel = #{tel} </if>
+			<if test="fax != null and fax != ''"> and t.fax = #{fax} </if>
+			<if test="address != null and address != ''"> and t.address = #{address} </if>
+			<if test="description != null and description != ''"> and t.description = #{description} </if>
+			and t.del_flag = 0
+		</where>
+	</sql>
+
+	<select id="findDepts" resultType="com.basic.zjgfbcc.entity.Frame_Dept">
+		select * from frame_dept where 1=1 and del_flag=0
+		<if test="isShowXTGLB==''">
+			and dept_name!='系统管理部'
+		</if>
+		<choose>
+			<when test="deptcode != null and deptcode.trim() != ''">
+              and pdept_code=#{deptcode} order by sort_sq asc
+			</when>
+			<otherwise>
+				and pdept_code='' order by sort_sq asc
+			</otherwise>
+		</choose>
+
+	</select>
+
+	<select id="getChildDepts" resultType="com.basic.zjgfbcc.entity.Frame_Dept">
+        select * from frame_dept where 1=1 and del_flag=0 and pdept_code=#{deptCode}
+	</select>
+
+	<select id="getDetailByGuid" resultType="com.basic.zjgfbcc.entity.Frame_Dept">
+		select *,(select dept_name from frame_dept where dept_code=a.pdept_code)pdeptName
+		 from frame_dept a where 1=1 and a.del_flag=0 and a.row_guid=#{rowGuid}
+	</select>
+
+	<!--获取除系统管理部外所有部门-->
+	<select id="getDeptList" resultType="com.basic.zjgfbcc.entity.Frame_CodeValue">
+		select dept_name as itemtext,row_guid as itemvalue from frame_dept where del_flag=0 and dept_name!='系统管理部';
+	</select>
+	<!--根据部门名称更新组织架构编号-->
+	<select id="updateDeptByName">
+		update frame_dept set oucode=#{unit_no} where dept_name=#{unit_name}
+	</select>
+
+	<select id="getDetailByPara" resultType="com.basic.zjgfbcc.entity.Frame_Dept">
+		select * from frame_dept where del_flag=0 and ${para}=#{value}
+	</select>
+
+	<select id="getQueryList" resultType="com.basic.zjgfbcc.entity.Frame_Dept">
+		select * from frame_dept t  <include refid="where_clause2" />
+		order by sort_sq,row_id desc
+
+	</select>
+
+	<!--获取该人员拥有的部门的第一级-->
+	<select id="getFirstLevel" resultType="int">
+		select codeLevel from frame_dept a inner join jt_device_relation b on a.dept_code=b.deptCode
+        where b.loginId=#{loginId} order by codeLevel limit 1
+	</select>
+	<!--获取该人员拥有的第一级所有部门-->
+	<select id="findDeptsByLevel" resultType="com.basic.zjgfbcc.entity.Frame_Dept">
+		select a.* from frame_dept a inner join jt_device_relation b on a.dept_code=b.deptCode
+        where a.del_flag=0 and b.loginId=#{loginId} and a.codeLevel=#{codeLevel}
+	</select>
+</mapper> 

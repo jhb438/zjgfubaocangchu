@@ -1,0 +1,248 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
+    <title>信息列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <script src="../../Scripts/JsAndCss.Model.js" type="text/javascript"></script>
+    <link href="../../Content/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-layout">
+        <div class="layui-side">
+            <ul id="treeDept" class="ztree"></ul>
+        </div>
+        <div class="layui-body">
+            <div id="toolBar">
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            <form id="SearchForm" class="layui-form">
+                                <input type="hidden" id="categoryGuid" name="categoryGuid" />
+                                <input type="hidden" id="createUserGuid" name="createUserGuid" />
+                                <table style="width:100%">
+                                    <tr>
+                                        <td class="TB_01" width="15%">标题</td>
+                                        <td class="TB_02" width="35%">
+                                            <input id="titleVague" name="titleVague" type="text" class="layui-input">
+                                        </td>
+                                        <td class="TB_01" width="15%">信息日期</td>
+                                        <td class="TB_02" width="35%">
+                                            <input type="text" name="start_time" class="layui-input  icon" laydate-type="date" id="start_time" placeholder="开始时间" style="width:40%;display:inline-block">-
+                                            <input type="text" name="end_time" class="layui-input  icon" laydate-type="date" id="end_time" placeholder="结束时间" style="width:40%;display:inline-block">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:5px">
+                            <input type="button" value="查询" onclick="search()" class="layui-btn layui-btn-sm layui-btn-normal" />
+                            <input type="button" value="信息发布" onclick="addRow()" class="layui-btn layui-btn-sm layui-btn-normal" />
+                            <input type="button" value="删除" onclick="deleteRow()" class="layui-btn layui-btn-sm layui-btn-normal" />
+                            <input type="button" value="发布选中" onclick="deliverInfo()" class="layui-btn layui-btn-sm layui-btn-normal" />
+                            <input type="button" value="停止发布" onclick="stopDeliver()" class="layui-btn layui-btn-sm layui-btn-normal" />
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <table id="layuiTable"></table>
+        </div>
+    </div>
+    <script src="../../Scripts/jquery.ztree.all-3.5.min.js"></script>
+    <script type="text/html" id="indexTpl">
+        {{d.LAY_TABLE_INDEX+1}}
+    </script>
+    <script type="text/javascript">
+        var setting = {
+            async: {
+                enable: true,
+                url: window.serverUrl + "/sys/informationcategory/getCategoryTree",
+                treeNodeKey: "id",
+                autoParam: ["id", "name", "value"]
+            }
+        };
+
+        //节点点击的时候，重新加载表格对象
+        function NodeChecked(treeNode, value, text) {
+            $("#categoryGuid").val(value);
+            search();
+        }
+
+        $(document).ready(function () {
+            $("#createUserGuid").val(window.localStorage.getItem('m_user_rowGuid'));
+            initTree();
+            search();
+        });
+        function initTree() {
+            //初始化的时候，加入默认的节点
+            var nodedata = [{ "id": -1, "name": "所有栏目", "pId": 0, "isParent": 1, "click": "NodeChecked(this,'','所有栏目')", "icon": '@Url.Content("~/Content/zTreeStyle/img/diy/1_open.png")' }];
+            var zTree = $.fn.zTree.init($("#treeDept"), setting, nodedata);
+            //打开第一层界面
+            var nodes = zTree.getNodes();
+            if (nodes.length > 0)
+                for (var i = 0; i < nodes.length; i++)
+                    zTree.expandNode(nodes[i], true);
+
+        }
+    </script>
+    <script>
+        var table;//将table暴露出来
+        layui.use(["table"], function () {
+            table = layui.table;
+            search();//执行查询
+        })
+
+
+
+        function initData(where) {
+
+            table.render({
+                id: 'layuiTable',//固定写法
+                elem: '#layuiTable',//固定写法
+                height: 'full-' + ($("#toolBar").height()),//固定写法
+                method: 'get',//固定写法
+                remoteSort: true,
+                initSort: { field: "title", type: "asc" },
+                url: window.serverUrl + '/sys/informationinfo/listData', //数据接口
+                page: true, //开启分页
+                limit: 20,//每页显示行数
+                where: where,
+                cols: [[
+
+                   { width: 25, title: '', align: 'center', templet: '#indexTpl' },
+            { checkbox: true }
+            , { field: 'title', minWidth: 80, title: '标题' }
+            , { field: 'createUserName', width: 100, title: '发布人', sort: true }
+            , { field: 'infoType', width: 90, title: '信息类型', sort: true }
+            , { field: 'infoDate', width: 120, title: '信息日期', sort: true }
+            , {
+                field: 'status', width: 80, title: '状态', templet: function (d) {
+                    return d.status == 1 ? "已发布" : "<font color=\"red\">未发布</font>";
+                }
+            }
+            , { field: 'sortSq', width: 80, title: '排序', sort: true }
+            , {
+                title: '操作', align: 'center', width: 60, fixed: 'right', templet: function (d) {
+                    return "<a href=\"javascript: OpenWin('/static/pages/informationinfo/infoEdit.html?rowGuid=" + d.rowGuid + "', 1000, 600, '信息修改',refreshGrid)\" > <img src=\"../../Scripts/layui/images/face/edit.gif\" lay-event=\"edit\" style=\"cursor: pointer;\"></a>";
+                }
+            },
+                    {
+                        title: '操作', align: 'center', width: 60, fixed: 'right', templet: function (d) {
+                            return "<a href=\"javascript: OpenWin('/static/pages/informationinfo/infoDetail.html?rowGuid=" + d.rowGuid + "', 1000, 600, '信息查看')\" > <img src=\"../../Scripts/layui/images/face/find.gif\" lay-event=\"find\" style=\"cursor: pointer;\"></a>";
+                        }
+                    }
+                ]]
+            });
+
+        }
+
+        //删除选中
+        function deleteRow() {
+            var rows = table.checkStatus('layuiTable').data;//获取选中行
+            if (!rows || rows.length == 0) {
+                top.layuiMsg("请选择要删除的记录!")
+                return;
+            }
+            top.layuiConfirm("确定要删除该记录?", {}, function () {
+                var RowGuids = new Array();
+                for (var i = 0; i < rows.length; i++) {
+
+                    RowGuids.push(rows[i].rowGuid);
+                }
+
+                SendAjax("/sys/informationinfo/deleteInfo", { rowGuids: RowGuids }, function (res) {
+                    if (res.code == '0') {
+                        top.messageAlert("提醒", "删除成功", "info", function () {
+                            refreshGrid();
+                        });
+                    }
+                    else {
+                        top.messageAlert("提醒", data.msg, "error");
+                    }
+
+                });
+                return false;
+            });
+        }
+
+        //发布选中
+        function deliverInfo() {
+            var rows = table.checkStatus('layuiTable').data;//获取选中行
+            if (!rows || rows.length == 0) {
+                top.layuiMsg("请选择要发布的记录!")
+                return;
+            }
+            top.layuiConfirm("确定要发布该记录?", {}, function () {
+                var rowIds = new Array();
+                for (var i = 0; i < rows.length; i++) {
+
+                    rowIds.push(rows[i].rowId);
+                }
+
+                SendAjax("/sys/informationinfo/deliverInfo", { ids: rowIds }, function (res) {
+                    if (res.code == '0') {
+                        top.messageAlert("提醒", "发布成功", "info", function () {
+                            refreshGrid();
+                        });
+                    }
+                    else {
+                        top.messageAlert("提醒", data.msg, "error");
+                    }
+
+                });
+                return false;
+            });
+        }
+
+        function stopDeliver() {
+            var rows = table.checkStatus('layuiTable').data;//获取选中行
+            if (!rows || rows.length == 0) {
+                top.layuiMsg("请选择要停止发布的记录!")
+                return;
+            }
+            top.layuiConfirm("确定要停止发布该记录?", {}, function () {
+                var rowIds = new Array();
+                for (var i = 0; i < rows.length; i++) {
+
+                    rowIds.push(rows[i].rowId);
+                }
+
+                SendAjax("/sys/informationinfo/stopDeliver", { ids: rowIds }, function (res) {
+                    if (res.code == '0') {
+                        top.messageAlert("提醒", "操作成功", "info", function () {
+                            refreshGrid();
+                        });
+                    }
+                    else {
+                        top.messageAlert("提醒", data.msg, "error");
+                    }
+
+                });
+                return false;
+            });
+        }
+
+        function refreshGrid() {
+            table.reload('layuiTable');
+        }
+
+        function search() {
+
+            var data = $("#SearchForm").serializeJson();
+            initData(data);
+        }
+
+        function addRow() {
+            OpenWin('/static/pages/informationinfo/infoAdd.html', 1000, 600, '信息发布', refreshGrid)
+        }
+
+    </script>
+</body>
+</html>

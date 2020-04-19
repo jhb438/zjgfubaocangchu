@@ -1,0 +1,186 @@
+﻿
+/* public
+----------------------------------*/
+html, body, h1, h2, h3, h4, h5, h6, table, thead, tfoot, tbody, form, fieldset, legend, div, p, span, dl, dt, dd, ul, ol, li, blockquote, pre, q, cite, code, input, select, textarea{margin: 0 auto; padding: 0;}
+h1, h2, h3, h4, h5, h6, strong, em, cite, address, sup, sub{font-weight: normal; font-style: normal; font-size: 1em;}
+body{font-size: 12px; color: #3b3b3b; font-family: 'Microsoft YaHei';  -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; background-image: url(Login/bg.jpg);}
+ul, ol{list-style-type: none;}
+a:link, a:visited{text-decoration: none; color: #ffffff;}
+a:hover, a:active{text-decoration: none; color: #4EDFF5;}
+img{vertical-align: top;}
+input, textarea, button{font-size: 100%; font-family: inherit; outline: none;}
+button{cursor: pointer;}
+textarea{resize: vertical;}
+table{border-collapse: collapse; border-spacing: 0;}
+.clearfix:after{content: " "; display: block; height: 0; clear: both;}
+/* Header
+----------------------------------*/
+.header{background-repeat: no-repeat; background-size: 100% 100%; width: 100%; height: 65px;margin-bottom: 30px;} 
+.header .logo{ width: 100%; height: 65px;font-size: 30px; color: white;text-align: center; padding-top: 20px;} 
+
+/* 顶部菜单
+----------------------------------*/ 
+.header .headmenu{float: left; margin-left: 100px; min-width: 800px; height: 65px; text-align: center;} 
+.header .headmenu ul{margin-top: 18px;} 
+.header .headmenu ul li{float: left; width: 130px; height: 55px; line-height: 50px; text-align: center; background-size:100% 100%} 
+/*.header .menu ul li:hover{cursor: pointer; color: #44D9F0; background-image: url(../images/menu_ddxx.png);}*/ 
+/*.header .menu ul li.selected{cursor: pointer; color: #44D9F0; background-image: url(../images/menubg02.png);}*/
+/*.header .menu ul li.selected>a{text-decoration: none; color: #4EDFF5;}*/
+.menu_dlxx { background-image: url(../images/menu_ddxx.png);}
+.menu_ggsw {background-image: url(../images/menu_ggsw.png); }
+.menu_djqt {background-image: url(../images/menu_djqt.png);}
+.menu_dztz {background-image: url(../images/menu_dztz.png); }
+.menu_mqcz {background-image: url(../images/menu_mqcz.png); }
+.menu_rksj {background-image: url(../images/menu_rksj.png); }
+.menu_HomePageHover {background-image: url(../images/menu_HomePageHover.png);}
+.menu_dlxx:hover {cursor: pointer;background-image: url(../images/menu_ddxxHover.png); }
+.menu_ggsw:hover {cursor: pointer;background-image: url(../images/menu_ggswHover.png);}
+.menu_djqt:hover {cursor: pointer;background-image: url(../images/menu_djqtHover.png); }
+.menu_dztz:hover {cursor: pointer;background-image: url(../images/menu_dztzHover.png);}
+.menu_mqcz:hover {cursor: pointer;background-image: url(../images/menu_mqczHover.png); }
+.menu_rksj:hover {cursor: pointer;background-image: url(../images/menu_rksjHover.png);}
+
+
+.selected0 {cursor: pointer;background-image: url(../images/menu_ddxxHover.png); }
+.selected1 {cursor: pointer;background-image: url(../images/menu_rksjHover.png); }
+.selected2 {cursor: pointer;background-image: url(../images/menu_mqczHover.png); }
+
+
+
+
+/* 区块标题的样式
+----------------------------------*/
+.zoneTitle{color: #4EDFF5; font-size: 22px; font-weight: bold; padding-left: 15px; padding-top: 10px;}
+.newZoneTitle {float:left;width:85%;color: #4EDFF5; font-size: 22px; font-weight: bold; padding-left: 15px; padding-top: 10px;
+}
+.more {color: #4EDFF5; font-size: 16px; font-weight: bold; padding-left: 15px; padding-top: 10px;float:left;width:9%;text-align:right;cursor:pointer
+}
+
+
+
+/* 人口分布情况
+----------------------------------*/ 
+.rkmain .rkfbqk{margin: 10px 0px 0px 20px; float: left; width: 95%; height: 450px; border: 1px solid #709DF8; border-radius: 10px;} 
+/* Flash地图
+----------------------------------*/ 
+
+
+/* 页面主体部分布局
+----------------------------------*/
+.mqmain{width: 100%;} .gismain .content{width: 100%;} 
+.mqmain .content .left{float: left; width: 34%;} 
+.mqmain .content .center{float: left; width: 35%;} 
+.mqmain .content .right{float: left; width: 30%;} 
+.mqmain .bottom{width: 100%;} 
+.mqmain .bottom .left{float: left; width: 25%;} 
+.mqmain .bottom .right{float: left; width: 75%;} 
+
+/* 待办事项
+----------------------------------*/ 
+.mqmain .dbsx{margin: 10px 0px 0px 20px; float: left; width: 95%; height: 250px; border: 1px solid #709DF8; border-radius: 10px;} 
+.mqmain .dbsx .title { color:white; font-size:16px;font-weight:800; margin:10px 0px 10px 40px; }
+.mqmain .dbsx .value { width:80%; color:#4EDFF5; font-size:18px;height:35px;line-height:35px;text-align:center; background-image: url(../images/numbg.png);background-size:100% 100%;}
+
+/* 按期办结率统计
+----------------------------------*/ 
+.mqmain .aqbjl{margin: 10px 0px 0px 20px; float: left; width: 95%; height: 250px; border: 1px solid #709DF8; border-radius: 10px;} 
+/* 汇总数据
+----------------------------------*/ 
+.mqmain .hzsj{margin: 10px 0px 0px 10px; float: left; width: 97%; height: 250px; border: 1px solid #709DF8; border-radius: 10px;} 
+/* 月度分析
+----------------------------------*/ 
+.mqmain .ydfx{margin: 10px 0px 0px 10px; float: left; width: 97%; height: 250px; border: 1px solid #709DF8; border-radius: 10px;} 
+/* 社务处理类型占比
+----------------------------------*/ 
+.mqmain .swcllxzb{margin: 10px 0px 0px 10px; float: left; width: 95%; height: 380px; border: 1px solid #709DF8; border-radius: 10px;} 
+ /* 社务处理数量前五街道
+----------------------------------*/ 
+ .mqmain .jdswclfive{margin: 10px 0px 0px 10px; float: left; width: 95%; height: 380px; border: 1px solid #709DF8; border-radius: 10px;} 
+ /* 网格事件数量分析
+----------------------------------*/ 
+.mqmain .wgsjsl{margin: 10px 0px 30px 20px; float: left; width: 97%; height: 220px; border: 1px solid #709DF8; border-radius: 10px;}
+ /* 居民走访数量前五街道
+----------------------------------*/ 
+.mqmain .jdjmzffive{margin: 10px 0px 30px 0px; float: left; width: 95%; height: 220px; border: 1px solid #709DF8; border-radius: 10px;} 
+
+/*******************************
+      民情处置   End
+********************************/
+
+
+
+
+/*******************************
+      社区首页面布局   Begin
+********************************/
+
+/* 页面主体部分布局
+----------------------------------*/
+.sqindex{width: 100%;} .gismain .content{width: 100%;} 
+.sqindex .content .left{float: left; width: 25%;} 
+.sqindex .content .center{float: left; width: 50%;} 
+.sqindex .content .right{float: left; width: 25%;} 
+.sqindex .bottom{width: 100%;} 
+.sqindex .bottom .left{float: left; width: 25%;} 
+.sqindex .bottom .right{float: left; width: 75%;} 
+
+/* 待办事项
+----------------------------------*/ 
+.sqindex .dbsx{margin: 10px 0px 0px 20px; float: left; width: 95%; height: 250px; border: 1px solid #709DF8; border-radius: 10px;} 
+.sqindex .dbsx .title { color:white; font-size:16px;font-weight:800; margin:10px 0px 10px 40px; }
+.sqindex .dbsx .value { width:80%; color:#4EDFF5; font-size:18px;height:35px;line-height:35px;text-align:center; background-image: url(../images/numbg.png);background-size:100% 100%;}
+
+/* 社务处理类型占比
+----------------------------------*/ 
+.sqindex .swcllxzb{margin: 10px 0px 0px 20px; float: left; width: 95%; height: 300px; border: 1px solid #709DF8; border-radius: 10px;} 
+/* 汇总数据
+----------------------------------*/ 
+.sqindex .hzsj{margin: 10px 0px 0px 10px; float: left; width: 97%; height: 350px; border: 1px solid #709DF8; border-radius: 10px;} 
+/* 月度分析
+----------------------------------*/ 
+.sqindex .ydfx{margin: 10px 0px 0px 10px; float: left; width: 97%; height: 200px; border: 1px solid #709DF8; border-radius: 10px;} 
+/* 人口概况
+----------------------------------*/ 
+.sqindex .rkgk{margin: 10px 0px 0px 0px; float: left; width: 95%; height: 320px; border: 1px solid #709DF8; border-radius: 10px;}
+.sqindex .rkgk .title { color:white; font-size:16px;font-weight:800; margin:10px 0px 10px 70px; }
+.sqindex .rkgk .value { width:80%; color:#4EDFF5; font-size:18px;height:35px;line-height:35px;text-align:center; background-image: url(../images/numbg.png);background-size:100% 100%;}
+/* 党员数量
+----------------------------------*/ 
+.sqindex .dyslfx{margin: 10px 0px 0px 0px; float: left; width: 95%; height: 230px; border: 1px solid #709DF8; border-radius: 10px;}
+/* 关注人群
+----------------------------------*/ 
+.sqindex .gzrq{margin: 10px 0px 0px 0px; float: left; width: 95%; height: 118px; border: 1px solid #709DF8; border-radius: 10px;}
+ /* 性别占比
+----------------------------------*/ 
+.sqindex .xbzb{margin: 10px 0px 30px 20px; float: left; width: 95%; height: 280px; border: 1px solid #709DF8; border-radius: 10px;} 
+ /* 人口年龄结构
+----------------------------------*/ 
+.sqindex .rknljg{margin: 10px 0px 30px 10px; float: left; width: 32%; height: 280px; border: 1px solid #709DF8; border-radius: 10px;}
+
+/*******************************
+      社区首页面布局   End
+********************************/
+
+/*最新数据*/
+.tbl_zxsj {
+    margin-top:10px;
+    width: 100%;
+    border-width: 5px;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 13px;
+}
+
+.tbl_zxsj td {
+    width: 16%;
+    border: 5px solid #09213B;
+}
+
+.tbl_zxsj .title {
+    color: #FFFFFF;
+    background-color: #4AC1D9;
+}
+
+.tbl_zxsj .content {
+    background-color: #2C5084;
+}

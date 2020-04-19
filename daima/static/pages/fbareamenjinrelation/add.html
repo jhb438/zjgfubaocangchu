@@ -20,7 +20,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">区域名称</label>
                         <div class="layui-input-block">
-                            <select id="areaGuid" lay-filter="areaGuid" name="areaGuid" data-codename="" data-event="getAreaList" data-showoption=""></select>
+                            <select id="areaGuid" lay-filter="areaGuid" name="areaGuid" data-codename="" data-event="getAreaList" data-showoption="--请选择--" lay-verify="required"></select>
                         </div>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">门禁点名称</label>
                         <div class="layui-input-block">
-                            <select id="doorIndexCode" lay-filter="doorIndexCode" name="doorIndexCode" data-codename="" data-event="getMenJinList" data-showoption="--请选择--" lay-search></select>
+                            <select id="doorIndexCode" lay-filter="doorIndexCode" name="doorIndexCode" data-codename="" data-event="getMenJinList" data-showoption="--请选择--" lay-search lay-verify="required"></select>
                         </div>
                     </div>
                 </div>
@@ -38,12 +38,12 @@
                         <label class="layui-form-label ">门禁功能</label>
                         <div class="layui-input-block">
                             <select name="menJinGN" id="menJinGN" data-codename="门禁功能"
-                                    data-showoption="--请选择--" lay-search></select>
+                                    data-showoption="--请选择--"  lay-verify="required"></select>
                         </div>
                     </div>
                 </div>
-                <input type="hidden" name="areaGuid" id="areaGuid" lay-verify="areaGuid"/>
-                <input type="hidden" name="doorIndexCode" id="doorIndexCode" lay-verify="doorIndexCode" />
+                <input type="hidden" name="areaName" id="areaName"  />
+                <input type="hidden" name="doorName" id="doorName" />
             </div>
         </div>
         <div style="text-align:center;margin-top:20px">
@@ -55,6 +55,29 @@
 
 
     <script>
+
+
+        layui.use(["form", "table"], function () {
+            var form = layui.form;
+
+            form.on('select(areaGuid)', function (data) {
+
+                if ($("#areaGuid").val() != "") {
+
+                    $("#areaName").val(data.elem[data.elem.selectedIndex].text);
+                }
+
+            })
+            form.on('select(doorIndexCode)', function (data) {
+
+                if ($("#doorIndexCode").val() != "") {
+
+                    $("#doorName").val(data.elem[data.elem.selectedIndex].text);
+                }
+
+            })
+
+        })
 
         function afterSuccess(data) {
             if (data.code == "0") {

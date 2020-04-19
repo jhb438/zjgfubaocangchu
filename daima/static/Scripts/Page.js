@@ -39,7 +39,8 @@ $(function () {
             else if (dataEvent == "getMenJinList")
             {
                 //获取门禁点列表
-                url = "sys/jttempchannel/getChannelList";
+              
+                url = "/sys/fbmenjindian/getMenJinList";
             
             }
             else

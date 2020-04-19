@@ -184,33 +184,10 @@
 
         $(function () {
             $("#userName").text(window.localStorage.getItem('m_user_userName'));
-            getOnlineUserCount();
-            setInterval('getOnlineUserCount()', 1000 * 60);
+         
         })
 
-        //获取在线人员个数
-        var serverUrl = location.protocol + '\\\\' + location.hostname + ':' + (location.port == '' ? 80 : location.port) + "/zjgjtzf";
-        function getOnlineUserCount() {
-            $.ajax({
-                url: serverUrl + '/sys/user/getOnLineUserCount',
-                method: 'post',
-                data: {},
-                success: function (res) {
-                    if (res.code == "0") {
-                        
-                        var zx = res.data.split('/')[0];
-                        var zj = res.data.split('/')[1];
-                        var lx = parseInt(zj) - parseInt(zx);
-                        $("#lbZJ").text(zj);
-                        $("#lbZX").text(zx);
-                        $("#lbLX").text(lx);
-                    }
-                   
-                }
-              
-            });
-         
-        }
+     
 
         //为所有 AJAX 请求设置默认 headers 和 complete 函数：
         $.ajaxSetup({

@@ -74,14 +74,10 @@
 
             {
                 title: '操作', align: 'center', width: 60, fixed: 'right', templet: function (d) {
-                    return "<a href=\"javascript: OpenWin('/static/pages/fbAreainfo/edit.html?rowGuid=" + d.rowGuid + "', 800, 600, '修改',refreshGrid)\" > <img src=\"../../Scripts/layui/images/face/edit.gif\" lay-event=\"edit\" style=\"cursor: pointer;\"></a>";
+                    return "<a href=\"javascript: OpenWin('/static/pages/fbAreainfo/edit.html?rowGuid=" + d.rowGuid + "', 500, 400, '区域修改',refreshGrid)\" > <img src=\"../../Scripts/layui/images/face/edit.gif\" lay-event=\"edit\" style=\"cursor: pointer;\"></a>";
                 }
             },
-                    {
-                        title: '操作', align: 'center', width: 60, fixed: 'right', templet: function (d) {
-                            return "<a href=\"javascript: OpenWin('/static/pages/fbAreainfo/detail.html?rowGuid=" + d.rowGuid + "', 800, 600, '查看')\" > <img src=\"../../Scripts/layui/images/face/find.gif\" lay-event=\"find\" style=\"cursor: pointer;\"></a>";
-                        }
-                    }
+                  
                 ]]
             });
 
@@ -119,7 +115,7 @@
 
 
         function refreshGrid() {
-            table.reload('layuiTable');
+            search();
         }
 
         function search() {
@@ -129,7 +125,7 @@
         }
 
         function addRow() {
-            OpenWin('/static/pages/fbAreainfo/add.html', 800, 600, '新增', refreshGrid)
+            OpenWin('/static/pages/fbAreainfo/add.html', 500, 400, '新增区域', refreshGrid)
         }
     </script>
 </body>

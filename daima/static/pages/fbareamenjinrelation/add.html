@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
-   <meta charset="utf-8">
+    <meta charset="utf-8">
     <title>编辑</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -12,60 +12,51 @@
 </head>
 <body>
 
- <form action="/sys/fbareamenjinrelation/add" class="layui-form" data-ajax="true" data-ajax-method="post"
-  data-ajax-success="afterSuccess" id="CreateFbAreamenjinRelation" method="post">
-    <div class="layui-container">
-     <div class="layui-row">
-  	     	<div class="layui-col-xs6">
-	  	<div class="layui-form-item">
-	        <label class="layui-form-label">区域Guid</label>
-	        <div class="layui-input-block">
-	            <input type="text" name="areaGuid" id="areaGuid"  lay-verify="areaGuid"
-	            placeholder="请输入区域Guid" autocomplete="off" class="layui-input" />
-	        </div>
-	    </div>
-	 </div>
-	                                    	<div class="layui-col-xs6">
-	  	<div class="layui-form-item">
-	        <label class="layui-form-label">门禁点名称</label>
-	        <div class="layui-input-block">
-	            <input type="text" name="doorName" id="doorName"  lay-verify="doorName"
-	            placeholder="请输入门禁点名称" autocomplete="off" class="layui-input" />
-	        </div>
-	    </div>
-	 </div>
-	                                    	<div class="layui-col-xs6">
-	  	<div class="layui-form-item">
-	        <label class="layui-form-label">门禁点唯一标识</label>
-	        <div class="layui-input-block">
-	            <input type="text" name="doorIndexCode" id="doorIndexCode"  lay-verify="doorIndexCode"
-	            placeholder="请输入门禁点唯一标识" autocomplete="off" class="layui-input" />
-	        </div>
-	    </div>
-	 </div>
-	                                        	 <div class="layui-col-xs6">
-	    <div class="layui-form-item" >
-            <label class="layui-form-label ">门禁功能</label>
-            <div class="layui-input-block">
-                <select name="menJinGN"  id="menJinGN" data-codename="门禁功能"
-                 data-showoption="--请选择--" lay-search >
-                </select>
+    <form action="/sys/fbareamenjinrelation/add" class="layui-form" data-ajax="true" data-ajax-method="post"
+          data-ajax-success="afterSuccess" id="CreateFbAreamenjinRelation" method="post">
+        <div class="layui-container">
+            <div class="layui-row">
+                <div class="layui-col-xs6">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">区域名称</label>
+                        <div class="layui-input-block">
+                            <select id="areaGuid" lay-filter="areaGuid" name="areaGuid" data-codename="" data-event="getAreaList" data-showoption=""></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs6">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">门禁点名称</label>
+                        <div class="layui-input-block">
+                            <select id="doorIndexCode" lay-filter="doorIndexCode" name="doorIndexCode" data-codename="" data-event="getMenJinList" data-showoption="--请选择--" lay-search></select>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="layui-col-xs6">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label ">门禁功能</label>
+                        <div class="layui-input-block">
+                            <select name="menJinGN" id="menJinGN" data-codename="门禁功能"
+                                    data-showoption="--请选择--" lay-search></select>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="areaGuid" id="areaGuid" lay-verify="areaGuid"/>
+                <input type="hidden" name="doorIndexCode" id="doorIndexCode" lay-verify="doorIndexCode" />
             </div>
         </div>
-      </div>
-	                                 </div>
-    </div>
-    <div style="text-align:center;margin-top:20px">
-        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">立即提交</button>
-         <input type="button" value="关闭" class="layui-btn layui-btn-normal" onclick="closeWin()" />
-    </div>
-</form>
+        <div style="text-align:center;margin-top:20px">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">立即提交</button>
+            <input type="button" value="关闭" class="layui-btn layui-btn-normal" onclick="closeWin()" />
+        </div>
+    </form>
 
 
 
-<script>
+    <script>
 
-     function afterSuccess(data) {
+        function afterSuccess(data) {
             if (data.code == "0") {
                 top.messageAlert("提醒", "保存成功", "info", function () {
                     top.closePanel(window.name, true);
@@ -79,7 +70,7 @@
             top.closePanel(window.name, false);
         }
 
-</script>
+    </script>
 
 </body>
 

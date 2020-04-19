@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
@@ -19,16 +19,16 @@
                         <table style="width:100%">
                             <tr>
                                 <td class="TB_01" style="width:15%">
-                                    查询条件
+                                    区域名称
                                 </td>
                                 <td class="TB_02" style="width:35%">
-
+                                    <input type="text" id="areaName" name="areaName" class="layui-input" />
                                 </td>
                                 <td class="TB_01" style="width:15%">
-                                    查询条件
+                                    门禁点名称
                                 </td>
                                 <td class="TB_02" style="width:35%">
-
+                                    <input type="text" id="doorName" name="doorName" class="layui-input" />
                                 </td>
                             </tr>
 
@@ -69,22 +69,19 @@
                 where: where,
                 cols: [[
             { checkbox: true },
-                        { field: 'areaGuid', width: 80, title: '区域Guid' },
-                        { field: 'doorName', width: 80, title: '门禁点名称' },
-                        { field: 'doorIndexCode', width: 80, title: '门禁点唯一标识' },
-                        { field: 'menJinGN', width: 80, title: '门禁功能' },
+             { field: 'areaName', width: '20%', title: '区域名称' },
+                    
+                        { field: 'doorName', width: '20%', title: '门禁点名称' },
+                      
+                        { field: 'menJinGN', width: '20%', title: '门禁功能' },
             
 
             {
                 title: '操作', align: 'center', width: 60, fixed: 'right', templet: function (d) {
-                    return "<a href=\"javascript: OpenWin('/static/pages/fbAreamenjinRelation/edit.html?rowGuid=" + d.rowGuid + "', 800, 600, '修改',refreshGrid)\" > <img src=\"../../Scripts/layui/images/face/edit.gif\" lay-event=\"edit\" style=\"cursor: pointer;\"></a>";
+                    return "<a href=\"javascript: OpenWin('/static/pages/fbAreamenjinRelation/edit.html?rowGuid=" + d.rowGuid + "', 700, 500, '修改',refreshGrid)\" > <img src=\"../../Scripts/layui/images/face/edit.gif\" lay-event=\"edit\" style=\"cursor: pointer;\"></a>";
                 }
             },
-                    {
-                        title: '操作', align: 'center', width: 60, fixed: 'right', templet: function (d) {
-                            return "<a href=\"javascript: OpenWin('/static/pages/fbAreamenjinRelation/detail.html?rowGuid=" + d.rowGuid + "', 800, 600, '查看')\" > <img src=\"../../Scripts/layui/images/face/find.gif\" lay-event=\"find\" style=\"cursor: pointer;\"></a>";
-                        }
-                    }
+                    
                 ]]
             });
 
@@ -132,7 +129,7 @@
         }
 
         function addRow() {
-            OpenWin('/static/pages/fbAreamenjinRelation/add.html', 800, 600, '新增', refreshGrid)
+            OpenWin('/static/pages/fbAreamenjinRelation/add.html', 700, 500, '新增区域与门禁点关系', refreshGrid)
         }
     </script>
 </body>

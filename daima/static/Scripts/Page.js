@@ -32,13 +32,13 @@ $(function () {
         else {
             var url;
             var par = {};
-            if (dataEvent == "getDeptList") {
-                //集群对讲固定频道
-                url = "/sys/dept/getDeptList";
+            if (dataEvent == "getAreaList") {
+                //获取区域列表
+                url = "/sys/fbareainfo/getAreaList";
             }
-            else if(dataEvent=="getChannelList")
+            else if (dataEvent == "getMenJinList")
             {
-                //集群对讲临时频道
+                //获取门禁点列表
                 url = "sys/jttempchannel/getChannelList";
             
             }

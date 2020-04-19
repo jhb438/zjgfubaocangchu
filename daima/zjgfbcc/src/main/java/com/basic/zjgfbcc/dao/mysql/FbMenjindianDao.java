@@ -1,5 +1,7 @@
 package com.basic.zjgfbcc.dao.mysql;
 
+import java.util.List;
+
 import com.basic.zjgfbcc.entity.FbMenjindian;
 import com.basic.zjgfbcc.entity.Frame_CodeValue;
 
@@ -14,4 +16,9 @@ import java.util.List;
 public interface FbMenjindianDao extends BaseDao<FbMenjindian> {
 
     List<Frame_CodeValue> getMenJinList();
+
+	void deleteAll();
+
+	void insertAll(List<FbMenjindian> list);
+	
 }

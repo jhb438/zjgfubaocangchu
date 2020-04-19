@@ -33,4 +33,10 @@ public interface FbRenyuaninfoService {
      * @return
 	 */
      FbRenyuaninfo getDetailByPara(String para,String value);
+     /**
+      * 删除所有
+      */
+	void deleteAll();
+
+	void insertAll(List<FbRenyuaninfo> renList);
 }

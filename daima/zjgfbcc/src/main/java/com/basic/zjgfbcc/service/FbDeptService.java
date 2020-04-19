@@ -2,6 +2,7 @@ package com.basic.zjgfbcc.service;
 
 import com.basic.zjgfbcc.entity.FbDept;
 import com.basic.zjgfbcc.entity.Frame_Dept;
+import com.basic.zjgfbcc.entity.FbRenyuaninfo;
 
 import java.util.Collection;
 import java.util.List;
@@ -39,4 +40,8 @@ public interface FbDeptService {
     List<FbDept> findDepts(String deptcode);
 
 	List<FbDept> getChildDepts(String orgIndexCode);
+
+	void deleteAll();
+
+	void insertAll(List<FbDept> list);
 }

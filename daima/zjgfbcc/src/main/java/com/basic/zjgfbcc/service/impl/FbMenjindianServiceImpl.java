@@ -67,5 +67,15 @@ public class FbMenjindianServiceImpl implements FbMenjindianService {
 	public List<Frame_CodeValue> getMenJinList() {
 		return fbMenjindianDao.getMenJinList();
 	}
+
+	@Override
+	public void deleteAll() {
+		fbMenjindianDao.deleteAll();
+	}
+
+	@Override
+	public void insertAll(List<FbMenjindian> list) {
+		fbMenjindianDao.insertAll(list);
+	}
 	
 }

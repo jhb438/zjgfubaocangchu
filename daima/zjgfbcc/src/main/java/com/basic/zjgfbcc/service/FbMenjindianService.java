@@ -37,3 +37,8 @@ public interface FbMenjindianService {
 
     List<Frame_CodeValue> getMenJinList();
 }
+
+	void deleteAll();
+
+	void insertAll(List<FbMenjindian> list);
+}

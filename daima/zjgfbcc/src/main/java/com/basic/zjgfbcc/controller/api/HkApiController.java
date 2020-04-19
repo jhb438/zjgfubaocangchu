@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.basic.zjgfbcc.common.customclass.PassToken;
 import com.basic.zjgfbcc.common.utils.R;
 import com.basic.zjgfbcc.service.api.HkApiService;
 import com.basic.zjgfbcc.thread.HkThread;
@@ -26,12 +27,59 @@ public class HkApiController extends BaseApiController{
 	HkThread HkThread;
 	
 	//获取人员列表
+	@PassToken
 	@RequestMapping(value="/personList",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 	@ResponseBody
 	public R personList(){
 		Future<String> res = null;
 		try {
 			res = HkThread.personList();
+			JSONObject obj = JSONObject.parseObject(res.get());
+			if(obj.getIntValue("code") == 0){
+				return R.ok();
+			}else{
+				return R.error(obj.getString("msg"));
+			}
+			
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return R.error();
+	}
+	
+	
+	//获取部门列表
+	@PassToken
+	@RequestMapping(value="/orgList",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	@ResponseBody
+	public R orgList(){
+		Future<String> res = null;
+		try {
+			res = HkThread.orgList();
+			JSONObject obj = JSONObject.parseObject(res.get());
+			if(obj.getIntValue("code") == 0){
+				return R.ok();
+			}else{
+				return R.error(obj.getString("msg"));
+			}
+			
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return R.error();
+	}
+	
+	
+	//获取门禁点列表
+	@PassToken
+	@RequestMapping(value="/acsDoorList",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	@ResponseBody
+	public R acsDoorList(){
+		Future<String> res = null;
+		try {
+			res = HkThread.acsDoorList();
 			JSONObject obj = JSONObject.parseObject(res.get());
 			if(obj.getIntValue("code") == 0){
 				return R.ok();

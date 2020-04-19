@@ -1,5 +1,7 @@
 package com.basic.zjgfbcc.dao.mysql;
 
+import java.util.List;
+
 import com.basic.zjgfbcc.entity.FbDept;
 
 import java.util.List;
@@ -15,4 +17,9 @@ public interface FbDeptDao extends BaseDao<FbDept> {
     List<FbDept> findDepts(String orgIndexCode);
 
     List<FbDept> getChildDepts(String orgIndexCode);
+
+	void deleteAll();
+
+	void insertAll(List<FbDept> list);
+	
 }

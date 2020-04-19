@@ -59,5 +59,16 @@ public class FbRenyuaninfoServiceImpl implements FbRenyuaninfoService {
     public FbRenyuaninfo getDetailByPara(String para,String value) {
         return fbRenyuaninfoDao.getDetailByPara(para,value);
     }
+
+	@Override
+	public void deleteAll() {
+		fbRenyuaninfoDao.deleteAll();
+	}
+
+	@Override
+	public void insertAll(List<FbRenyuaninfo> renList) {
+		// TODO Auto-generated method stub
+		fbRenyuaninfoDao.insertAll(renList);
+	}
 	
 }

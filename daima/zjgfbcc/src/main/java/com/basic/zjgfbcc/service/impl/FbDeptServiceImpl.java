@@ -74,4 +74,15 @@ public class FbDeptServiceImpl implements FbDeptService {
 	public List<FbDept> getChildDepts(String orgIndexCode) {
 		return fbDeptDao.getChildDepts(orgIndexCode);
 	}
+
+	@Override
+	public void deleteAll() {
+		fbDeptDao.deleteAll();
+	}
+
+	@Override
+	public void insertAll(List<FbDept> list) {
+		fbDeptDao.insertAll(list);
+	}
+	
 }

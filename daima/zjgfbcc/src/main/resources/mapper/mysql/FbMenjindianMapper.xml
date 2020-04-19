@@ -40,8 +40,8 @@
             1=1
             <if test="doorIndexCode != null and doorIndexCode != ''"> and t.doorIndexCode = #{doorIndexCode} </if>
     		<if test="doorIndexCodeVague != null and doorIndexCodeVague != ''"> and t.doorIndexCode like concat('%',#{doorIndexCodeVague},'%') </if>
-            <if test="doorName != null and doorName != ''"> and t.doorName = #{doorName} </if>
-    		<if test="doorNameVague != null and doorNameVague != ''"> and t.doorName like concat('%',#{doorNameVague},'%') </if>
+
+    		<if test="doorName != null and doorName != ''"> and t.doorName like concat('%',#{doorName},'%') </if>
             <if test="doorNo != null and doorNo != ''"> and t.doorNo = #{doorNo} </if>
     		<if test="doorNoVague != null and doorNoVague != ''"> and t.doorNo like concat('%',#{doorNoVague},'%') </if>
             <if test="acsDevIndexCode != null and acsDevIndexCode != ''"> and t.acsDevIndexCode = #{acsDevIndexCode} </if>

@@ -6,7 +6,6 @@ import com.basic.zjgfbcc.common.customclass.PassToken;
 import com.basic.zjgfbcc.common.utils.*;
 import com.basic.zjgfbcc.entity.*;
 import com.basic.zjgfbcc.service.*;
-import com.basic.zjgfbcc.service.api.JyApiService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -44,8 +43,7 @@ public class Frame_DeptController extends BaseController {
     @Autowired
     private Frame_Role_UserService role_userService;
 
-    @Autowired
-    public JyApiService jyApiService;
+
 
 
 

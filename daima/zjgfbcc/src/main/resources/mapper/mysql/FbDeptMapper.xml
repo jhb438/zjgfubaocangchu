@@ -40,8 +40,7 @@
     		<if test="orgIndexCodeVague != null and orgIndexCodeVague != ''"> and t.orgIndexCode like concat('%',#{orgIndexCodeVague},'%') </if>
             <if test="orgNo != null and orgNo != ''"> and t.orgNo = #{orgNo} </if>
     		<if test="orgNoVague != null and orgNoVague != ''"> and t.orgNo like concat('%',#{orgNoVague},'%') </if>
-            <if test="orgName != null and orgName != ''"> and t.orgName = #{orgName} </if>
-    		<if test="orgNameVague != null and orgNameVague != ''"> and t.orgName like concat('%',#{orgNameVague},'%') </if>
+    		<if test="orgName != null and orgName != ''"> and t.orgName like concat('%',#{orgName},'%') </if>
             <if test="orgPath != null and orgPath != ''"> and t.orgPath = #{orgPath} </if>
     		<if test="orgPathVague != null and orgPathVague != ''"> and t.orgPath like concat('%',#{orgPathVague},'%') </if>
             <if test="parentOrgIndexCode != null and parentOrgIndexCode != ''"> and t.parentOrgIndexCode = #{parentOrgIndexCode} </if>

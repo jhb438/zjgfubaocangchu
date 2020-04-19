@@ -8,7 +8,6 @@ import com.basic.zjgfbcc.common.customclass.PassToken;
 import com.basic.zjgfbcc.common.utils.*;
 import com.basic.zjgfbcc.entity.*;
 import com.basic.zjgfbcc.service.*;
-import com.basic.zjgfbcc.service.api.JyApiService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,8 +53,6 @@ public class Frame_UserController {
     @Autowired
     private Frame_RoleService roleService;
     
-    @Autowired
-    private JyApiService jyApiService;
 
     /**
      * 获取所有正常用户
@@ -151,37 +148,8 @@ public class Frame_UserController {
             roUserList.add(roUser);
         }
         roleUserService.insertBatch(roUserList);
-        
-        //保存相关信息至警翼平台
-        Frame_Dept dept = deptService.getDetailByGuid(user.getDeptGuid());
-        Map<String,String> map = new HashMap();
-        map.put("jy_xm", user.getUserName());
-        map.put("jybh", user.getGongHao());
-        map.put("jgdm", dept.getOucode());
-        map.put("jylx", "164");
-//        map.put("jsbh", value);
-//        map.put("yhzt", value);
-        List<Map<String,String>> list = new ArrayList();
-        list.add(map);
-        String res = jyApiService.PoliceinfoUp(list);
-		JSONObject obj = JSONObject.parseObject(res);
-		if("1".equals(obj.getString("code"))){
-			map.clear();
-			map.put("user", user.getLoginId());
-	        map.put("jybh", user.getGongHao());
-	        list.clear();
-	        list.add(map);
-			//存系统用户信息
-			String resobj = jyApiService.UserinfoUp(list);
-			JSONObject o = JSONObject.parseObject(resobj);
-			if("1".equals(o.getString("code"))){
-				return R.ok(o.getString("message"));
-			}else{
-				return R.error(o.getString("message"));
-			}
-		}else{
-			return R.error(obj.getString("message"));
-		}
+
+        return R.ok();
     }
 
     /**

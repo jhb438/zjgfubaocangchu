@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.zjgfbcc.dao.mysql.FbAreamenjinRelationDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.zjgfbcc.entity.FbAreamenjinRelation" id="fbAreamenjinRelationMap">
+        <result property="areaGuid" column="areaGuid"/>
+        <result property="doorName" column="doorName"/>
+        <result property="doorIndexCode" column="doorIndexCode"/>
+        <result property="menJinGN" column="menJinGN"/>
+    </resultMap>
+
+	<select id="getList" resultType="com.basic.zjgfbcc.entity.FbAreamenjinRelation">
+		select * from fb_areamenjin_relation t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by row_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from fb_areamenjin_relation t  <include refid="where_clause" />
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="areaGuid != null and areaGuid != ''"> and t.areaGuid = #{areaGuid} </if>
+    		<if test="areaGuidVague != null and areaGuidVague != ''"> and t.areaGuid like concat('%',#{areaGuidVague},'%') </if>
+            <if test="doorName != null and doorName != ''"> and t.doorName = #{doorName} </if>
+    		<if test="doorNameVague != null and doorNameVague != ''"> and t.doorName like concat('%',#{doorNameVague},'%') </if>
+            <if test="doorIndexCode != null and doorIndexCode != ''"> and t.doorIndexCode = #{doorIndexCode} </if>
+    		<if test="doorIndexCodeVague != null and doorIndexCodeVague != ''"> and t.doorIndexCode like concat('%',#{doorIndexCodeVague},'%') </if>
+            <if test="menJinGN != null and menJinGN != ''"> and t.menJinGN = #{menJinGN} </if>
+    		<if test="menJinGNVague != null and menJinGNVague != ''"> and t.menJinGN like concat('%',#{menJinGNVague},'%') </if>
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="com.basic.zjgfbcc.entity.FbAreamenjinRelation">
+		insert into fb_areamenjin_relation
+		(
+		    `row_guid`,
+			`create_time`,
+			`del_flag`,
+			`sort_sq`,
+			`areaGuid`, 
+			`doorName`, 
+			`doorIndexCode`, 
+			`menJinGN`
+		)
+		values
+		(
+		    #{rowGuid},
+			#{createTime},
+			#{delFlag},
+			#{sortSq},
+			#{areaGuid}, 
+			#{doorName}, 
+			#{doorIndexCode}, 
+			#{menJinGN}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.zjgfbcc.entity.FbAreamenjinRelation">
+		update fb_areamenjin_relation 
+		<set>
+            <if test="createTime != null">`create_time` = #{createTime}, </if>
+            <if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="doorName != null">`doorName` = #{doorName}, </if>
+			<if test="doorIndexCode != null">`doorIndexCode` = #{doorIndexCode}, </if>
+			<if test="menJinGN != null">`menJinGN` = #{menJinGN}</if>
+		</set>
+        where row_guid = #{rowGuid}
+	</update>
+	
+	<delete id="deleteBatch">
+		delete from fb_areamenjin_relation  where row_guid in
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+    <select id="getDetailByGuid" resultType="com.basic.zjgfbcc.entity.FbAreamenjinRelation">
+        select * from fb_areamenjin_relation where row_guid =#{rowGuid} and del_flag =0
+    </select>
+
+    <select id="getDetailByPara" resultType="com.basic.zjgfbcc.entity.FbAreamenjinRelation">
+        select * from fb_areamenjin_relation where ${para}=#{value} and del_flag =0
+    </select>
+
+    <select id="getQueryList" resultType="com.basic.zjgfbcc.entity.FbAreamenjinRelation">
+        select * from fb_areamenjin_relation t <include refid="where_clause" />
+        order by row_id desc
+    </select>
+
+</mapper>

@@ -29,17 +29,14 @@ public class BaseApiController {
     @Value(value = "${upload.file.path}")
     public String filePath;
     
-    @Value(value = "${interface.DZZJUrl}")
-	public String InterFace_DZZJUrl;
+    @Value(value="${hk.host}")
+    public static String hkHsot;
     
-    @Value(value="${interface.Url}")
-    public String InterFace_Url;
+    @Value(value="${hk.appKey}")
+    public static String hkKey;
     
-    @Value(value = "${interface.authKey}")
-	public String interface_AuthKey;
-    
-    @Value(value="${interface.unitcode}")
-    public String unitcode;
+    @Value(value="${hk.appSecret}")
+    public static String hkSecret;
     
 	/**
 	 * 验证参数
@@ -54,18 +51,4 @@ public class BaseApiController {
 		}
 	}
 	
-	/**
-	 * 登录
-	 * @return
-	 * @throws Exception 
-	 */
-	public String login() throws Exception{
-		Map map=new HashMap();
-        String para=Base64Util.encryptBASE64("{\"username\": \"cs01\",  \"password\": \"123456\"}");
-        map.put("para",para);
-        String loginUrl=InterFace_Url+"/api/login";
-        String ReturnData=new HttpUtil().sendPost(loginUrl,map);
-		return ReturnData;
-	}
-   	
 }

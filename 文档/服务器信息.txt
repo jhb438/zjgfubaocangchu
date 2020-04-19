@@ -2,6 +2,10 @@
 
 http://10.130.115.50:8001/center
 
+host:10.130.115.50
+appKey:27527251
+appSecret:7usokZcwq1G4vExjuD7O
+
 用户名：sysadmin
 密码：Vop@k2019!
 
@@ -10,6 +14,9 @@ http://10.130.115.50:8001/center
 
 http://10.130.115.51:8001/center
 
+host:10.130.115.51
+appKey:23406132
+appSecret:UsVqbwnYwCo2BC2EMzZE
 
 用户名：sysadmin
 密码：Vtz@dmin

@@ -1,5 +1,6 @@
 package com.basic.zjgfbcc.service.impl;
 
+import com.basic.zjgfbcc.entity.Frame_CodeValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,8 @@ import com.basic.zjgfbcc.service.FbMenjindianService;
 @Service("fbMenjindianService")
 @Transactional
 public class FbMenjindianServiceImpl implements FbMenjindianService {
+
+
 	@Autowired
 	private FbMenjindianDao fbMenjindianDao;
 
@@ -59,5 +62,10 @@ public class FbMenjindianServiceImpl implements FbMenjindianService {
     public FbMenjindian getDetailByPara(String para,String value) {
         return fbMenjindianDao.getDetailByPara(para,value);
     }
+
+	@Override
+	public List<Frame_CodeValue> getMenJinList() {
+		return fbMenjindianDao.getMenJinList();
+	}
 	
 }

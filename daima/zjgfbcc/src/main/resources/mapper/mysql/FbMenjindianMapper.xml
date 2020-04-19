@@ -127,4 +127,7 @@
         order by row_id desc
     </select>
 
+	<select id="getMenJinList" resultType="com.basic.zjgfbcc.entity.Frame_CodeValue">
+select doorIndexCode as itemValue,doorName as itemText from fb_menjindian order by doorName
+	</select>
 </mapper>

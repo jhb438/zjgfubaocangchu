@@ -1,7 +1,9 @@
 package com.basic.zjgfbcc.service;
 
 import com.basic.zjgfbcc.entity.FbDept;
+import com.basic.zjgfbcc.entity.Frame_Dept;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -33,4 +35,8 @@ public interface FbDeptService {
      * @return
 	 */
      FbDept getDetailByPara(String para,String value);
+
+    List<FbDept> findDepts(String deptcode);
+
+	List<FbDept> getChildDepts(String orgIndexCode);
 }

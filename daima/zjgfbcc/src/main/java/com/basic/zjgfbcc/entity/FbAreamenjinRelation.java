@@ -22,6 +22,8 @@ public class FbAreamenjinRelation extends BaseModel implements Serializable {
 	/**门禁功能**/
 	private String menJinGN;
 
+	 private String areaName;
+
 	/**
 	 * 设置：区域Guid
 	 */
@@ -70,4 +72,13 @@ public class FbAreamenjinRelation extends BaseModel implements Serializable {
 	public String getMenJinGN() {
 		return menJinGN;
 	}
-}
+
+	 public String getAreaName() {
+		 return areaName;
+	 }
+
+	 public void setAreaName(String areaName) {
+		 this.areaName = areaName;
+	 }
+
+ }

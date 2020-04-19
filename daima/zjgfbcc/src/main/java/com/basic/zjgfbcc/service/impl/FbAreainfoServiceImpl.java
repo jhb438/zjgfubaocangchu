@@ -1,5 +1,6 @@
 package com.basic.zjgfbcc.service.impl;
 
+import com.basic.zjgfbcc.entity.Frame_CodeValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,5 +60,10 @@ public class FbAreainfoServiceImpl implements FbAreainfoService {
     public FbAreainfo getDetailByPara(String para,String value) {
         return fbAreainfoDao.getDetailByPara(para,value);
     }
+
+	@Override
+	public List<Frame_CodeValue> getAreaList() {
+		return fbAreainfoDao.getAreaList();
+	}
 	
 }

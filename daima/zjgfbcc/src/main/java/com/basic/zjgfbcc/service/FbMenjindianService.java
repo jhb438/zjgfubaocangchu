@@ -1,6 +1,7 @@
 package com.basic.zjgfbcc.service;
 
 import com.basic.zjgfbcc.entity.FbMenjindian;
+import com.basic.zjgfbcc.entity.Frame_CodeValue;
 
 import java.util.List;
 import java.util.Map;
@@ -33,4 +34,6 @@ public interface FbMenjindianService {
      * @return
 	 */
      FbMenjindian getDetailByPara(String para,String value);
+
+    List<Frame_CodeValue> getMenJinList();
 }

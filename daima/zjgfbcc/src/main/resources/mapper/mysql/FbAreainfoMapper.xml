@@ -85,4 +85,7 @@
         order by row_id desc
     </select>
 
+	<select id="getAreaList" resultType="com.basic.zjgfbcc.entity.Frame_CodeValue">
+		select row_guid as itemValue,areaName as itemText from fb_areainfo order by row_id desc
+	</select>
 </mapper>

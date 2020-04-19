@@ -1,8 +1,11 @@
 package com.basic.zjgfbcc.service.impl;
 
+import com.basic.zjgfbcc.entity.Frame_Dept;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +19,8 @@ import com.basic.zjgfbcc.service.FbDeptService;
 @Service("fbDeptService")
 @Transactional
 public class FbDeptServiceImpl implements FbDeptService {
+
+
 	@Autowired
 	private FbDeptDao fbDeptDao;
 
@@ -59,5 +64,14 @@ public class FbDeptServiceImpl implements FbDeptService {
     public FbDept getDetailByPara(String para,String value) {
         return fbDeptDao.getDetailByPara(para,value);
     }
-	
+
+	@Override
+	public List<FbDept> findDepts(String orgIndexCode) {
+		return fbDeptDao.findDepts(orgIndexCode);
+	}
+
+	@Override
+	public List<FbDept> getChildDepts(String orgIndexCode) {
+		return fbDeptDao.getChildDepts(orgIndexCode);
+	}
 }

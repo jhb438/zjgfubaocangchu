@@ -114,4 +114,10 @@
         order by row_id desc
     </select>
 
+	<select id="findDepts" resultType="com.basic.zjgfbcc.entity.FbDept">
+		select * from fb_dept where parentOrgIndexCode=#{orgIndexCode}
+	</select>
+
+
+
 </mapper>

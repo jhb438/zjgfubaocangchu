@@ -35,9 +35,8 @@
         <where>
             1=1
             <if test="areaGuid != null and areaGuid != ''"> and t.areaGuid = #{areaGuid} </if>
-    		<if test="areaGuidVague != null and areaGuidVague != ''"> and t.areaGuid like concat('%',#{areaGuidVague},'%') </if>
-            <if test="doorName != null and doorName != ''"> and t.doorName = #{doorName} </if>
-    		<if test="doorNameVague != null and doorNameVague != ''"> and t.doorName like concat('%',#{doorNameVague},'%') </if>
+    		<if test="areaName != null and areaName != ''"> and t.areaName like concat('%',#{areaName},'%') </if>
+    		<if test="doorName != null and doorName != ''"> and t.doorName like concat('%',#{doorName},'%') </if>
             <if test="doorIndexCode != null and doorIndexCode != ''"> and t.doorIndexCode = #{doorIndexCode} </if>
     		<if test="doorIndexCodeVague != null and doorIndexCodeVague != ''"> and t.doorIndexCode like concat('%',#{doorIndexCodeVague},'%') </if>
             <if test="menJinGN != null and menJinGN != ''"> and t.menJinGN = #{menJinGN} </if>
@@ -55,7 +54,8 @@
 			`areaGuid`, 
 			`doorName`, 
 			`doorIndexCode`, 
-			`menJinGN`
+			`menJinGN`,
+			 `areaName`
 		)
 		values
 		(
@@ -66,7 +66,8 @@
 			#{areaGuid}, 
 			#{doorName}, 
 			#{doorIndexCode}, 
-			#{menJinGN}
+			#{menJinGN},
+			#{areaName}
 		)
 	</insert>
 	 
@@ -78,7 +79,8 @@
             <if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
 			<if test="doorName != null">`doorName` = #{doorName}, </if>
 			<if test="doorIndexCode != null">`doorIndexCode` = #{doorIndexCode}, </if>
-			<if test="menJinGN != null">`menJinGN` = #{menJinGN}</if>
+			<if test="menJinGN != null">`menJinGN` = #{menJinGN},</if>
+			<if test="areaName != null">`areaName` = #{areaName}</if>
 		</set>
         where row_guid = #{rowGuid}
 	</update>

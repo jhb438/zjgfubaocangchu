@@ -1,10 +1,12 @@
 package com.basic.zjgfbcc.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.basic.zjgfbcc.common.utils.DateUtil;
 import com.basic.zjgfbcc.common.utils.LayuiUtil;
+import com.basic.zjgfbcc.entity.Frame_CodeValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -97,5 +99,18 @@ public class FbAreainfoController {
 		FbAreainfo model = fbAreainfoService.getDetailByGuid(rowGuid);
         return R.ok().put("data",model);
     }
+
+	/**
+	 * 获取所有的列表数据
+	 * @return
+	 */
+	@PassToken
+	@ApiOperation(value="通过rowGuid获取一条记录")
+	@ResponseBody
+	@RequestMapping(value="/getAreaList",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getAreaList(){
+		List<Frame_CodeValue> list = fbAreainfoService.getAreaList();
+		return R.ok().put("data",list);
+	}
 	
 }

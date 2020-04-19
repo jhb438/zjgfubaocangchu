@@ -1,10 +1,13 @@
 package com.basic.zjgfbcc.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import com.basic.zjgfbcc.common.utils.DateUtil;
 import com.basic.zjgfbcc.common.utils.LayuiUtil;
+import com.basic.zjgfbcc.entity.Frame_Dept;
+import com.basic.zjgfbcc.entity.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +54,42 @@ public class FbDeptController {
 		return LayuiUtil.data(pageUtil.getTotalCount(), pageUtil.getList());
 	}
 
-    /**
+	/**
+	 * 查询部门树
+	 * <p>Title: getdeptTrees</p>
+	 * <p>Description: </p>
+	 *
+	 * @return
+	 * @author hero
+	 */
+	@ApiOperation(value = "查询部门树")
+	@ResponseBody
+	@RequestMapping(value = "/getDeptTree", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
+	public List<TreeNode> getdeptTree(String id, String name, String value) {
+		String deptcode = "root000000";
+		if (value != null) {
+			deptcode = value;
+		}
+
+		List<FbDept> trees = fbDeptService.findDepts(deptcode);
+
+		List<TreeNode> nodes = new ArrayList<TreeNode>();
+		for (FbDept v : trees) {
+			TreeNode tn = new TreeNode();
+			tn.id = v.getRowId();
+			tn.name = v.getOrgName();
+			tn.value = v.getOrgIndexCode();
+			tn.click = "NodeChecked(this,'" + v.getOrgIndexCode() + "','" + v.getOrgName() + "','" + v.getRowGuid() + "')";
+			int Child = fbDeptService.findDepts(v.getOrgIndexCode()).size();
+			tn.isParent = Child > 0 ? 1 : 0;
+
+			nodes.add(tn);
+		}
+		return nodes;
+	}
+
+
+	/**
      * 新增
      **/
     @ApiOperation(value="")

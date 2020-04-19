@@ -1,9 +1,6 @@
 package com.basic.zjgfbcc.service;
 import com.basic.zjgfbcc.entity.Frame_Role;
-import com.basic.zjgfbcc.entity.Frame_Role_User;
 import com.basic.zjgfbcc.entity.Frame_User;
-import com.basic.zjgfbcc.entity.JtTempperson;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;

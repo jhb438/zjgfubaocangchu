@@ -1,12 +1,8 @@
 package com.basic.zjgfbcc.dao.mysql;
 
-import com.basic.zjgfbcc.common.customclass.RedisCacheable;
 import com.basic.zjgfbcc.entity.Frame_Role;
-import com.basic.zjgfbcc.entity.Frame_Role_User;
 import com.basic.zjgfbcc.entity.Frame_User;
-import com.basic.zjgfbcc.entity.JtTempperson;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;

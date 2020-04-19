@@ -40,7 +40,7 @@ public class HkThread {
 		if(obj != null && "0".equals(obj.getString("code")) && "SUCCESS".equals(obj.getString("msg"))){
 			JSONArray arr = obj.getJSONObject("data").getJSONArray("list");
 			//删除用户 再插用户
-			
+			System.out.println(arr.toJSONString());
 			
 			
 			long end = System.currentTimeMillis();

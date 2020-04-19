@@ -59,5 +59,15 @@ public class FbMenjindianServiceImpl implements FbMenjindianService {
     public FbMenjindian getDetailByPara(String para,String value) {
         return fbMenjindianDao.getDetailByPara(para,value);
     }
+
+	@Override
+	public void deleteAll() {
+		fbMenjindianDao.deleteAll();
+	}
+
+	@Override
+	public void insertAll(List<FbMenjindian> list) {
+		fbMenjindianDao.insertAll(list);
+	}
 	
 }

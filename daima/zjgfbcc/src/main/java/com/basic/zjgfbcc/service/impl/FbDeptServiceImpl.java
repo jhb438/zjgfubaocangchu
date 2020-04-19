@@ -59,5 +59,15 @@ public class FbDeptServiceImpl implements FbDeptService {
     public FbDept getDetailByPara(String para,String value) {
         return fbDeptDao.getDetailByPara(para,value);
     }
+
+	@Override
+	public void deleteAll() {
+		fbDeptDao.deleteAll();
+	}
+
+	@Override
+	public void insertAll(List<FbDept> list) {
+		fbDeptDao.insertAll(list);
+	}
 	
 }

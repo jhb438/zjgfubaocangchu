@@ -89,6 +89,41 @@
 			#{installLocation}
 		)
 	</insert>
+	
+	<insert id="insertAll" parameterType="com.basic.zjgfbcc.entity.FbMenjindian">
+		insert into fb_menjindian
+		(
+		    `row_guid`,
+			`create_time`,
+			`del_flag`,
+			`sort_sq`,
+			`doorIndexCode`, 
+			`doorName`, 
+			`doorNo`, 
+			`acsDevIndexCode`, 
+			`regionIndexCode`, 
+			`channelType`, 
+			`channelNo`, 
+			`installLocation`
+		)
+		values
+		<foreach collection="list" item="it" separator=",">
+		(
+		    #{it.rowGuid},
+			#{it.createTime},
+			#{it.delFlag},
+			#{it.sortSq},
+			#{it.doorIndexCode}, 
+			#{it.doorName}, 
+			#{it.doorNo}, 
+			#{it.acsDevIndexCode}, 
+			#{it.regionIndexCode}, 
+			#{it.channelType}, 
+			#{it.channelNo}, 
+			#{it.installLocation}
+		)
+        </foreach>
+	</insert>
 	 
 	<update id="update" parameterType="com.basic.zjgfbcc.entity.FbMenjindian">
 		update fb_menjindian 
@@ -112,6 +147,10 @@
 		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
 			#{rowGuid}
 		</foreach>
+	</delete>
+	
+	<delete id="deleteAll">
+	    delete from fb_menjindian
 	</delete>
 
     <select id="getDetailByGuid" resultType="com.basic.zjgfbcc.entity.FbMenjindian">

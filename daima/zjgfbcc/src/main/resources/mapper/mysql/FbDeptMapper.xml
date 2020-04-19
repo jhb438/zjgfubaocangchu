@@ -78,6 +78,39 @@
 			#{parentOrgName}
 		)
 	</insert>
+	
+	<insert id="insertAll" parameterType="com.basic.zjgfbcc.entity.FbDept">
+		insert into fb_dept
+		(
+		    `row_guid`,
+			`create_time`,
+			`del_flag`,
+			`sort_sq`,
+			`orgIndexCode`, 
+			`orgNo`, 
+			`orgName`, 
+			`orgPath`, 
+			`parentOrgIndexCode`, 
+			`parentOrgName`
+		)
+		values
+		
+		<foreach collection="list" item="dept" separator=",">
+		(
+		    #{dept.rowGuid},
+			#{dept.createTime},
+			#{dept.delFlag},
+			#{dept.sortSq},
+			#{dept.orgIndexCode}, 
+			#{dept.orgNo}, 
+			#{dept.orgName}, 
+			#{dept.orgPath}, 
+			#{dept.parentOrgIndexCode}, 
+			#{dept.parentOrgName}
+		)
+        </foreach>
+	</insert>
+	
 	 
 	<update id="update" parameterType="com.basic.zjgfbcc.entity.FbDept">
 		update fb_dept 
@@ -100,7 +133,11 @@
 			#{rowGuid}
 		</foreach>
 	</delete>
-
+	
+	<delete id="deleteAll">
+	    delete from fb_dept
+	</delete>
+	
     <select id="getDetailByGuid" resultType="com.basic.zjgfbcc.entity.FbDept">
         select * from fb_dept where row_guid =#{rowGuid} and del_flag =0
     </select>

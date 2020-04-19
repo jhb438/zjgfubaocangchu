@@ -100,6 +100,47 @@
 		)
 	</insert>
 	 
+	<insert id="insertAll" parameterType="com.basic.zjgfbcc.entity.FbRenyuaninfo">
+        insert into fb_renyuaninfo
+		(
+			`row_Id`,
+		    `row_guid`,
+			`create_time`,
+			`del_flag`,
+			`sort_sq`,
+			`personId`, 
+			`personName`, 
+			`gender`, 
+			`orgPath`, 
+			`orgIndexCode`, 
+			`orgName`, 
+			`certificateType`, 
+			`certificateNo`, 
+			`phoneNo`, 
+			`address`
+		) values 
+		<foreach collection="list" item="user" separator=",">
+		(
+			  #{user.rowId},
+			  #{user.rowGuid},
+			  #{user.createTime},
+			  #{user.delFlag},
+			  #{user.sortSq},
+			  #{user.personId},
+			  #{user.personName},
+			  #{user.gender},
+			  #{user.orgPath},
+			  #{user.orgIndexCode},
+			  #{user.orgName},
+			  #{user.certificateType},
+			  #{user.certificateNo},
+			  #{user.phoneNo},
+			  #{user.address}
+		)
+        </foreach>
+    </insert>
+	
+	
 	<update id="update" parameterType="com.basic.zjgfbcc.entity.FbRenyuaninfo">
 		update fb_renyuaninfo 
 		<set>
@@ -124,6 +165,10 @@
 		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
 			#{rowGuid}
 		</foreach>
+	</delete>
+	
+	<delete id="deleteAll">
+	    delete from fb_renyuaninfo
 	</delete>
 
     <select id="getDetailByGuid" resultType="com.basic.zjgfbcc.entity.FbRenyuaninfo">

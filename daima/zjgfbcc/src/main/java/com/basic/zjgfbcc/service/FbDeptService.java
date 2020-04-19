@@ -1,6 +1,7 @@
 package com.basic.zjgfbcc.service;
 
 import com.basic.zjgfbcc.entity.FbDept;
+import com.basic.zjgfbcc.entity.FbRenyuaninfo;
 
 import java.util.List;
 import java.util.Map;
@@ -33,4 +34,8 @@ public interface FbDeptService {
      * @return
 	 */
      FbDept getDetailByPara(String para,String value);
+
+	void deleteAll();
+
+	void insertAll(List<FbDept> list);
 }

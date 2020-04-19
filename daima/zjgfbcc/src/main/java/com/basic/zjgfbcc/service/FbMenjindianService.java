@@ -33,4 +33,8 @@ public interface FbMenjindianService {
      * @return
 	 */
      FbMenjindian getDetailByPara(String para,String value);
+
+	void deleteAll();
+
+	void insertAll(List<FbMenjindian> list);
 }

@@ -1,6 +1,7 @@
 package com.basic.zjgfbcc.thread;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.basic.zjgfbcc.common.utils.R;
 import com.basic.zjgfbcc.controller.FbDeptController;
 import com.basic.zjgfbcc.entity.FbDept;
+import com.basic.zjgfbcc.entity.FbDoorevents;
 import com.basic.zjgfbcc.entity.FbMenjindian;
 import com.basic.zjgfbcc.entity.FbRenyuaninfo;
 import com.basic.zjgfbcc.service.FbDeptService;
+import com.basic.zjgfbcc.service.FbDooreventsService;
 import com.basic.zjgfbcc.service.FbMenjindianService;
 import com.basic.zjgfbcc.service.FbRenyuaninfoService;
 import com.basic.zjgfbcc.service.api.HkApiService;
@@ -47,6 +50,9 @@ public class HkThread {
 	@Autowired
 	FbMenjindianService FbMenjindianService;
 	
+	@Autowired
+	FbDooreventsService FbDooreventsService;
+	
 	@Async("myAsync")
 	public Future<String> personList() throws InterruptedException{
 		logger.info("personList started---");
@@ -54,12 +60,14 @@ public class HkThread {
 
 		String resStr = hkApiService.personList();
 		JSONObject obj = JSONObject.parseObject(resStr);
-		if(obj != null && "0".equals(obj.getString("code")) && "SUCCESS".equals(obj.getString("msg"))){
+		if(obj != null && "0".equals(obj.getString("code")) && "success".equals(obj.getString("msg"))){
 			JSONArray arr = obj.getJSONObject("data").getJSONArray("list");
 			//删除用户 再插用户
 			FbRenyuaninfoService.deleteAll();
 			List<FbRenyuaninfo> list = JSONObject.parseArray(arr.toJSONString(), FbRenyuaninfo.class);
-			FbRenyuaninfoService.insertAll(list);
+			if(list.size() != 0){
+				FbRenyuaninfoService.insertAll(list);
+			}
 			
 			
 			long end = System.currentTimeMillis();
@@ -80,12 +88,14 @@ public class HkThread {
 
 		String resStr = hkApiService.orgList();
 		JSONObject obj = JSONObject.parseObject(resStr);
-		if(obj != null && "0".equals(obj.getString("code")) && "SUCCESS".equals(obj.getString("msg"))){
+		if(obj != null && "0".equals(obj.getString("code")) && "success".equals(obj.getString("msg"))){
 			JSONArray arr = obj.getJSONObject("data").getJSONArray("list");
 			//删除再新增
 			FbDeptService.deleteAll();
 			List<FbDept> list = JSONObject.parseArray(arr.toJSONString(), FbDept.class);
-			FbDeptService.insertAll(list);
+			if(list.size() != 0){
+				FbDeptService.insertAll(list);
+			}
 			
 			
 			long end = System.currentTimeMillis();
@@ -105,13 +115,14 @@ public class HkThread {
 
 		String resStr = hkApiService.acsDoorList();
 		JSONObject obj = JSONObject.parseObject(resStr);
-		if(obj != null && "0".equals(obj.getString("code")) && "SUCCESS".equals(obj.getString("msg"))){
+		if(obj != null && "0".equals(obj.getString("code")) && "success".equals(obj.getString("msg"))){
 			JSONArray arr = obj.getJSONObject("data").getJSONArray("list");
 			//删除再新增
 			FbMenjindianService.deleteAll();
 			List<FbMenjindian> list = JSONObject.parseArray(arr.toJSONString(), FbMenjindian.class);
-			FbMenjindianService.insertAll(list);
-			
+			if(list.size() != 0){
+				FbMenjindianService.insertAll(list);
+			}
 			
 			long end = System.currentTimeMillis();
 	        logger.info("acsDoorList finished, time elapsed: {} ms.",end-start);
@@ -121,5 +132,40 @@ public class HkThread {
 			Future<String> res = new AsyncResult<>(JSONObject.toJSONString(R.error("获取门禁点异常")));
 			return res;
 		}
+	}
+	
+	//第一次运行项目执行该方法  删除当天
+	@Async("myAsync")
+	public Future<String> doorEventsDel(String startTime, String endTime) {
+		logger.info("doorEvents started---");
+		long start = System.currentTimeMillis();
+
+		JSONArray arr = hkApiService.doorEvents(startTime,endTime);
+		//删除当天记录
+		FbDooreventsService.deleteNowDays();
+		List<FbDoorevents> list = JSONObject.parseArray(arr.toJSONString(), FbDoorevents.class);
+		if(list.size() != 0){
+			FbDooreventsService.insertAll(list);
+		}
+		long end = System.currentTimeMillis();
+        logger.info("doorEvents finished, time elapsed: {} ms.",end-start);
+        Future<String> res = new AsyncResult<>(JSONObject.toJSONString(R.ok()));
+        return res;
+	}
+	
+	@Async("myAsync")
+	public Future<String> doorEvents(String startTime, String endTime) {
+		logger.info("doorEvents started---");
+		long start = System.currentTimeMillis();
+
+		JSONArray arr = hkApiService.doorEvents(startTime,endTime);
+		List<FbDoorevents> list = JSONObject.parseArray(arr.toJSONString(), FbDoorevents.class);
+		if(list.size() != 0){
+			FbDooreventsService.insertAll(list);
+		}
+		long end = System.currentTimeMillis();
+        logger.info("doorEvents finished, time elapsed: {} ms.",end-start);
+        Future<String> res = new AsyncResult<>(JSONObject.toJSONString(R.ok()));
+        return res;
 	}
 }

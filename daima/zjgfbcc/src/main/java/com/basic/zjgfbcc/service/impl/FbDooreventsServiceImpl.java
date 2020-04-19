@@ -59,5 +59,20 @@ public class FbDooreventsServiceImpl implements FbDooreventsService {
     public FbDoorevents getDetailByPara(String para,String value) {
         return fbDooreventsDao.getDetailByPara(para,value);
     }
+
+	@Override
+	public void deleteAll() {
+		fbDooreventsDao.deleteAll();
+	}
+
+	@Override
+	public void insertAll(List<FbDoorevents> list) {
+		fbDooreventsDao.insertAll(list);
+	}
+
+	@Override
+	public void deleteNowDays() {
+		fbDooreventsDao.deleteNowDays();
+	}
 	
 }

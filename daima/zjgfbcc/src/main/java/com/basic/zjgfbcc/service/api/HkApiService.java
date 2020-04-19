@@ -1,10 +1,12 @@
 package com.basic.zjgfbcc.service.api;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.basic.zjgfbcc.controller.api.BaseApiController;
 import com.hikvision.artemis.sdk.ArtemisHttpUtil;
@@ -31,12 +33,18 @@ public class HkApiService extends BaseApiController{
 	 * 调用前看清接口传入的是什么，是传入json就用doPostStringArtemis方法，是表单提交就用doPostFromArtemis方法
 	 *
 	 */
-	static {
+	/*static {
 		ArtemisConfig.host = hkHsot; // 平台/nginx的IP和端口（https端口默认为443）
 		ArtemisConfig.appKey = hkKey; // 合作方Key
 		ArtemisConfig.appSecret = hkSecret;// 合作方Secret
 	}
+	*/
 	
+	static {
+		ArtemisConfig.host = "10.130.115.51"; // 平台/nginx的IP和端口（https端口默认为443）
+		ArtemisConfig.appKey = "23406132"; // 合作方Key
+		ArtemisConfig.appSecret = "UsVqbwnYwCo2BC2EMzZE";// 合作方Secret
+	}
 
 	/**
 	 * API网关的后端服务上下文为：/artemis
@@ -84,7 +92,7 @@ public class HkApiService extends BaseApiController{
 	}
 	
 	//分页获取门禁点列表
-	public String acsDoorList() {
+	public static String acsDoorList() {
 		String camerasDataApi = ARTEMIS_PATH +"/api/resource/v1/acsDoor/acsDoorList";
 		Map<String,String> path = new HashMap<String,String>(2){
 			{
@@ -93,12 +101,68 @@ public class HkApiService extends BaseApiController{
 		};
 		Map<String, String> params = new HashMap<>();
 		params.put("pageNo", "1");
-		params.put("pageSize", "1000000");
+		params.put("pageSize", "1000");
 		String body=JSONObject.toJSONString(params);
 		String result =ArtemisHttpUtil.doPostStringArtemis(path,body,null,null,"application/json");
-		
+		System.out.println(result);
 //		String result = "{\"code\":\"0\",\"msg\":\"SUCCESS\",\"data\":{\"total\":35,\"pageNo\":1,\"pageSize\":100,\"list\":[{\"doorIndexCode\":\"05b4cf0900c5469bbf3b04862747cd9b\",\"doorName\":\"出办公楼摆闸_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"cf91d81c-631e-46ff-96fc-88be4f7a4f8e\",\"acsDevIndexCode\":\"73193a4ec25c4ea29652813748bb3a4f\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-01-10T13:39:18.002+08:00\",\"updateTime\":\"2020-01-10T13:39:18.295+08:00\"},{\"doorIndexCode\":\"c6cf78774cde4630ac6f183c434ca9d3\",\"doorName\":\"进办公楼摆闸_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"cf91d81c-631e-46ff-96fc-88be4f7a4f8e\",\"acsDevIndexCode\":\"0a397062f47c4e76a14cd9fc782b8c25\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-01-10T13:39:18.001+08:00\",\"updateTime\":\"2020-01-10T13:39:18.295+08:00\"},{\"doorIndexCode\":\"1fe73491715042f6af621e34f7e01051\",\"doorName\":\"出罐区摆闸_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"cf91d81c-631e-46ff-96fc-88be4f7a4f8e\",\"acsDevIndexCode\":\"40c7f4d284f24a1fa38d5cc740edb35c\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-01-11T09:34:51.332+08:00\",\"updateTime\":\"2020-01-11T09:34:51.660+08:00\"},{\"doorIndexCode\":\"1eb0fa73d7754e278ed498edb9f6dcb2\",\"doorName\":\"进罐区摆闸_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"cf91d81c-631e-46ff-96fc-88be4f7a4f8e\",\"acsDevIndexCode\":\"5ca6152a0083425e83a411d97a343406\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-01-11T09:34:51.331+08:00\",\"updateTime\":\"2020-01-11T09:34:51.660+08:00\"},{\"doorIndexCode\":\"ebbb9f1a19fb47db93f83417410231c2\",\"doorName\":\"旋转门北出_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"e7764e84-514a-4a15-a17b-007123f5f432\",\"acsDevIndexCode\":\"322310cc441f436981cad82586261a60\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-01-12T13:42:03.852+08:00\",\"updateTime\":\"2020-01-12T13:42:03.986+08:00\"},{\"doorIndexCode\":\"3193a113b48f4acc93dddf50d515f873\",\"doorName\":\"旋转门北进_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"e7764e84-514a-4a15-a17b-007123f5f432\",\"acsDevIndexCode\":\"9393ae2dc0ca407b8d96ff41f4cfc134\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-01-12T13:42:03.854+08:00\",\"updateTime\":\"2020-01-12T13:42:03.986+08:00\"},{\"doorIndexCode\":\"96159467495146b3ad772e8d2c3ddca0\",\"doorName\":\"旋转门南出_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"e7764e84-514a-4a15-a17b-007123f5f432\",\"acsDevIndexCode\":\"2607dfc7d1884be193ae8ea79acd71f9\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-01-12T13:42:03.851+08:00\",\"updateTime\":\"2020-01-12T13:42:03.986+08:00\"},{\"doorIndexCode\":\"1b847c2e54244a35b8594e5cea8f8199\",\"doorName\":\"旋转门南进_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"e7764e84-514a-4a15-a17b-007123f5f432\",\"acsDevIndexCode\":\"b8305f9a104542f392336241347b17b4\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-01-12T13:42:03.853+08:00\",\"updateTime\":\"2020-01-12T13:42:03.986+08:00\"},{\"doorIndexCode\":\"44ff5ee348d44c43baea62b73ff30b27\",\"doorName\":\"进开票间摆闸_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"cf91d81c-631e-46ff-96fc-88be4f7a4f8e\",\"acsDevIndexCode\":\"3b794d7193aa4cca803e1067f181d0f9\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-01-13T16:33:59.527+08:00\",\"updateTime\":\"2020-01-13T16:33:59.615+08:00\"},{\"doorIndexCode\":\"17032f8d297943cd83b02e161965c6ed\",\"doorName\":\"出开票间摆闸_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"cf91d81c-631e-46ff-96fc-88be4f7a4f8e\",\"acsDevIndexCode\":\"ebdecf00152d4b12b26cbdba4ef0f39d\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-01-13T16:35:00.471+08:00\",\"updateTime\":\"2020-01-13T16:35:00.582+08:00\"},{\"doorIndexCode\":\"2cfb716ee5f24afaa10c22518915c218\",\"doorName\":\"C2地磅东\",\"doorNo\":\"1\",\"regionIndexCode\":\"cf91d81c-631e-46ff-96fc-88be4f7a4f8e\",\"acsDevIndexCode\":\"4e0b0e0fc214454d985ee8a656c636e8\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-01-14T16:57:22.066+08:00\",\"updateTime\":\"2020-01-14T16:57:22.187+08:00\"},{\"doorIndexCode\":\"b8413bc70e4b4aee83e97c7eaf76ab4f\",\"doorName\":\"C1地磅东\",\"doorNo\":\"2\",\"regionIndexCode\":\"cf91d81c-631e-46ff-96fc-88be4f7a4f8e\",\"acsDevIndexCode\":\"4e0b0e0fc214454d985ee8a656c636e8\",\"channelType\":\"door\",\"channelNo\":\"2\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-01-14T16:57:22.065+08:00\",\"updateTime\":\"2020-01-14T16:57:22.187+08:00\"},{\"doorIndexCode\":\"606d7dd2e230452da2ba6ac1fe78cfa2\",\"doorName\":\"C1地磅西\",\"doorNo\":\"3\",\"regionIndexCode\":\"cf91d81c-631e-46ff-96fc-88be4f7a4f8e\",\"acsDevIndexCode\":\"4e0b0e0fc214454d985ee8a656c636e8\",\"channelType\":\"door\",\"channelNo\":\"3\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-01-14T16:57:22.064+08:00\",\"updateTime\":\"2020-01-14T16:57:22.187+08:00\"},{\"doorIndexCode\":\"1cf7bc16f3c34e088a6734a22ab466a2\",\"doorName\":\"C2地磅西\",\"doorNo\":\"4\",\"regionIndexCode\":\"cf91d81c-631e-46ff-96fc-88be4f7a4f8e\",\"acsDevIndexCode\":\"4e0b0e0fc214454d985ee8a656c636e8\",\"channelType\":\"door\",\"channelNo\":\"4\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-01-14T16:57:22.063+08:00\",\"updateTime\":\"2020-01-14T16:57:22.187+08:00\"},{\"doorIndexCode\":\"b00d357c5afa441fa81d3e7901a65572\",\"doorName\":\"维修办公室东门_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"df5c22d4-a437-4673-a610-80a248b9d875\",\"acsDevIndexCode\":\"8f3b938c93c545d5a4b350949d05bf1e\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-09T11:16:58.268+08:00\",\"updateTime\":\"2020-03-09T11:16:58.370+08:00\"},{\"doorIndexCode\":\"93e07e5853994e5594d56afd1986ddcf\",\"doorName\":\"备件仓库_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"df5c22d4-a437-4673-a610-80a248b9d875\",\"acsDevIndexCode\":\"a342efa6c3e14b5096fe105470a3101d\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-09T13:43:42.999+08:00\",\"updateTime\":\"2020-03-09T13:43:43.099+08:00\"},{\"doorIndexCode\":\"2731155b8ed945caab55d54f0e57bebd\",\"doorName\":\"维修办公室西门_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"df5c22d4-a437-4673-a610-80a248b9d875\",\"acsDevIndexCode\":\"b2cd5da14f8c4c3b9cbc3c3b7fdb0c96\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-09T13:43:42.998+08:00\",\"updateTime\":\"2020-03-09T13:43:43.099+08:00\"},{\"doorIndexCode\":\"ef03e73255ba433ba2e0816d3e83b26e\",\"doorName\":\"档案室_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"df5c22d4-a437-4673-a610-80a248b9d875\",\"acsDevIndexCode\":\"0eb8da6ce95f46639cebb1623b97e17f\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-09T14:04:52.029+08:00\",\"updateTime\":\"2020-03-09T14:04:52.127+08:00\"},{\"doorIndexCode\":\"98cebc08e1fb4f07b0b928de152898a9\",\"doorName\":\"维修电仪仓库_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"df5c22d4-a437-4673-a610-80a248b9d875\",\"acsDevIndexCode\":\"cde509b584a746248b8a48a4bfbcc16c\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-09T14:04:52.028+08:00\",\"updateTime\":\"2020-03-09T14:04:52.127+08:00\"},{\"doorIndexCode\":\"2c18acce24e84a16950096db091dc900\",\"doorName\":\"开票间_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"cf91d81c-631e-46ff-96fc-88be4f7a4f8e\",\"acsDevIndexCode\":\"eb61aff7bd2247319f0f8b3fab6f1aa2\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-09T15:34:08.238+08:00\",\"updateTime\":\"2020-03-09T15:34:08.354+08:00\"},{\"doorIndexCode\":\"27d82e6eadf94b359ad9ecbc6ee5970c\",\"doorName\":\"更衣室_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"fe8b0385-f2a3-4e47-82cb-132d49547463\",\"acsDevIndexCode\":\"654c1d4cd43f40d1a1caaa5197c5f260\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-12T14:48:43.757+08:00\",\"updateTime\":\"2020-03-12T14:48:43.858+08:00\"},{\"doorIndexCode\":\"507d3649dc81401c8a1a005d225e4fa9\",\"doorName\":\"商务部_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"fe8b0385-f2a3-4e47-82cb-132d49547463\",\"acsDevIndexCode\":\"66996d54b79c4ee8a189f6b4b613ba88\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-13T14:13:07.133+08:00\",\"updateTime\":\"2020-03-13T14:13:07.217+08:00\"},{\"doorIndexCode\":\"77265ed2687e49218680017a7e9d6168\",\"doorName\":\"财务&SHE&HR_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"fe8b0385-f2a3-4e47-82cb-132d49547463\",\"acsDevIndexCode\":\"774af72c33944e1091ac61fd386ab389\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-13T14:13:07.132+08:00\",\"updateTime\":\"2020-03-13T14:13:07.217+08:00\"},{\"doorIndexCode\":\"5bc4ceb243ad47bbb730b7d3bd6d4f8d\",\"doorName\":\"2C出罐区_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"26643b1e-c7a3-472c-8235-abce9b238073\",\"acsDevIndexCode\":\"da9bc7ab300049d0a3c4975481b0fe68\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-16T13:29:03.153+08:00\",\"updateTime\":\"2020-03-16T13:29:03.238+08:00\"},{\"doorIndexCode\":\"5c8ec128975d43b5bda3ced8c195e442\",\"doorName\":\"2C进罐区_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"26643b1e-c7a3-472c-8235-abce9b238073\",\"acsDevIndexCode\":\"37bf822d1cd74d8a939da3b1741a35ea\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-16T13:29:03.152+08:00\",\"updateTime\":\"2020-03-16T13:29:03.238+08:00\"},{\"doorIndexCode\":\"c0bc2c53464847ebb854366042a2390b\",\"doorName\":\"2C开票间_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"26643b1e-c7a3-472c-8235-abce9b238073\",\"acsDevIndexCode\":\"981c861a337641f48c112ee12d9b9732\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-16T15:58:54.877+08:00\",\"updateTime\":\"2020-03-16T15:58:54.984+08:00\"},{\"doorIndexCode\":\"1396e5c7e5a54ed3b4ecb918bdb7c742\",\"doorName\":\"IT Room_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"d8a0dd8e-b8c6-4388-81b1-ac0766428214\",\"acsDevIndexCode\":\"5752fd1dc1d74ec1be0dd34e7aab7d17\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-17T15:07:06.244+08:00\",\"updateTime\":\"2020-03-17T15:07:06.349+08:00\"},{\"doorIndexCode\":\"b431d183cc6041cf81e29605ca41e250\",\"doorName\":\"OT Room_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"d8a0dd8e-b8c6-4388-81b1-ac0766428214\",\"acsDevIndexCode\":\"59341d9c6836418fa40e245b7ac16005\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-17T15:07:06.243+08:00\",\"updateTime\":\"2020-03-17T15:07:06.349+08:00\"},{\"doorIndexCode\":\"723ca5c0d4974afaa55b4c46b5d36f05\",\"doorName\":\"CCR2号门_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"d8a0dd8e-b8c6-4388-81b1-ac0766428214\",\"acsDevIndexCode\":\"d3743819016247b6a2fafd0b94bc252b\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-17T15:33:56.731+08:00\",\"updateTime\":\"2020-03-17T15:33:56.837+08:00\"},{\"doorIndexCode\":\"3533ca9bdf2c4e4584d0e81711637e28\",\"doorName\":\"CCR1号门_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"d8a0dd8e-b8c6-4388-81b1-ac0766428214\",\"acsDevIndexCode\":\"d8c993e119f14a12a4382efe441c2743\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-27T10:08:37.881+08:00\",\"updateTime\":\"2020-03-27T10:08:37.989+08:00\"},{\"doorIndexCode\":\"5564124d7f88448c87b767664d971da9\",\"doorName\":\"CS&OPS办公室_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"fe8b0385-f2a3-4e47-82cb-132d49547463\",\"acsDevIndexCode\":\"4cb690fad0de4ec69a59e8b43b257de2\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-27T15:57:17.271+08:00\",\"updateTime\":\"2020-03-27T15:57:17.347+08:00\"},{\"doorIndexCode\":\"80d79e10837f473ebad78c8a0ee64aef\",\"doorName\":\"培训教室东_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"c0458d16-fbfc-41f9-a9db-f0bf7e6c0185\",\"acsDevIndexCode\":\"33e322d44f954d87a06edb1815a3a899\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-28T14:03:07.707+08:00\",\"updateTime\":\"2020-03-28T14:03:08.014+08:00\"},{\"doorIndexCode\":\"2ae3d08026524dee8c14b76d1a64e720\",\"doorName\":\"培训教室西_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"c0458d16-fbfc-41f9-a9db-f0bf7e6c0185\",\"acsDevIndexCode\":\"0c239a29bc1e48918d20f48c96b8ab7e\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-28T14:03:07.706+08:00\",\"updateTime\":\"2020-03-28T14:03:08.014+08:00\"},{\"doorIndexCode\":\"b91d25a9a9ab4df7a03f10c7f74a6e39\",\"doorName\":\"CCR3号门_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"d8a0dd8e-b8c6-4388-81b1-ac0766428214\",\"acsDevIndexCode\":\"e139a5ff5ac84e1c9f27974201a6df06\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-28T14:04:45.225+08:00\",\"updateTime\":\"2020-03-28T14:04:45.319+08:00\"},{\"doorIndexCode\":\"52c0f61e20b74dc184f720430f133c7a\",\"doorName\":\"餐厅_门1\",\"doorNo\":\"1\",\"regionIndexCode\":\"bb21c6a1-74b0-4c80-9dda-6d93395368ac\",\"acsDevIndexCode\":\"3556a21449294232bcabb5cca7332950\",\"channelType\":\"door\",\"channelNo\":\"1\",\"installLocation\":null,\"remark\":null,\"createTime\":\"2020-03-28T15:04:05.659+08:00\",\"updateTime\":\"2020-03-28T15:04:05.739+08:00\"}]}}";
 		return result;
+	}
+	
+	
+	//分页获取出入事件列表
+	public JSONArray doorEvents(String startTime,String endTime) {
+		String camerasDataApi = ARTEMIS_PATH +"/api/acs/v1/door/events";
+		Map<String,String> path = new HashMap<String,String>(2){
+			{
+				put("https://",camerasDataApi);
+			}
+		};
+		
+//		String body=JSONObject.toJSONString(params);
+//		String result =ArtemisHttpUtil.doPostStringArtemis(path,body,null,null,"application/json");
+//		JSONObject obj = JSONObject.parseObject(result);
+//		if(obj != null && "0".equals(obj.getString("code")) && "success".equals(obj.getString("msg"))){
+//			JSONObject reso = obj.getJSONObject("data");
+//			int totalPage =  reso.getIntValue("totalPage");
+//			if(totalPage > 1){
+//				//说明还有数据
+//				getEvents(startTime,endTime);
+//			}else{
+//				return result;
+//			}
+//		}
+		JSONArray arr = new JSONArray();
+		JSONArray res = getEvents(startTime,endTime,path,1,arr);
+		return res;
+	}
+	
+	public JSONArray getEvents(String startTime,String endTime,Map<String,String> path,int pageNo,JSONArray arr){
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("pageNo", pageNo);
+		params.put("pageSize", "1000");
+		params.put("startTime", startTime);
+		params.put("endTime", endTime);
+		
+		String body=JSONObject.toJSONString(params);
+		String result =ArtemisHttpUtil.doPostStringArtemis(path,body,null,null,"application/json");
+		JSONObject obj = JSONObject.parseObject(result);
+		if(obj != null && "0".equals(obj.getString("code")) && "success".equals(obj.getString("msg"))){
+			JSONObject reso = obj.getJSONObject("data");
+			JSONArray list = reso.getJSONArray("list");
+			int totalPage =  reso.getIntValue("totalPage");
+			//拼接数组
+			arr.addAll(list);
+			if(totalPage > 1 && totalPage >= pageNo){
+				//说明还有数据
+				pageNo += 1;
+				getEvents(startTime,endTime,path,pageNo,arr);
+			}else{
+				return arr;
+			}
+		}
+		return arr;
 	}
 	
 	

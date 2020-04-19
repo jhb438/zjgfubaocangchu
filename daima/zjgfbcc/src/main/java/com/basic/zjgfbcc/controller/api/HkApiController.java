@@ -1,11 +1,13 @@
 package com.basic.zjgfbcc.controller.api;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -80,6 +82,30 @@ public class HkApiController extends BaseApiController{
 		Future<String> res = null;
 		try {
 			res = HkThread.acsDoorList();
+			JSONObject obj = JSONObject.parseObject(res.get());
+			if(obj.getIntValue("code") == 0){
+				return R.ok();
+			}else{
+				return R.error(obj.getString("msg"));
+			}
+			
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return R.error();
+	}
+	
+	
+	//获取门禁事件列表
+	@PassToken
+	@RequestMapping(value="/doorEvents",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	@ResponseBody
+	public R doorEvents(@RequestBody Map<String,String> params){
+		
+		Future<String> res = null;
+		try {
+			res = HkThread.doorEvents(params.get("startTime"),params.get("endTime"));
 			JSONObject obj = JSONObject.parseObject(res.get());
 			if(obj.getIntValue("code") == 0){
 				return R.ok();

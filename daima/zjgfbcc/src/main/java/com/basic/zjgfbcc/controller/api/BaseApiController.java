@@ -29,14 +29,26 @@ public class BaseApiController {
     @Value(value = "${upload.file.path}")
     public String filePath;
     
-    @Value(value="${hk.host}")
     public static String hkHsot;
     
-    @Value(value="${hk.appKey}")
     public static String hkKey;
     
-    @Value(value="${hk.appSecret}")
     public static String hkSecret;
+    
+    @Value("${hk.host}")
+    public void setHkHost(String it) {
+    	BaseApiController.hkHsot = it;
+    }
+    
+    @Value("${hk.appKey}")
+    public void sethkKey(String it) {
+    	BaseApiController.hkKey = it;
+    }
+    
+    @Value("${hk.appSecret}")
+    public void sethkSecret(String it) {
+    	BaseApiController.hkSecret = it;
+    }
     
 	/**
 	 * 验证参数

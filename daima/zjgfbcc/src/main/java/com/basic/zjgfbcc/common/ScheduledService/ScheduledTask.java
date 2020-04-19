@@ -4,6 +4,7 @@ import com.basic.zjgfbcc.controller.BaseController;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,10 +22,14 @@ public class ScheduledTask extends BaseController {
 
 //   @Scheduled(cron = "*/30  *  *  *  *  ?")//代表每30秒执行一次
 //    @Scheduled(cron = "0 0 23 * * ?")   //每天23点执行
-    @ApiOperation(value="定时获取设备坐标")
+//    @Scheduled(cron = "*/10  *  *  *  *  ?")
     public void getDeviceLoaction() {
         try {
-            // getLocationThread.GetLocation();
+            
+        	System.out.println("xxxxx");
+        	
+        	
+        	
 
         } catch (Exception ex) {
             ex.printStackTrace();

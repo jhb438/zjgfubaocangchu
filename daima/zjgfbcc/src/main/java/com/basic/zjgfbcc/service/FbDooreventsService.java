@@ -1,6 +1,7 @@
 package com.basic.zjgfbcc.service;
 
 import com.basic.zjgfbcc.entity.FbDoorevents;
+import com.basic.zjgfbcc.entity.FbMenjindian;
 
 import java.util.List;
 import java.util.Map;
@@ -33,4 +34,10 @@ public interface FbDooreventsService {
      * @return
 	 */
      FbDoorevents getDetailByPara(String para,String value);
+
+	void deleteAll();
+
+	void insertAll(List<FbDoorevents> list);
+
+	void deleteNowDays();
 }

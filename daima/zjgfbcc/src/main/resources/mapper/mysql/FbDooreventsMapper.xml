@@ -104,6 +104,47 @@
 			#{doorName}
 		)
 	</insert>
+	
+	<insert id="insertAll" parameterType="com.basic.zjgfbcc.entity.FbDoorevents">
+		insert into fb_doorevents
+		(
+		    `row_guid`,
+			`create_time`,
+			`del_flag`,
+			`sort_sq`,
+			`personName`, 
+			`jobNo`, 
+			`cardNo`, 
+			`orgIndexCode`, 
+			`orgName`, 
+			`eventId`, 
+			`eventName`, 
+			`eventTime`, 
+			`personId`, 
+			`doorIndexCode`, 
+			`doorName`
+		)
+		values
+		<foreach collection="list" item="time" separator=",">
+		(
+		    #{time.rowGuid},
+			#{time.createTime},
+			#{time.delFlag},
+			#{time.sortSq},
+			#{time.personName}, 
+			#{time.jobNo}, 
+			#{time.cardNo}, 
+			#{time.orgIndexCode}, 
+			#{time.orgName}, 
+			#{time.eventId}, 
+			#{time.eventName}, 
+			#{time.eventTime}, 
+			#{time.personId}, 
+			#{time.doorIndexCode}, 
+			#{time.doorName}
+		)
+        </foreach>
+	</insert>
 	 
 	<update id="update" parameterType="com.basic.zjgfbcc.entity.FbDoorevents">
 		update fb_doorevents 
@@ -131,6 +172,14 @@
 			#{rowGuid}
 		</foreach>
 	</delete>
+	
+	<delete id="deleteAll">
+	    delete from fb_doorevents
+	</delete>
+	
+	<delete id="deleteNowDays">
+	    delete from fb_doorevents where substring(eventTime,1,10) = CURDATE()
+	</delete> 
 
     <select id="getDetailByGuid" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
         select * from fb_doorevents where row_guid =#{rowGuid} and del_flag =0

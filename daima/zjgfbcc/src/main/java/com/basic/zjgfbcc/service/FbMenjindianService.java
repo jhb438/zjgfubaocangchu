@@ -36,7 +36,7 @@ public interface FbMenjindianService {
      FbMenjindian getDetailByPara(String para,String value);
 
     List<Frame_CodeValue> getMenJinList();
-}
+
 
 	void deleteAll();
 

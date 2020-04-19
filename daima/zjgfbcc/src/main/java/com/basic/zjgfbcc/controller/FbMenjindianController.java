@@ -104,10 +104,10 @@ public class FbMenjindianController {
 	 * @return
 	 */
 	@PassToken
-	@ApiOperation(value="通过rowGuid获取一条记录")
+	@ApiOperation(value="获取所有的列表数据")
 	@ResponseBody
 	@RequestMapping(value="/getMenJinList",produces="application/json;charset=utf-8",method=RequestMethod.POST)
-	public R getAreaList(){
+	public R getMenJinList(){
 		List<Frame_CodeValue> list = fbMenjindianService.getMenJinList();
 		return R.ok().put("data",list);
 	}

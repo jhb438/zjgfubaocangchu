@@ -1,13 +1,10 @@
 package com.basic.zjgfbcc.service;
 
 import com.alibaba.fastjson.JSONArray;
-import com.basic.zjgfbcc.common.utils.Query;
 import com.basic.zjgfbcc.entity.Frame_CodeValue;
 import com.basic.zjgfbcc.entity.Frame_Dept;
 import com.basic.zjgfbcc.entity.Frame_User;
-import com.basic.zjgfbcc.entity.JtDeviceinfo;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Map;
 

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.zjgfbcc.dao.mysql.FbDooreventsDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.zjgfbcc.entity.FbDoorevents" id="fbDooreventsMap">
+        <result property="personName" column="personName"/>
+        <result property="jobNo" column="jobNo"/>
+        <result property="cardNo" column="cardNo"/>
+        <result property="orgIndexCode" column="orgIndexCode"/>
+        <result property="orgName" column="orgName"/>
+        <result property="eventId" column="eventId"/>
+        <result property="eventName" column="eventName"/>
+        <result property="eventTime" column="eventTime"/>
+        <result property="personId" column="personId"/>
+        <result property="doorIndexCode" column="doorIndexCode"/>
+        <result property="doorName" column="doorName"/>
+    </resultMap>
+
+	<select id="getList" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
+		select * from fb_doorevents t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by row_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from fb_doorevents t  <include refid="where_clause" />
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="personName != null and personName != ''"> and t.personName = #{personName} </if>
+    		<if test="personNameVague != null and personNameVague != ''"> and t.personName like concat('%',#{personNameVague},'%') </if>
+            <if test="jobNo != null and jobNo != ''"> and t.jobNo = #{jobNo} </if>
+    		<if test="jobNoVague != null and jobNoVague != ''"> and t.jobNo like concat('%',#{jobNoVague},'%') </if>
+            <if test="cardNo != null and cardNo != ''"> and t.cardNo = #{cardNo} </if>
+    		<if test="cardNoVague != null and cardNoVague != ''"> and t.cardNo like concat('%',#{cardNoVague},'%') </if>
+            <if test="orgIndexCode != null and orgIndexCode != ''"> and t.orgIndexCode = #{orgIndexCode} </if>
+    		<if test="orgIndexCodeVague != null and orgIndexCodeVague != ''"> and t.orgIndexCode like concat('%',#{orgIndexCodeVague},'%') </if>
+            <if test="orgName != null and orgName != ''"> and t.orgName = #{orgName} </if>
+    		<if test="orgNameVague != null and orgNameVague != ''"> and t.orgName like concat('%',#{orgNameVague},'%') </if>
+            <if test="eventId != null and eventId != ''"> and t.eventId = #{eventId} </if>
+    		<if test="eventIdVague != null and eventIdVague != ''"> and t.eventId like concat('%',#{eventIdVague},'%') </if>
+            <if test="eventName != null and eventName != ''"> and t.eventName = #{eventName} </if>
+    		<if test="eventNameVague != null and eventNameVague != ''"> and t.eventName like concat('%',#{eventNameVague},'%') </if>
+            <if test="eventTime != null and eventTime != ''"> and t.eventTime = #{eventTime} </if>
+    		<if test="eventTimeVague != null and eventTimeVague != ''"> and t.eventTime like concat('%',#{eventTimeVague},'%') </if>
+            <if test="personId != null and personId != ''"> and t.personId = #{personId} </if>
+    		<if test="personIdVague != null and personIdVague != ''"> and t.personId like concat('%',#{personIdVague},'%') </if>
+            <if test="doorIndexCode != null and doorIndexCode != ''"> and t.doorIndexCode = #{doorIndexCode} </if>
+    		<if test="doorIndexCodeVague != null and doorIndexCodeVague != ''"> and t.doorIndexCode like concat('%',#{doorIndexCodeVague},'%') </if>
+            <if test="doorName != null and doorName != ''"> and t.doorName = #{doorName} </if>
+    		<if test="doorNameVague != null and doorNameVague != ''"> and t.doorName like concat('%',#{doorNameVague},'%') </if>
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="com.basic.zjgfbcc.entity.FbDoorevents">
+		insert into fb_doorevents
+		(
+		    `row_guid`,
+			`create_time`,
+			`del_flag`,
+			`sort_sq`,
+			`personName`, 
+			`jobNo`, 
+			`cardNo`, 
+			`orgIndexCode`, 
+			`orgName`, 
+			`eventId`, 
+			`eventName`, 
+			`eventTime`, 
+			`personId`, 
+			`doorIndexCode`, 
+			`doorName`
+		)
+		values
+		(
+		    #{rowGuid},
+			#{createTime},
+			#{delFlag},
+			#{sortSq},
+			#{personName}, 
+			#{jobNo}, 
+			#{cardNo}, 
+			#{orgIndexCode}, 
+			#{orgName}, 
+			#{eventId}, 
+			#{eventName}, 
+			#{eventTime}, 
+			#{personId}, 
+			#{doorIndexCode}, 
+			#{doorName}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.zjgfbcc.entity.FbDoorevents">
+		update fb_doorevents 
+		<set>
+            <if test="createTime != null">`create_time` = #{createTime}, </if>
+            <if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="jobNo != null">`jobNo` = #{jobNo}, </if>
+			<if test="cardNo != null">`cardNo` = #{cardNo}, </if>
+			<if test="orgIndexCode != null">`orgIndexCode` = #{orgIndexCode}, </if>
+			<if test="orgName != null">`orgName` = #{orgName}, </if>
+			<if test="eventId != null">`eventId` = #{eventId}, </if>
+			<if test="eventName != null">`eventName` = #{eventName}, </if>
+			<if test="eventTime != null">`eventTime` = #{eventTime}, </if>
+			<if test="personId != null">`personId` = #{personId}, </if>
+			<if test="doorIndexCode != null">`doorIndexCode` = #{doorIndexCode}, </if>
+			<if test="doorName != null">`doorName` = #{doorName}</if>
+		</set>
+        where row_guid = #{rowGuid}
+	</update>
+	
+	<delete id="deleteBatch">
+		delete from fb_doorevents  where row_guid in
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+    <select id="getDetailByGuid" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
+        select * from fb_doorevents where row_guid =#{rowGuid} and del_flag =0
+    </select>
+
+    <select id="getDetailByPara" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
+        select * from fb_doorevents where ${para}=#{value} and del_flag =0
+    </select>
+
+    <select id="getQueryList" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
+        select * from fb_doorevents t <include refid="where_clause" />
+        order by row_id desc
+    </select>
+
+</mapper>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.zjgfbcc.dao.mysql.FbRenyuaninfoDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.zjgfbcc.entity.FbRenyuaninfo" id="fbRenyuaninfoMap">
+        <result property="personId" column="personId"/>
+        <result property="personName" column="personName"/>
+        <result property="gender" column="gender"/>
+        <result property="orgPath" column="orgPath"/>
+        <result property="orgIndexCode" column="orgIndexCode"/>
+        <result property="orgName" column="orgName"/>
+        <result property="certificateType" column="certificateType"/>
+        <result property="certificateNo" column="certificateNo"/>
+        <result property="phoneNo" column="phoneNo"/>
+        <result property="address" column="address"/>
+    </resultMap>
+
+	<select id="getList" resultType="com.basic.zjgfbcc.entity.FbRenyuaninfo">
+		select * from fb_renyuaninfo t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by row_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from fb_renyuaninfo t  <include refid="where_clause" />
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="personId != null and personId != ''"> and t.personId = #{personId} </if>
+    		<if test="personIdVague != null and personIdVague != ''"> and t.personId like concat('%',#{personIdVague},'%') </if>
+            <if test="personName != null and personName != ''"> and t.personName = #{personName} </if>
+    		<if test="personNameVague != null and personNameVague != ''"> and t.personName like concat('%',#{personNameVague},'%') </if>
+            <if test="gender != null and gender != ''"> and t.gender = #{gender} </if>
+    		<if test="genderVague != null and genderVague != ''"> and t.gender like concat('%',#{genderVague},'%') </if>
+            <if test="orgPath != null and orgPath != ''"> and t.orgPath = #{orgPath} </if>
+    		<if test="orgPathVague != null and orgPathVague != ''"> and t.orgPath like concat('%',#{orgPathVague},'%') </if>
+            <if test="orgIndexCode != null and orgIndexCode != ''"> and t.orgIndexCode = #{orgIndexCode} </if>
+    		<if test="orgIndexCodeVague != null and orgIndexCodeVague != ''"> and t.orgIndexCode like concat('%',#{orgIndexCodeVague},'%') </if>
+            <if test="orgName != null and orgName != ''"> and t.orgName = #{orgName} </if>
+    		<if test="orgNameVague != null and orgNameVague != ''"> and t.orgName like concat('%',#{orgNameVague},'%') </if>
+            <if test="certificateType != null and certificateType != ''"> and t.certificateType = #{certificateType} </if>
+    		<if test="certificateTypeVague != null and certificateTypeVague != ''"> and t.certificateType like concat('%',#{certificateTypeVague},'%') </if>
+            <if test="certificateNo != null and certificateNo != ''"> and t.certificateNo = #{certificateNo} </if>
+    		<if test="certificateNoVague != null and certificateNoVague != ''"> and t.certificateNo like concat('%',#{certificateNoVague},'%') </if>
+            <if test="phoneNo != null and phoneNo != ''"> and t.phoneNo = #{phoneNo} </if>
+    		<if test="phoneNoVague != null and phoneNoVague != ''"> and t.phoneNo like concat('%',#{phoneNoVague},'%') </if>
+            <if test="address != null and address != ''"> and t.address = #{address} </if>
+    		<if test="addressVague != null and addressVague != ''"> and t.address like concat('%',#{addressVague},'%') </if>
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="com.basic.zjgfbcc.entity.FbRenyuaninfo">
+		insert into fb_renyuaninfo
+		(
+		    `row_guid`,
+			`create_time`,
+			`del_flag`,
+			`sort_sq`,
+			`personId`, 
+			`personName`, 
+			`gender`, 
+			`orgPath`, 
+			`orgIndexCode`, 
+			`orgName`, 
+			`certificateType`, 
+			`certificateNo`, 
+			`phoneNo`, 
+			`address`
+		)
+		values
+		(
+		    #{rowGuid},
+			#{createTime},
+			#{delFlag},
+			#{sortSq},
+			#{personId}, 
+			#{personName}, 
+			#{gender}, 
+			#{orgPath}, 
+			#{orgIndexCode}, 
+			#{orgName}, 
+			#{certificateType}, 
+			#{certificateNo}, 
+			#{phoneNo}, 
+			#{address}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.zjgfbcc.entity.FbRenyuaninfo">
+		update fb_renyuaninfo 
+		<set>
+            <if test="createTime != null">`create_time` = #{createTime}, </if>
+            <if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="personName != null">`personName` = #{personName}, </if>
+			<if test="gender != null">`gender` = #{gender}, </if>
+			<if test="orgPath != null">`orgPath` = #{orgPath}, </if>
+			<if test="orgIndexCode != null">`orgIndexCode` = #{orgIndexCode}, </if>
+			<if test="orgName != null">`orgName` = #{orgName}, </if>
+			<if test="certificateType != null">`certificateType` = #{certificateType}, </if>
+			<if test="certificateNo != null">`certificateNo` = #{certificateNo}, </if>
+			<if test="phoneNo != null">`phoneNo` = #{phoneNo}, </if>
+			<if test="address != null">`address` = #{address}</if>
+		</set>
+        where row_guid = #{rowGuid}
+	</update>
+	
+	<delete id="deleteBatch">
+		delete from fb_renyuaninfo  where row_guid in
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+    <select id="getDetailByGuid" resultType="com.basic.zjgfbcc.entity.FbRenyuaninfo">
+        select * from fb_renyuaninfo where row_guid =#{rowGuid} and del_flag =0
+    </select>
+
+    <select id="getDetailByPara" resultType="com.basic.zjgfbcc.entity.FbRenyuaninfo">
+        select * from fb_renyuaninfo where ${para}=#{value} and del_flag =0
+    </select>
+
+    <select id="getQueryList" resultType="com.basic.zjgfbcc.entity.FbRenyuaninfo">
+        select * from fb_renyuaninfo t <include refid="where_clause" />
+        order by row_id desc
+    </select>
+
+</mapper>

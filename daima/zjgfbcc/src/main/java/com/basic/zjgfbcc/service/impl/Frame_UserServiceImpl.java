@@ -1,14 +1,10 @@
 package com.basic.zjgfbcc.service.impl;
 
-import com.basic.zjgfbcc.common.customclass.RedisCacheable;
-import com.basic.zjgfbcc.controller.ceshiController;
 import com.basic.zjgfbcc.dao.mysql.Frame_DeptDao;
 import com.basic.zjgfbcc.dao.mysql.Frame_UserDao;
 import com.basic.zjgfbcc.entity.Frame_Dept;
 import com.basic.zjgfbcc.entity.Frame_Role;
-import com.basic.zjgfbcc.entity.Frame_Role_User;
 import com.basic.zjgfbcc.entity.Frame_User;
-import com.basic.zjgfbcc.entity.JtTempperson;
 import com.basic.zjgfbcc.service.Frame_UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

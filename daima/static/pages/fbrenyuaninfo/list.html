@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
@@ -19,13 +19,13 @@
                         <table style="width:100%">
                             <tr>
                                 <td class="TB_01" style="width:15%">
-                                    查询条件
+                                    人员名称
                                 </td>
                                 <td class="TB_02" style="width:35%">
-
+                                    <input type="text" id="personName" name="personName" class="layui-input" />
                                 </td>
                                 <td class="TB_01" style="width:15%">
-                                    查询条件
+                                  
                                 </td>
                                 <td class="TB_02" style="width:35%">
 
@@ -69,28 +69,17 @@
                 where: where,
                 cols: [[
             { checkbox: true },
-                        { field: 'personId', width: 80, title: '人员ID' },
-                        { field: 'personName', width: 80, title: '姓名' },
-                        { field: 'gender', width: 80, title: '性别' },
-                        { field: 'orgPath', width: 80, title: '所属组织路径' },
-                        { field: 'orgIndexCode', width: 80, title: '所属组织名称' },
-                        { field: 'orgName', width: 80, title: '所属组织名称' },
-                        { field: 'certificateType', width: 80, title: '证件类型' },
-                        { field: 'certificateNo', width: 80, title: '证件号码' },
-                        { field: 'phoneNo', width: 80, title: '联系电话' },
-                        { field: 'address', width: 80, title: '联系地址' },
+                       
+                        { field: 'personName', width: '10%', title: '姓名' },
+                        { field: 'gender', width: '10%', title: '性别' },
+                        { field: 'orgName', width: '10%', title: '所属组织名称' },
+                        { field: 'certificateType', width: '10%', title: '证件类型' },
+                        { field: 'certificateNo', width: '10%', title: '证件号码' },
+                        { field: 'phoneNo', width: '10%', title: '联系电话' },
+                        { field: 'address', width: '10%', title: '联系地址' },
             
 
-            {
-                title: '操作', align: 'center', width: 60, fixed: 'right', templet: function (d) {
-                    return "<a href=\"javascript: OpenWin('/static/pages/fbRenyuaninfo/edit.html?rowGuid=" + d.rowGuid + "', 800, 600, '修改',refreshGrid)\" > <img src=\"../../Scripts/layui/images/face/edit.gif\" lay-event=\"edit\" style=\"cursor: pointer;\"></a>";
-                }
-            },
-                    {
-                        title: '操作', align: 'center', width: 60, fixed: 'right', templet: function (d) {
-                            return "<a href=\"javascript: OpenWin('/static/pages/fbRenyuaninfo/detail.html?rowGuid=" + d.rowGuid + "', 800, 600, '查看')\" > <img src=\"../../Scripts/layui/images/face/find.gif\" lay-event=\"find\" style=\"cursor: pointer;\"></a>";
-                        }
-                    }
+           
                 ]]
             });
 

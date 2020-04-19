@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
@@ -19,13 +19,13 @@
                         <table style="width:100%">
                             <tr>
                                 <td class="TB_01" style="width:15%">
-                                    查询条件
+                                    门禁点名称
                                 </td>
                                 <td class="TB_02" style="width:35%">
-
+                                    <input type="text" id="doorName" name="doorName" class="layui-input" />
                                 </td>
                                 <td class="TB_01" style="width:15%">
-                                    查询条件
+                                   
                                 </td>
                                 <td class="TB_02" style="width:35%">
 
@@ -69,26 +69,15 @@
                 where: where,
                 cols: [[
             { checkbox: true },
-                        { field: 'doorIndexCode', width: 80, title: '门禁点唯一标识' },
-                        { field: 'doorName', width: 80, title: '门禁点名称' },
-                        { field: 'doorNo', width: 80, title: '门禁点序号' },
-                        { field: 'acsDevIndexCode', width: 80, title: '所属门禁设备唯一标识' },
-                        { field: 'regionIndexCode', width: 80, title: '所属区域唯一标识' },
-                        { field: 'channelType', width: 80, title: '通道类型' },
-                        { field: 'channelNo', width: 80, title: '通道号' },
-                        { field: 'installLocation', width: 80, title: '安装位置' },
+                      
+                        { field: 'doorName', width: '15%', title: '门禁点名称' },
+                        { field: 'doorNo', width: '15%', title: '门禁点序号' },
+                        { field: 'channelType', width: '15%', title: '通道类型' },
+                        { field: 'channelNo', width: '15%', title: '通道号' },
+                        { field: 'installLocation', width: '15%', title: '安装位置' },
             
 
-            {
-                title: '操作', align: 'center', width: 60, fixed: 'right', templet: function (d) {
-                    return "<a href=\"javascript: OpenWin('/static/pages/fbMenjindian/edit.html?rowGuid=" + d.rowGuid + "', 800, 600, '修改',refreshGrid)\" > <img src=\"../../Scripts/layui/images/face/edit.gif\" lay-event=\"edit\" style=\"cursor: pointer;\"></a>";
-                }
-            },
-                    {
-                        title: '操作', align: 'center', width: 60, fixed: 'right', templet: function (d) {
-                            return "<a href=\"javascript: OpenWin('/static/pages/fbMenjindian/detail.html?rowGuid=" + d.rowGuid + "', 800, 600, '查看')\" > <img src=\"../../Scripts/layui/images/face/find.gif\" lay-event=\"find\" style=\"cursor: pointer;\"></a>";
-                        }
-                    }
+         
                 ]]
             });
 

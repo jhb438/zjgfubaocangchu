@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.basic.zjgfbcc.entity.FbDoorevents;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -22,5 +23,10 @@ public interface FbDooreventsDao extends BaseDao<FbDoorevents> {
 	List<Map<String, String>> Statistics(String str, String str2);
 
 	List<Map<String, String>> StatisticsCBS(String string);
-	
+
+	List<FbDoorevents> getEventListByRu(@Param("areaName") String areaName, @Param("isCBS") String isCBS,
+										@Param("isVTZ")String isVTZ);
+
+	List<FbDoorevents> getEventListByShiJiChu(@Param("areaName") String areaName, @Param("isCBS") String isCBS,
+											  @Param("isVTZ")String isVTZ);
 }

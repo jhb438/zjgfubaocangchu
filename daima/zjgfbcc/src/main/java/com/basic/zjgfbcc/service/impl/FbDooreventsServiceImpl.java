@@ -86,5 +86,16 @@ public class FbDooreventsServiceImpl implements FbDooreventsService {
 		// TODO Auto-generated method stub
 		return fbDooreventsDao.StatisticsCBS(string);
 	}
-	
+
+    @Override
+    public List<FbDoorevents> getEventListByRu(String areaName, String isCBS, String isVTZ) {
+		return fbDooreventsDao.getEventListByRu(areaName,isCBS,isVTZ);
+    }
+
+    @Override
+    public List<FbDoorevents> getEventListByShiJiChu(String areaName, String isCBS, String isVTZ) {
+
+		return fbDooreventsDao.getEventListByShiJiChu(areaName,isCBS,isVTZ);
+    }
+
 }

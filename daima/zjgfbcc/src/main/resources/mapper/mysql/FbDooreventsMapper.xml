@@ -191,7 +191,7 @@
 	</delete>
 	
 	<delete id="deleteNowDays">
-	    delete from fb_doorevents where substring(eventTime,1,10) = CURDATE()
+	    delete from fb_doorevents where substring(eventTime,1,10) = date_format(now(), '%Y-%m-%d')
 	</delete> 
 
     <select id="getDetailByGuid" resultType="com.basic.zjgfbcc.entity.FbDoorevents">

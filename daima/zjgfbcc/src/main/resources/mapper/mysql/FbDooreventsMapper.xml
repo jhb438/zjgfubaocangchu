@@ -231,11 +231,11 @@
 		select distinct a.personId,a.personName,a.orgName from fb_doorevents a left join fb_renyuaninfo b on a.personId=b.personId
 		 where doorIndexCode in
 (select doorIndexCode from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='出')
-and DATE_SUB(curdate(),INTERVAL 1 DAY) = substring(eventTime,1,10)
+and DATE_SUB(curdate(),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10)
 and a.personId  in
 (select distinct personId from fb_doorevents where doorIndexCode in
 (select doorIndexCode from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='入')
-and DATE_SUB(curdate(),INTERVAL 1 DAY) = substring(eventTime,1,10))
+and DATE_SUB(curdate(),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10))
 		<if test="isCBS!='' and isCBS!=null">
 			and b.orgPath like '%承包商%'
 		</if>

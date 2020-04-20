@@ -209,7 +209,7 @@
     <!--获取今天及昨天所有的入-->
 	<select id="getEventListByRu" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
 			select distinct a.personId,a.personName,a.orgName from fb_doorevents a left join fb_renyuaninfo b on a.personId=b.personId where doorIndexCode in
-		(select doorIndexCode,doorName from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='入')
+		(select doorIndexCode from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='入')
 		and DATE_SUB(curdate(),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10)
 		<if test="isCBS!='' and isCBS!=null">
 			and b.orgPath like '%承包商%'

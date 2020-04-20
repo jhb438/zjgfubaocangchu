@@ -232,7 +232,7 @@
 		 where doorIndexCode in
 (select doorIndexCode from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='出')
 and DATE_SUB(curdate(),INTERVAL 1 DAY) = substring(eventTime,1,10)
-and personId  in
+and a.personId  in
 (select distinct personId from fb_doorevents where doorIndexCode in
 (select doorIndexCode from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='入')
 and DATE_SUB(curdate(),INTERVAL 1 DAY) = substring(eventTime,1,10))

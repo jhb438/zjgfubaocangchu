@@ -40,4 +40,8 @@ public interface FbDooreventsService {
 	void insertAll(List<FbDoorevents> list);
 
 	void deleteNowDays();
+
+	List<Map<String, String>> Statistics(String string, String string2);
+
+	List<Map<String, String>> StatisticsCBS(String string);
 }

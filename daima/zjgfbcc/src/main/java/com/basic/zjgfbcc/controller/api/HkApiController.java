@@ -97,7 +97,6 @@ public class HkApiController extends BaseApiController{
 	}
 	
 	
-	//获取门禁事件列表
 	@PassToken
 	@RequestMapping(value="/doorEvents",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 	@ResponseBody

@@ -20,12 +20,22 @@ public class DateUtil {
 	private static SimpleDateFormat SDF_MD = new SimpleDateFormat("MMdd");
 	private static SimpleDateFormat SDF_CHINA_MD = new SimpleDateFormat("MM鏈坉d鏃�");
 	private static SimpleDateFormat SDFMD = new SimpleDateFormat("yyyy/MM/dd");
+	private static SimpleDateFormat S = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 	public static String getYmdhms() {
 		return SDF_YMDHMS.format(new Date());
 	}
+	
+	public static String getYmdhms(Date date) {
+		return SDF_YMDHMS.format(date);
+	}
+	
 	public static String getY_m_d(Date date) {
 		return SDF_Y_M_D.format(date);
+	}
+	
+	public static String getS(Date date) {
+		return S.format(date);
 	}
 	
 	public static boolean isValidDate(String str) {
@@ -316,7 +326,22 @@ public class DateUtil {
 		minute = millisecond / (60 * 1000);
 		return minute;
 	}
-
+	
+	/**
+	 * 
+	 * @param time 传入时间
+	 * @param type Calendar.Minute 时分秒
+	 * @param amount 加减范围
+	 * @return
+	 */
+	public static Date timeCalculation(Date time,int type,int amount){
+		String endtime = SDF_YMDHMS.format(time);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(time);
+		calendar.add(type,amount);
+		Date startDate=calendar.getTime();
+		return startDate;
+	}
 
 	public static void main(String[] args) {
 		// System.out.println(getYmdhms());

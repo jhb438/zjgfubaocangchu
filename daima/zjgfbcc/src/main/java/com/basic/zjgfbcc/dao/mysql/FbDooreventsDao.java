@@ -1,6 +1,7 @@
 package com.basic.zjgfbcc.dao.mysql;
 
 import java.util.List;
+import java.util.Map;
 
 import com.basic.zjgfbcc.entity.FbDoorevents;
 
@@ -17,5 +18,9 @@ public interface FbDooreventsDao extends BaseDao<FbDoorevents> {
 	void insertAll(List<FbDoorevents> list);
 
 	void deleteNowDays();
+
+	List<Map<String, String>> Statistics(String str, String str2);
+
+	List<Map<String, String>> StatisticsCBS(String string);
 	
 }

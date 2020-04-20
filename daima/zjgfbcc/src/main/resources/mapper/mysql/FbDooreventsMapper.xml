@@ -17,6 +17,19 @@
         <result property="doorIndexCode" column="doorIndexCode"/>
         <result property="doorName" column="doorName"/>
     </resultMap>
+    
+    <select id="Statistics" resultType="map">
+		select d.*,a.*,r.personName as userName,r.orgName as deptName,r.orgPath as deptPath from fb_doorevents d left join fb_areamenjin_relation a on d.doorIndexCode = a.doorIndexCode left join fb_renyuaninfo r on d.personId = r.personId 
+		where a.doorIndexCode is NOT NULL and a.areaName = #{param1} and substring(d.eventTime,1,10) = CURDATE() and a.menJinGN = #{param2}
+    </select>
+    
+    <select id="StatisticsCBS" resultType="map">
+		select d.*,a.*,r.personName as userName,r.orgName as deptName,r.orgPath as deptPath from fb_doorevents d left join fb_areamenjin_relation a on d.doorIndexCode = a.doorIndexCode left join fb_renyuaninfo r on d.personId = r.personId 
+		where a.doorIndexCode is NOT NULL and a.areaName = #{value} and substring(d.eventTime,1,10) = CURDATE() and r.orgPath like '%承包商%'
+		union all 
+		select d.*,a.*,r.personName as userName,r.orgName as deptName,r.orgPath as deptPath from fb_doorevents d left join fb_areamenjin_relation a on d.doorIndexCode = a.doorIndexCode left join fb_renyuaninfo r on d.personId = r.personId 
+		where a.doorIndexCode is NOT NULL and a.areaName = #{value} and substring(d.eventTime,1,10) = DATE_SUB(curdate(),INTERVAL 1 DAY) and a.menJinGN = '入' and r.orgPath like '%承包商%'
+    </select>
 
 	<select id="getList" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
 		select * from fb_doorevents t <include refid="where_clause" />

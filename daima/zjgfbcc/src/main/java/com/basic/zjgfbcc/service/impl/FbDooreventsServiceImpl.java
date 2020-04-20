@@ -74,5 +74,17 @@ public class FbDooreventsServiceImpl implements FbDooreventsService {
 	public void deleteNowDays() {
 		fbDooreventsDao.deleteNowDays();
 	}
+
+	@Override
+	public List<Map<String, String>> Statistics(String str,String str2) {
+		// TODO Auto-generated method stub
+		return fbDooreventsDao.Statistics(str,str2);
+	}
+
+	@Override
+	public List<Map<String, String>> StatisticsCBS(String string) {
+		// TODO Auto-generated method stub
+		return fbDooreventsDao.StatisticsCBS(string);
+	}
 	
 }

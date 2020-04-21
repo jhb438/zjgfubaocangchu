@@ -195,7 +195,7 @@
 	</delete> 
 	
 	<delete id="deleteSevenBe">
-	    delete from fb_doorevents where substring(eventTime,1,10) <![CDATA[ <= ]]> DATE_SUB(curdate(),INTERVAL 7 DAY)
+	    delete from fb_doorevents where substring(eventTime,1,10) <![CDATA[ <= ]]> DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 7 DAY)
 	</delete>
 
     <select id="getDetailByGuid" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
@@ -214,14 +214,19 @@
 	<select id="getEventListByRu" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
 			select distinct a.personId,b.personName,b.orgName from fb_doorevents a left join fb_renyuaninfo b on a.personId=b.personId where doorIndexCode in
 		(select doorIndexCode from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='入')
-		and DATE_SUB(curdate(),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10)
+		and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10)
 		<if test="isCBS!='' and isCBS!=null">
 			and b.orgPath like '%承包商%'
 		</if>
 		<if test="isVTZ!='' and isVTZ!=null">
 			and (b.orgPath like '%罐区运营%' or b.orgPath like '%办公室%' or b.orgPath like '%苏城孚宝%' or b.orgPath like '%保安%')
 		</if>
-
+		<if test="personName!='' and personName!=null">
+			and b.personName like concat('%',#{personName},'%')
+		</if>
+		<if test="orgName!='' and orgName!=null">
+			and b.orgName like concat('%',#{orgName},'%')
+		</if>
 	</select>
 
 	<!--获取今天及昨天所有的出-->
@@ -235,16 +240,22 @@
 		select distinct a.personId,b.personName,b.orgName from fb_doorevents a left join fb_renyuaninfo b on a.personId=b.personId
 		 where doorIndexCode in
 (select doorIndexCode from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='出')
-and DATE_SUB(curdate(),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10)
+and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10)
 and a.personId  in
 (select distinct personId from fb_doorevents where doorIndexCode in
 (select doorIndexCode from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='入')
-and DATE_SUB(curdate(),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10))
+and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10))
 		<if test="isCBS!='' and isCBS!=null">
 			and b.orgPath like '%承包商%'
 		</if>
 		<if test="isVTZ!='' and isVTZ!=null">
 			and (b.orgPath like '%罐区运营%' or b.orgPath like '%办公室%' or b.orgPath like '%苏城孚宝%' or b.orgPath like '%保安%')
+		</if>
+		<if test="personName!='' and personName!=null">
+			and b.personName like concat('%',#{personName},'%')
+		</if>
+		<if test="orgName!='' and orgName!=null">
+			and b.orgName like concat('%',#{orgName},'%')
 		</if>
 	</select>
 </mapper>

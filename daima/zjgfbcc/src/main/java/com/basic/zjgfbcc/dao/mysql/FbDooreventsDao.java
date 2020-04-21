@@ -25,10 +25,12 @@ public interface FbDooreventsDao extends BaseDao<FbDoorevents> {
 	List<Map<String, String>> StatisticsCBS(String string);
 
 	List<FbDoorevents> getEventListByRu(@Param("areaName") String areaName, @Param("isCBS") String isCBS,
-										@Param("isVTZ")String isVTZ);
+										@Param("isVTZ")String isVTZ,@Param("personName")String personName,
+										@Param("orgName")String orgName);
 
 	List<FbDoorevents> getEventListByShiJiChu(@Param("areaName") String areaName, @Param("isCBS") String isCBS,
-											  @Param("isVTZ")String isVTZ);
+											  @Param("isVTZ")String isVTZ,@Param("personName")String personName,
+											  @Param("orgName")String orgName);
 
 	void deleteSevenBe();
 }

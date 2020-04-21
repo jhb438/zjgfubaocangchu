@@ -4,8 +4,7 @@ package com.basic.zjgfbcc.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.basic.zjgfbcc.common.customclass.PassToken;
-import com.basic.zjgfbcc.common.utils.DateUtil;
-import com.basic.zjgfbcc.common.utils.R;
+import com.basic.zjgfbcc.common.utils.*;
 import com.basic.zjgfbcc.entity.FbAreainfo;
 import com.basic.zjgfbcc.entity.FbDoorevents;
 import com.basic.zjgfbcc.entity.Frame_User;
@@ -70,34 +69,37 @@ public class CommonController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/StatisticsQYRS", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
     public R StatisticsQYRS(String areaName) {
-    	
     	//获取今天与昨天的所有入
-    	List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "", "");
-    	System.out.println(JSONObject.toJSONString(ruList));
-    	
-    	//获取额外的出
-    	List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "", "");
-    	System.out.println(JSONObject.toJSONString(chuList));
-    	
-    	if(ruList.size() == 0){
-    		return R.error("异常");
-    	}
-    	for (FbDoorevents chu : chuList) {
-    		for(int i=0;i<ruList.size();i++){
-    			FbDoorevents f = ruList.get(i);
-    			if(chu.getPersonId().equals(f.getPersonId())){
-    				ruList.remove(i);
-    				continue;
-    			}
-    		}
-		}
-    	
-    	System.out.println(JSONObject.toJSONString(ruList));
-    	
-    	
+        List<FbDoorevents> ruList=getQYRS(areaName,"","");
     	return R.ok().put("data", ruList);
     }
 
+    /**
+     * 获取区域人数
+     * @param areaName
+     * @return
+     */
+    public List<FbDoorevents> getQYRS(String areaName,String personName,String orgName)
+    {
+        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "", "",personName,orgName);
+        System.out.println(JSONObject.toJSONString(ruList));
+
+        //获取额外的出
+        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "", "",personName,orgName);
+        System.out.println(JSONObject.toJSONString(chuList));
+
+
+        for (FbDoorevents chu : chuList) {
+            for(int i=0;i<ruList.size();i++){
+                FbDoorevents f = ruList.get(i);
+                if(chu.getPersonId().equals(f.getPersonId())){
+                    ruList.remove(i);
+                    continue;
+                }
+            }
+        }
+        return ruList;
+    }
 
     /**
      * 统计区域承包商人数
@@ -112,33 +114,20 @@ public class CommonController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/StatisticsCBSRS", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
     public R StatisticsCBSRS(String areaName) {
-        //生产区域
-        //获取今天与昨天的所有入
-        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "1", "");
-
-        //获取额外的出
-        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "1", "");
-
-        for (FbDoorevents chu : chuList) {
-            for(int i=0;i<ruList.size();i++){
-                FbDoorevents f = ruList.get(i);
-                if(chu.getPersonId().equals(f.getPersonId())){
-                    ruList.remove(i);
-                    continue;
-                }
-            }
-        }
+        List<FbDoorevents> ruList=getCBSList(areaName,"","");
         return R.ok().put("data", ruList);
     }
 
-    @PassToken
-    public List<FbDoorevents> getCBSList(String areaName) {
+
+
+
+    public List<FbDoorevents> getCBSList(String areaName,String personName,String orgName) {
         //生产区域
         //获取今天与昨天的所有入
-        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "1", "");
+        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "1", "",personName,orgName);
 
         //获取额外的出
-        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "1", "");
+        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "1", "",personName,orgName);
 
         for (FbDoorevents chu : chuList) {
             for(int i=0;i<ruList.size();i++){
@@ -151,27 +140,6 @@ public class CommonController extends BaseController {
         }
         return ruList;
     }
-
-    public List<FbDoorevents> getVTZList(String areaName) {
-        //生产区域
-        //获取今天与昨天的所有入
-        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "", "1");
-
-        //获取额外的出
-        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "", "1");
-
-        for (FbDoorevents chu : chuList) {
-            for(int i=0;i<ruList.size();i++){
-                FbDoorevents f = ruList.get(i);
-                if(chu.getPersonId().equals(f.getPersonId())){
-                    ruList.remove(i);
-                    continue;
-                }
-            }
-        }
-        return ruList;
-    }
-
 
     /**
      * 统计所有承包商总和
@@ -192,7 +160,7 @@ public class CommonController extends BaseController {
         List<FbAreainfo> areaList=fbAreainfoService.getQueryList(map);
         for(FbAreainfo model: areaList)
         {
-            List<FbDoorevents> list=getCBSList(model.getAreaName());
+            List<FbDoorevents> list=getCBSList(model.getAreaName(),"","");
             allList.addAll(list);
         }
 
@@ -219,7 +187,7 @@ public class CommonController extends BaseController {
         List<FbAreainfo> areaList=fbAreainfoService.getQueryList(map);
         for(FbAreainfo model: areaList)
         {
-            List<FbDoorevents> list=getVTZList(model.getAreaName());
+            List<FbDoorevents> list=getVTZList(model.getAreaName(),"","");
             allList.addAll(list);
         }
 
@@ -227,7 +195,72 @@ public class CommonController extends BaseController {
 
     }
 
+    public List<FbDoorevents> getVTZList(String areaName,String personName,String orgName) {
+        //生产区域
+        //获取今天与昨天的所有入
+        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "", "1",personName,orgName);
 
+        //获取额外的出
+        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "", "1",personName,orgName);
+
+        for (FbDoorevents chu : chuList) {
+            for(int i=0;i<ruList.size();i++){
+                FbDoorevents f = ruList.get(i);
+                if(chu.getPersonId().equals(f.getPersonId())){
+                    ruList.remove(i);
+                    continue;
+                }
+            }
+        }
+        return ruList;
+    }
+
+    /**
+     * 列表数据
+     */
+    @PassToken
+    @ApiOperation(value="")
+    @ResponseBody
+    @RequestMapping(value="/listData",produces="application/json;charset=utf-8",method=RequestMethod.GET)
+    public R listData(@RequestParam Map<String, Object> params){
+        //查询列表数据
+        String type=params.get("type").toString();
+        String areaName=params.get("areaName").toString();
+        String personName=params.get("personName").toString();
+        String orgName=params.get("orgName").toString();
+        List<FbDoorevents> ruList = new ArrayList<>();
+        if(type.equals("qyrs"))
+        {
+            ruList=getQYRS(areaName,personName,orgName);
+        }
+        else if(type.equals("cbsrs"))
+        {
+            ruList=getCBSList(areaName,personName,orgName);
+        }
+        else if(type.equals("cbszrs"))
+        {
+            Map map=new HashMap();
+            List<FbAreainfo> areaList=fbAreainfoService.getQueryList(map);
+            for(FbAreainfo model: areaList)
+            {
+                List<FbDoorevents> list=getCBSList(model.getAreaName(),personName,orgName);
+                ruList.addAll(list);
+            }
+        }
+        else
+        {
+            Map map=new HashMap();
+            List<FbAreainfo> areaList=fbAreainfoService.getQueryList(map);
+            for(FbAreainfo model: areaList)
+            {
+                List<FbDoorevents> list=getVTZList(model.getAreaName(),personName,orgName);
+                ruList.addAll(list);
+            }
+        }
+
+
+        return R.ok().put("data", ruList);
+    }
 
 
 

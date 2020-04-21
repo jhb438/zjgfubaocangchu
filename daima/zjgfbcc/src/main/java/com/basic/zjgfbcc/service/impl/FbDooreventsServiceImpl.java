@@ -88,14 +88,14 @@ public class FbDooreventsServiceImpl implements FbDooreventsService {
 	}
 
     @Override
-    public List<FbDoorevents> getEventListByRu(String areaName, String isCBS, String isVTZ) {
-		return fbDooreventsDao.getEventListByRu(areaName,isCBS,isVTZ);
+    public List<FbDoorevents> getEventListByRu(String areaName, String isCBS, String isVTZ,String personName,String orgName) {
+		return fbDooreventsDao.getEventListByRu(areaName,isCBS,isVTZ,personName,orgName);
     }
 
     @Override
-    public List<FbDoorevents> getEventListByShiJiChu(String areaName, String isCBS, String isVTZ) {
+    public List<FbDoorevents> getEventListByShiJiChu(String areaName, String isCBS, String isVTZ,String personName,String orgName) {
 
-		return fbDooreventsDao.getEventListByShiJiChu(areaName,isCBS,isVTZ);
+		return fbDooreventsDao.getEventListByShiJiChu(areaName,isCBS,isVTZ,personName,orgName);
     }
 
 	@Override

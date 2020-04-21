@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.basic.zjgfbcc.common.customclass.PassToken;
 import com.basic.zjgfbcc.common.utils.DateUtil;
 import com.basic.zjgfbcc.common.utils.R;
+import com.basic.zjgfbcc.entity.FbAreainfo;
 import com.basic.zjgfbcc.entity.FbDoorevents;
 import com.basic.zjgfbcc.entity.Frame_User;
 import com.basic.zjgfbcc.service.*;
@@ -16,6 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,8 @@ public class CommonController extends BaseController {
     
     @Autowired
 	private FbDooreventsService fbDooreventsService;
+    @Autowired
+    private FbAreainfoService fbAreainfoService;
     
 
     /**
@@ -40,7 +44,6 @@ public class CommonController extends BaseController {
      * <p>Title: getUser</p>
      * <p>Description: 用户</p>
      *
-     * @param params
      * @return
      * @author
      */
@@ -55,25 +58,25 @@ public class CommonController extends BaseController {
     
     
     /**
-     * 统计办公区域
+     * 统计区域人数
      * <p>Title: getUser</p>
      * <p>Description: 用户</p>
      *
-     * @param params
+     * @param areaName
      * @return
      * @author
      */
     @PassToken
     @ResponseBody
-    @RequestMapping(value = "/StatisticsBG", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
-    public R StatisticsBG() {
+    @RequestMapping(value = "/StatisticsQYRS", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
+    public R StatisticsQYRS(String areaName) {
     	
     	//获取今天与昨天的所有入
-    	List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu("办公区域", "", "");
+    	List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "", "");
     	System.out.println(JSONObject.toJSONString(ruList));
     	
     	//获取额外的出
-    	List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu("办公区域", "", "");
+    	List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "", "");
     	System.out.println(JSONObject.toJSONString(chuList));
     	
     	if(ruList.size() == 0){
@@ -94,192 +97,138 @@ public class CommonController extends BaseController {
     	
     	return R.ok().put("data", ruList);
     }
-    
-//    /**
-//     * 统计办公区域承包商
-//     * <p>Title: getUser</p>
-//     * <p>Description: 用户</p>
-//     *
-//     * @param params
-//     * @return
-//     * @author
-//     */
-//    @PassToken
-//    @ResponseBody
-//    @RequestMapping(value = "/StatisticsBGCBS", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
-//    public R StatisticsBGCBS() {
-//    	
-//    	//获取今天与昨天的所有入
-//    	List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu("办公区域", "1", "");
-//    	System.out.println(JSONObject.toJSONString(ruList));
-//    	
-//    	//获取额外的出
-//    	List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu("办公区域", "1", "");
-//    	System.out.println(JSONObject.toJSONString(chuList));
-//    	
-//    	if(ruList.size() == 0){
-//    		return R.error("异常");
-//    	}
-//    	for (FbDoorevents chu : chuList) {
-//    		for(int i=0;i<ruList.size();i++){
-//    			FbDoorevents f = ruList.get(i);
-//    			if(chu.getPersonId().equals(f.getPersonId())){
-//    				ruList.remove(i);
-//    				continue;
-//    			}
-//    		}
-//		}
-//    	
-//    	System.out.println(JSONObject.toJSONString(ruList));
-//    	
-//    	
-//    	return R.ok().put("data", ruList);
-//    }
-    
-    /**
-     * 统计生产区域
-     * <p>Title: getUser</p>
-     * <p>Description: 用户</p>
-     *
-     * @param params
-     * @return
-     * @author
-     */
-    @PassToken
-    @ResponseBody
-    @RequestMapping(value = "/StatisticsSC", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
-    public R StatisticsSC() {
-    	
-    	//获取今天与昨天的所有入
-    	List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu("生产区域（含码头）", "", "");
-    	System.out.println(JSONObject.toJSONString(ruList));
-    	
-    	//获取额外的出
-    	List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu("生产区域（含码头）", "", "");
-    	System.out.println(JSONObject.toJSONString(chuList));
-    	
-    	if(ruList.size() == 0){
-    		return R.error("异常");
-    	}
-    	for (FbDoorevents chu : chuList) {
-    		for(int i=0;i<ruList.size();i++){
-    			FbDoorevents f = ruList.get(i);
-    			if(chu.getPersonId().equals(f.getPersonId())){
-    				ruList.remove(i);
-    				continue;
-    			}
-    		}
-		}
-    	
-    	System.out.println(JSONObject.toJSONString(ruList));
-    	
-    	
-    	return R.ok().put("data", ruList);
-    }
-    
-//    /**
-//     * 统计生产区域承包商
-//     * <p>Title: getUser</p>
-//     * <p>Description: 用户</p>
-//     *
-//     * @param params
-//     * @return
-//     * @author
-//     */
-//    @PassToken
-//    @ResponseBody
-//    @RequestMapping(value = "/StatisticsSCCBS", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
-//    public R StatisticsSCCBS() {
-//    	
-//    	//获取今天与昨天的所有入
-//    	List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu("生产区域（含码头）", "1", "");
-//    	System.out.println(JSONObject.toJSONString(ruList));
-//    	
-//    	//获取额外的出
-//    	List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu("生产区域（含码头）", "1", "");
-//    	System.out.println(JSONObject.toJSONString(chuList));
-//    	
-//    	if(ruList.size() == 0){
-//    		return R.error("异常");
-//    	}
-//    	for (FbDoorevents chu : chuList) {
-//    		for(int i=0;i<ruList.size();i++){
-//    			FbDoorevents f = ruList.get(i);
-//    			if(chu.getPersonId().equals(f.getPersonId())){
-//    				ruList.remove(i);
-//    				continue;
-//    			}
-//    		}
-//		}
-//    	
-//    	System.out.println(JSONObject.toJSONString(ruList));
-//    	
-//    	
-//    	return R.ok().put("data", ruList);
-//    }
-    
-    
-    
-    /**
-     * 统计所有承包商
-     * <p>Title: getUser</p>
-     * <p>Description: 用户</p>
-     *
-     * @param params
-     * @return
-     * @author
-     */
-    @PassToken
-    @ResponseBody
-    @RequestMapping(value = "/StatisticsCBS", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
-    public R StatisticsCBS() {
-    	//生产区域
-    	//获取今天与昨天的所有入
-    	List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu("生产区域（含码头）", "1", "");
-    	
-    	//获取额外的出
-    	List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu("生产区域（含码头）", "1", "");
-    	
-    	for (FbDoorevents chu : chuList) {
-    		for(int i=0;i<ruList.size();i++){
-    			FbDoorevents f = ruList.get(i);
-    			if(chu.getPersonId().equals(f.getPersonId())){
-    				ruList.remove(i);
-    				continue;
-    			}
-    		}
-		}
-    	
-    	
-    	
-    	//办公区域
-    	//获取今天与昨天的所有入
-    	List<FbDoorevents> rList = fbDooreventsService.getEventListByRu("办公区域", "1", "");
-    	
-    	//获取额外的出
-    	List<FbDoorevents> chList = fbDooreventsService.getEventListByShiJiChu("办公区域", "1", "");
-    	
-    	for (FbDoorevents chu : chList) {
-    		for(int i=0;i<rList.size();i++){
-    			FbDoorevents f = rList.get(i);
-    			if(chu.getPersonId().equals(f.getPersonId())){
-    				rList.remove(i);
-    				continue;
-    			}
-    		}
-		}
-    	
-    	JSONObject o = new JSONObject();
-    	o.put("bg", rList);//办公区域承包商
-    	o.put("sc", ruList);//生产区域承包商
-    	o.put("all", rList.addAll(ruList));//承包商总人数
-    	
-    	
-    	return R.ok().put("data", o);
-    }
-    
 
-    
-    
-   
+
+    /**
+     * 统计区域承包商人数
+     * <p>Title: getUser</p>
+     * <p>Description: 用户</p>
+     *
+     * @param areaName
+     * @return
+     * @author
+     */
+    @PassToken
+    @ResponseBody
+    @RequestMapping(value = "/StatisticsCBSRS", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
+    public R StatisticsCBSRS(String areaName) {
+        //生产区域
+        //获取今天与昨天的所有入
+        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "1", "");
+
+        //获取额外的出
+        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "1", "");
+
+        for (FbDoorevents chu : chuList) {
+            for(int i=0;i<ruList.size();i++){
+                FbDoorevents f = ruList.get(i);
+                if(chu.getPersonId().equals(f.getPersonId())){
+                    ruList.remove(i);
+                    continue;
+                }
+            }
+        }
+        return R.ok().put("data", ruList);
+    }
+
+    @PassToken
+    public List<FbDoorevents> getCBSList(String areaName) {
+        //生产区域
+        //获取今天与昨天的所有入
+        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "1", "");
+
+        //获取额外的出
+        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "1", "");
+
+        for (FbDoorevents chu : chuList) {
+            for(int i=0;i<ruList.size();i++){
+                FbDoorevents f = ruList.get(i);
+                if(chu.getPersonId().equals(f.getPersonId())){
+                    ruList.remove(i);
+                    continue;
+                }
+            }
+        }
+        return ruList;
+    }
+
+    public List<FbDoorevents> getVTZList(String areaName) {
+        //生产区域
+        //获取今天与昨天的所有入
+        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "", "1");
+
+        //获取额外的出
+        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "", "1");
+
+        for (FbDoorevents chu : chuList) {
+            for(int i=0;i<ruList.size();i++){
+                FbDoorevents f = ruList.get(i);
+                if(chu.getPersonId().equals(f.getPersonId())){
+                    ruList.remove(i);
+                    continue;
+                }
+            }
+        }
+        return ruList;
+    }
+
+
+    /**
+     * 统计所有承包商总和
+     * <p>Title: getUser</p>
+     * <p>Description: 用户</p>
+     *
+     * @return
+     * @author
+     */
+    @PassToken
+    @ResponseBody
+    @RequestMapping(value = "/StatisticsCBSRSHJ", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
+    public R StatisticsCBSRSHJ() {
+
+        List<FbDoorevents> allList=new ArrayList<>();
+
+        Map map=new HashMap();
+        List<FbAreainfo> areaList=fbAreainfoService.getQueryList(map);
+        for(FbAreainfo model: areaList)
+        {
+            List<FbDoorevents> list=getCBSList(model.getAreaName());
+            allList.addAll(list);
+        }
+
+    	return R.ok().put("data", allList);
+    }
+
+
+    /**
+     * 统计VTZ人数
+     * <p>Title: getUser</p>
+     * <p>Description: 用户</p>
+     *
+     * @return
+     * @author
+     */
+    @PassToken
+    @ResponseBody
+    @RequestMapping(value = "/StatisticsVTZ", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
+    public R StatisticsVTZ() {
+
+        List<FbDoorevents> allList=new ArrayList<>();
+
+        Map map=new HashMap();
+        List<FbAreainfo> areaList=fbAreainfoService.getQueryList(map);
+        for(FbAreainfo model: areaList)
+        {
+            List<FbDoorevents> list=getVTZList(model.getAreaName());
+            allList.addAll(list);
+        }
+
+        return R.ok().put("data", allList);
+
+    }
+
+
+
+
+
 }

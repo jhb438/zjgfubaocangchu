@@ -157,7 +157,10 @@ public class HkThread {
 	public Future<String> doorEvents(String startTime, String endTime) {
 		logger.info("doorEvents started---");
 		long start = System.currentTimeMillis();
-
+		
+		//删除7天之前的记录
+		FbDooreventsService.deleteSevenBe();
+		
 		JSONArray arr = hkApiService.doorEvents(startTime,endTime);
 		List<FbDoorevents> list = JSONObject.parseArray(arr.toJSONString(), FbDoorevents.class);
 		if(list.size() != 0){

@@ -29,4 +29,6 @@ public interface FbDooreventsDao extends BaseDao<FbDoorevents> {
 
 	List<FbDoorevents> getEventListByShiJiChu(@Param("areaName") String areaName, @Param("isCBS") String isCBS,
 											  @Param("isVTZ")String isVTZ);
+
+	void deleteSevenBe();
 }

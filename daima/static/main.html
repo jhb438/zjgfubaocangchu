@@ -155,6 +155,8 @@
 
         //初始化数据
         initData();
+        setInterval('initData()', 1000 * 60);
+
 
         //定义点击事件
         doClick();
@@ -163,88 +165,90 @@
 
     function initData()
     {
+     
         //获取办公区域人数
         SendAjax("/sys/common/StatisticsQYRS", { areaName: "办公区域" }, function (res) {
             if (res.code == '0') {
                 option_bgqy = option_aqbjv;
-                option_bgqy.title.subtext = res.data.length;
-                option_bgqy.series[0].name = "bgqy";
+                option_bgqy.title.subtext = res.data==""?"0":res.data.length;
+                option_bgqy.series[0].name = "qyrs|办公区域";
                 myChart_bgqy.setOption(option_bgqy);
             }
-        },true);
+        });
         //获取生产区域人数
         SendAjax("/sys/common/StatisticsQYRS", { areaName: "生产区域（含码头）" }, function (res) {
             if (res.code == '0') {
                 option_scqy = option_aqbjv;
-                option_scqy.title.subtext = res.data.length;
-                option_scqy.series[0].name = "scqy";
+                option_scqy.title.subtext = res.data==""?"0":res.data.length;
+                option_scqy.series[0].name = "qyrs|生产区域（含码头）";
                 myChart_scqy.setOption(option_scqy);
             }
-        }, true);
-        //获取办公区域承包商人数
+        });
+       // 获取办公区域承包商人数
         SendAjax("/sys/common/StatisticsCBSRS", { areaName: "办公区域" }, function (res) {
             if (res.code == '0') {
+              
                 option_bgqycbs = option_aqbjv;
-                option_bgqycbs.title.subtext = res.data.length;
-                option_bgqycbs.series[0].name = "bgqy_cbsrs";
+                option_bgqycbs.title.subtext = res.data==""?"0":res.data.length;
+                option_bgqycbs.series[0].name = "cbsrs|办公区域";
                 myChart_bgqy_cbsrs.setOption(option_bgqycbs);
             }
-        }, true);
+        });
         //获取生产区域承包商人数
         SendAjax("/sys/common/StatisticsCBSRS", { areaName: "生产区域（含码头）" }, function (res) {
             if (res.code == '0') {
                 option_scqycbs = option_aqbjv;
-                option_scqycbs.title.subtext = res.data.length;
-                option_scqycbs.series[0].name = "scqy_cbsrs";
+                option_scqycbs.title.subtext = res.data==""?"0":res.data.length;
+                option_scqycbs.series[0].name = "cbsrs|生产区域（含码头）";
                 myChart_scqy_cbsrs.setOption(option_scqycbs);
             }
-        }, true);
+        });
         //获取承包商总人数
         SendAjax("/sys/common/StatisticsCBSRSHJ", {}, function (res) {
             if (res.code == '0') {
                 option_cbszs = option_aqbjv;
-                option_cbszs.title.subtext = res.data.length;
-                option_cbszs.series[0].name = "cbsrs";
+                option_cbszs.title.subtext = res.data==""?"0":res.data.length;
+                option_cbszs.series[0].name = "cbszrs";
                 myChart_cbsrs.setOption(option_cbszs);
             }
-        }, true);
+        });
         //获取VTZ总人数
         SendAjax("/sys/common/StatisticsVTZ", {}, function (res) {
             if (res.code == '0') {
                 option_vtzzs = option_aqbjv;
-                option_vtzzs.title.subtext = res.data.length;
+                option_vtzzs.title.subtext =res.data==""?"0":res.data.length;
                 option_vtzzs.series[0].name = "vtzzrs";
                 myChart_vtzzrs.setOption(option_vtzzs);
             }
-        }, true);
+        });
     }
 
     function doClick()
     {
         //办公区域
         myChart_bgqy.on("click", function (params) {
-            alert(params.seriesName);
-            window.open("pages/fbrenyuaninfo/areaPerson_list.html?type=" + params.seriesName);
+          
+            window.open("pages/fbdoorevents/areaPerson_list.html?areaName=" + params.seriesName.split('|')[1] + "&type=" + params.seriesName.split('|')[0]);
         })
         //生产区域
         myChart_scqy.on("click", function (params) {
-            window.open("pages/fbrenyuaninfo/areaPerson_list.html?type=" + params.seriesName);
+            window.open("pages/fbdoorevents/areaPerson_list.html?areaName=" + params.seriesName.split('|')[1] + "&type=" + params.seriesName.split('|')[0]);
         })
         //生产区域承包商人数
         myChart_scqy_cbsrs.on("click", function (params) {
-            window.open("pages/fbrenyuaninfo/areaPerson_list.html?type=" + params.seriesName);
+            window.open("pages/fbdoorevents/areaPerson_list.html?areaName=" + params.seriesName.split('|')[1] + "&type=" + params.seriesName.split('|')[0]);
         })
         //办公区承包商人数
         myChart_bgqy_cbsrs.on("click", function (params) {
-            window.open("pages/fbrenyuaninfo/areaPerson_list.html?type=" + params.seriesName);
+            window.open("pages/fbdoorevents/areaPerson_list.html?areaName=" + params.seriesName.split('|')[1] + "&type=" + params.seriesName.split('|')[0]);
         })
         //承包商总人数
         myChart_cbsrs.on("click", function (params) {
-            window.open("pages/fbrenyuaninfo/areaPerson_list.html?type=" + params.seriesName);
+            window.open("pages/fbdoorevents/areaPerson_list.html?areaName=''&type=" + params.seriesName);
         })
         //vtz总人数
         myChart_vtzzrs.on("click", function (params) {
-            window.open("pages/fbrenyuaninfo/areaPerson_list.html?type=" + params.seriesName);
+            window.open("pages/fbdoorevents/areaPerson_list.html?areaName=''&type=" + params.seriesName);
         })
     }
 </script>

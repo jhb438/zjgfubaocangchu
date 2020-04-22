@@ -135,5 +135,7 @@ public class FbDeptController {
 		FbDept model = fbDeptService.getDetailByGuid(rowGuid);
         return R.ok().put("data",model);
     }
+
+
 	
 }

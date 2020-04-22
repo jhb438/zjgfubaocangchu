@@ -1,5 +1,7 @@
 package com.basic.zjgfbcc.service.api;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -116,6 +118,7 @@ public class HkApiService extends BaseApiController{
 
 		JSONArray arr = new JSONArray();
 		JSONArray res = getEvents(startTime,endTime,path,1,arr);
+		Collections.reverse(res);
 		return res;
 	}
 	

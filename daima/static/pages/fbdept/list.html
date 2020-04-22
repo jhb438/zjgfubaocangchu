@@ -44,7 +44,7 @@
                     <tr>
                         <td style="padding:5px">
                             <input type="button" value="查询" onclick="search()" class="layui-btn layui-btn-sm layui-btn-normal" />
-                            <input type="button" value="删除" onclick="deleteRow()" class="layui-btn layui-btn-sm layui-btn-normal" />
+                            <input type="button" value="点击获取最新组织架构" onclick="importData()" class="layui-btn layui-btn-sm layui-btn-normal" />
                         </td>
                     </tr>
                 </table>
@@ -68,7 +68,7 @@
         //节点点击的时候，重新加载表格对象
         function NodeChecked(treeNode, value, text) {
             $("#parentOrgIndexCode").val(value);
-          
+
             search();
         }
 
@@ -95,7 +95,7 @@
             search();//执行查询
         })
 
-         function initData(where) {
+        function initData(where) {
 
             table.render({
                 id: 'layuiTable',//固定写法
@@ -110,51 +110,39 @@
                 where: where,
                 cols: [[
             { checkbox: true },
-                       
-                       
-                        { field: 'orgName', width: '30%', title: '组织名称' },
-                     
-            
 
-           
+
+                        { field: 'orgName', width: '30%', title: '组织名称' },
+
+
+
+
                 ]]
             });
 
         }
 
-        //删除选中
-        function deleteRow() {
-            var rows = table.checkStatus('layuiTable').data;//获取选中行
-            if (!rows || rows.length == 0) {
-                top.layuiMsg("请选择要删除的记录!")
-                return;
-            }
-            top.layuiConfirm("确定要删除该记录?", {}, function () {
-                var RowGuids = new Array();
-                for (var i = 0; i < rows.length; i++) {
-
-                    RowGuids.push(rows[i].rowGuid);
-                }
-
-                SendAjax("/sys/fbdept/delete", { rowGuids: RowGuids }, function (res) {
+        //点击获取最新架构
+        function importData() {
+            top.layuiConfirm("确定要获取最新组织架构?", {}, function () {
+                SendAjax("/hk/orgList", {}, function (res) {
                     if (res.code == '0') {
-                        top.messageAlert("提醒", "删除成功", "info", function () {
+                        top.messageAlert("提醒", "获取成功", "info", function () {
                             refreshGrid();
                         });
                     }
                     else {
-                        top.messageAlert("提醒", data.msg, "error");
+                        top.messageAlert("提醒", res.msg, "error");
                     }
 
                 });
-                return false;
-            });
+            })
         }
 
 
 
         function refreshGrid() {
-            table.reload('layuiTable');
+            search();
         }
 
         function search() {

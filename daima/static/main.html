@@ -3,11 +3,11 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8">
-    <title>二道门人员统计</title>
+    <title>张家港仓储有线公司人员统计表</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  
+
     <script src="Scripts/jquery-1.11.3.min.js"></script>
     <script src="Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="Scripts/jquery.uploadify.min.js"></script>
@@ -16,241 +16,139 @@
     <script src="Scripts/echarts.min.js"></script>
     <script src="Scripts/utils.js"></script>
     <link href="Content/mainindex.css" rel="stylesheet" />
-   
+
 </head>
 <body>
     <div class="header">
-        <div class="logo">二道门人员统计</div>
+        <div class="logo">张家港仓储有限公司人员统计表</div>
+
     </div>
     <div class="mqmain">
-     
-            <div class="content">
-                <div class="left">
-                    <!-- 办公区域 -->
-                    <div class="dbsx">
-                        <div class="zoneTitle">办公区域</div>
-                        <div id="bgqy" style="width: 100%; height: 100%;"></div>
-                    </div>
-                    <!-- 生产区域 -->
-                    <div class="aqbjl">
-                        <div class="zoneTitle">生产区域（含码头）</div>
-                        <div id="scqy" style="width: 100%; height: 100%;"></div>
-                    </div>
-                    <div class="aqbjl">
-                        <div class="zoneTitle">码头区域(预留)</div>
-                    </div>
-                </div>
-                <div class="center">
-                    <!-- 承包商人数 -->
-                    <div class="hzsj">
-                        <div class="zoneTitle">办公区承包商人数</div>
-                        <div id="bgqy_cbsrs" style="width: 100%; height: 100%;"></div>
-                    </div>
-                    <!-- 承包商人数 -->
-                    <div class="ydfx">
-                        <div class="zoneTitle">生产区承包商人数</div>
-                        <div id="scqy_cbsrs" style="width: 100%; height: 100%;"></div>
-                    </div>
-                    <div class="ydfx">
-                        <div class="zoneTitle">码头区承包商人数</div>
 
+        <div class="content">
+            <div class="left">
+                <!-- 办公区域 -->
+                <div class="dbsx">
+                    <div class="zoneTitle">办公区域</div>
+                    <div class="zoneNum">
+                        <span id="bgqy" onclick="changePage('qyrs', '办公区域')">0</span>
                     </div>
                 </div>
-                <div class="right">
-                    <!-- VTZ总人数 -->
-                    <div class="swcllxzb">
-                        <div class="zoneTitle">VTZ总人数</div>
-                        <div id="vtzzrs" style="width: 100%; height: 100%;"></div>
-                    </div>
-                    <!-- 承包商总人数 -->
-                    <div class="jdswclfive">
-                        <div class="zoneTitle">承包商总人数</div>
-                        <div id="cbsrs" style="width: 100%; height: 100%;"></div>
+                <!-- 生产区域 -->
+                <div class="aqbjl">
+                    <div class="zoneTitle">生产区域（含码头）</div>
+                    <div class="zoneNum">
+                        <span id="scqy" onclick="changePage('qyrs', '生产区域')">0</span>
                     </div>
                 </div>
-                <div style="clear:both"></div>
+                <div class="aqbjl">
+                    <div class="zoneTitle">码头区域(预留)</div>
+                </div>
             </div>
-       
+            <div class="center">
+                <!-- 承包商人数 -->
+                <div class="hzsj">
+                    <div class="zoneTitle">办公区承包商人数</div>
+                    <div class="zoneNum">
+                        <span id="bgqy_cbsrs" onclick="changePage('cbsrs', '办公区域')">0</span>
+                    </div>
+                </div>
+                <!-- 承包商人数 -->
+                <div class="ydfx">
+                    <div class="zoneTitle">生产区承包商人数</div>
+                    <div class="zoneNum">
+                        <span id="scqy_cbsrs" onclick="changePage('cbsrs', '生产区域')">0</span>
+                    </div>
+                </div>
+                <div class="ydfx">
+                    <div class="zoneTitle">码头区承包商人数</div>
+
+                </div>
+            </div>
+            <div class="right">
+                <!-- VTZ总人数 -->
+                <div class="swcllxzb">
+                    <div class="zoneTitle">VTZ总人数</div>
+                    <div class="zoneNum" style="height:90%">
+                        <span id="vtzzrs" onclick="changePage('vtzzrs', '')">0</span>
+                    </div>
+                </div>
+                <!-- 承包商总人数 -->
+                <div class="jdswclfive">
+                    <div class="zoneTitle">承包商总人数</div>
+                    <div class="zoneNum" style="height:90%">
+                        <span id="cbsrs" onclick="changePage('cbszrs', '')">0</span>
+                    </div>
+                </div>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
     </div>
 </body>
 
 <script type="text/javascript">
 
-  
-        // 基于准备好的dom，初始化echarts实例
-        var myChart_bgqy = echarts.init(document.getElementById('bgqy'));
-        var myChart_scqy = echarts.init(document.getElementById('scqy'));
-        var myChart_scqy_cbsrs = echarts.init(document.getElementById('scqy_cbsrs'));
-        var myChart_bgqy_cbsrs = echarts.init(document.getElementById('bgqy_cbsrs'));
-        var myChart_cbsrs = echarts.init(document.getElementById('cbsrs'));
-        var myChart_vtzzrs = echarts.init(document.getElementById('vtzzrs'));
-
-        // 指定图表的配置项和数据
-        var option_aqbjv = {
-            title: {
-                text: '人数',
-                subtext: '30',
-                x: '50%',
-                y: '23%',
-                textAlign: "center",
-                textStyle: {
-                    fontWeight: 'normal',
-                    fontSize: 28,
-                    color: '#4EDFF5 '
-                },
-                subtextStyle: {
-                    fontWeight: 'bold',
-                    fontSize: 30,
-                    color: '#FFFFFF'
-                }
-            },
-            series: [{
-                center: ['50%', '35%'],
-                name: '11 ',
-                type: 'pie',
-                radius: ['50%', '70%'],
-                startAngle: 225,
-                color: [new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: '#00a2ff'
-                }, {
-                    offset: 1,
-                    color: '#70ffac'
-                }]), "transparent"],
-                hoverAnimation: false,
-                legendHoverLink: false,
-                itemStyle: {
-                    normal: {
-                        borderColor: "transparent",
-                        borderWidth: "20"
-                    },
-                    emphasis: {
-                        borderColor: "transparent",
-                        borderWidth: "20"
-                    }
-                },
-                z: 10,
-                labelLine: {
-                    normal: {
-                        show: false
-                    }
-                },
-                data: [{
-                    value: 75
-                }]
-            }
-
-            ]
-        };
-      
-
-
-        var option_bgqy;
-        var option_scqy;
-        var option_bgqycbs;
-        var option_scqycbs;
-        var option_cbszs;
-        var option_vtzzs;
     $(function () {
 
         //初始化数据
         initData();
-        setInterval('initData()', 1000 * 60);
-
-
-        //定义点击事件
-        doClick();
-      
+        setInterval('initData()', 1000 * 30);
     })
 
-    function initData()
-    {
-     
+    function initData() {
+
         //获取办公区域人数
         SendAjax("/sys/common/StatisticsQYRS", { areaName: "办公区域" }, function (res) {
             if (res.code == '0') {
-                option_bgqy = option_aqbjv;
-                option_bgqy.title.subtext = res.data==""?"0":res.data.length;
-                option_bgqy.series[0].name = "qyrs|办公区域";
-                myChart_bgqy.setOption(option_bgqy);
+                var data = res.data == "" ? "0" : res.data.length;
+                $("#bgqy").text(data);
+
             }
         });
         //获取生产区域人数
-        SendAjax("/sys/common/StatisticsQYRS", { areaName: "生产区域（含码头）" }, function (res) {
+        SendAjax("/sys/common/StatisticsQYRS", { areaName: "生产区域" }, function (res) {
             if (res.code == '0') {
-                option_scqy = option_aqbjv;
-                option_scqy.title.subtext = res.data==""?"0":res.data.length;
-                option_scqy.series[0].name = "qyrs|生产区域（含码头）";
-                myChart_scqy.setOption(option_scqy);
+                var data = res.data == "" ? "0" : res.data.length;
+                $("#scqy").text(data);
             }
         });
-       // 获取办公区域承包商人数
+        // 获取办公区域承包商人数
         SendAjax("/sys/common/StatisticsCBSRS", { areaName: "办公区域" }, function (res) {
             if (res.code == '0') {
-              
-                option_bgqycbs = option_aqbjv;
-                option_bgqycbs.title.subtext = res.data==""?"0":res.data.length;
-                option_bgqycbs.series[0].name = "cbsrs|办公区域";
-                myChart_bgqy_cbsrs.setOption(option_bgqycbs);
+                var data = res.data == "" ? "0" : res.data.length;
+                $("#bgqy_cbsrs").text(data);
             }
         });
         //获取生产区域承包商人数
-        SendAjax("/sys/common/StatisticsCBSRS", { areaName: "生产区域（含码头）" }, function (res) {
+        SendAjax("/sys/common/StatisticsCBSRS", { areaName: "生产区域" }, function (res) {
             if (res.code == '0') {
-                option_scqycbs = option_aqbjv;
-                option_scqycbs.title.subtext = res.data==""?"0":res.data.length;
-                option_scqycbs.series[0].name = "cbsrs|生产区域（含码头）";
-                myChart_scqy_cbsrs.setOption(option_scqycbs);
+                var data = res.data == "" ? "0" : res.data.length;
+                $("#scqy_cbsrs").text(data);
+
             }
         });
         //获取承包商总人数
         SendAjax("/sys/common/StatisticsCBSRSHJ", {}, function (res) {
             if (res.code == '0') {
-                option_cbszs = option_aqbjv;
-                option_cbszs.title.subtext = res.data==""?"0":res.data.length;
-                option_cbszs.series[0].name = "cbszrs";
-                myChart_cbsrs.setOption(option_cbszs);
+                var data = res.data == "" ? "0" : res.data.length;
+                $("#cbsrs").text(data);
             }
         });
         //获取VTZ总人数
         SendAjax("/sys/common/StatisticsVTZ", {}, function (res) {
             if (res.code == '0') {
-                option_vtzzs = option_aqbjv;
-                option_vtzzs.title.subtext =res.data==""?"0":res.data.length;
-                option_vtzzs.series[0].name = "vtzzrs";
-                myChart_vtzzrs.setOption(option_vtzzs);
+                var data = res.data == "" ? "0" : res.data.length;
+                $("#vtzzrs").text(data);
+
             }
         });
     }
 
-    function doClick()
-    {
-        //办公区域
-        myChart_bgqy.on("click", function (params) {
-          
-            window.open("pages/fbdoorevents/areaPerson_list.html?areaName=" + params.seriesName.split('|')[1] + "&type=" + params.seriesName.split('|')[0]);
-        })
-        //生产区域
-        myChart_scqy.on("click", function (params) {
-            window.open("pages/fbdoorevents/areaPerson_list.html?areaName=" + params.seriesName.split('|')[1] + "&type=" + params.seriesName.split('|')[0]);
-        })
-        //生产区域承包商人数
-        myChart_scqy_cbsrs.on("click", function (params) {
-            window.open("pages/fbdoorevents/areaPerson_list.html?areaName=" + params.seriesName.split('|')[1] + "&type=" + params.seriesName.split('|')[0]);
-        })
-        //办公区承包商人数
-        myChart_bgqy_cbsrs.on("click", function (params) {
-            window.open("pages/fbdoorevents/areaPerson_list.html?areaName=" + params.seriesName.split('|')[1] + "&type=" + params.seriesName.split('|')[0]);
-        })
-        //承包商总人数
-        myChart_cbsrs.on("click", function (params) {
-            window.open("pages/fbdoorevents/areaPerson_list.html?areaName=''&type=" + params.seriesName);
-        })
-        //vtz总人数
-        myChart_vtzzrs.on("click", function (params) {
-            window.open("pages/fbdoorevents/areaPerson_list.html?areaName=''&type=" + params.seriesName);
-        })
+    function changePage(type, areaName) {
+        window.open("pages/fbdoorevents/areaPerson_list.html?areaName=" + areaName + "&type=" + type);
     }
+
 </script>
 
 </html>

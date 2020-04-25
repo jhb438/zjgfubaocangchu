@@ -31,7 +31,21 @@
                                     <input type="text" id="doorName" name="doorName" class="layui-input" />
                                 </td>
                             </tr>
-
+                            <tr>
+                                <td class="TB_01" style="width:15%">
+                                    出入时间
+                                </td>
+                                <td class="TB_02" style="width:35%">
+                                    <input type="text" id="startTime" name="startTime" autocomplete="off" class="layui-input" laydate-type="datetime"  style="width:40%;display:inline-block !important"/>-
+                                    <input type="text" id="endTime" name="endTime" autocomplete="off" class="layui-input" laydate-type="datetime" style="width:40%;display:inline-block !important" />
+                                </td>
+                                <td class="TB_01" style="width:15%">
+                                  
+                                </td>
+                                <td class="TB_02" style="width:35%">
+                                   
+                                </td>
+                            </tr>
                         </table>
 
                     </form>
@@ -40,8 +54,8 @@
             <tr>
                 <td style="padding:5px">
                     <input type="button" value="查询" onclick="search()" class="layui-btn layui-btn-sm layui-btn-normal" />
-                    <input type="button" value="新增" onclick="addRow()" class="layui-btn layui-btn-sm layui-btn-normal" />
-                    <input type="button" value="删除" onclick="deleteRow()" class="layui-btn layui-btn-sm layui-btn-normal" />
+                   
+                    <input type="button" value="获取选定时间的出入记录" onclick="deleteRow()" class="layui-btn layui-btn-sm layui-btn-normal" />
                 </td>
             </tr>
         </table>
@@ -89,30 +103,22 @@
 
         //删除选中
         function deleteRow() {
-            var rows = table.checkStatus('layuiTable').data;//获取选中行
-            if (!rows || rows.length == 0) {
-                top.layuiMsg("请选择要删除的记录!")
-                return;
-            }
-            top.layuiConfirm("确定要删除该记录?", {}, function () {
-                var RowGuids = new Array();
-                for (var i = 0; i < rows.length; i++) {
+           
+            top.layuiConfirm("确定要获取该记录?", {}, function () {
+               
 
-                    RowGuids.push(rows[i].rowGuid);
-                }
-
-                SendAjax("/sys/fbdoorevents/delete", { rowGuids: RowGuids }, function (res) {
+                SendAjax("/sys/fbdoorevents/add", { startTime: $("#startTime").val(), endTime: $("#endTime").val() }, function (res) {
                     if (res.code == '0') {
-                        top.messageAlert("提醒", "删除成功", "info", function () {
+                        top.messageAlert("提醒", "获取成功", "info", function () {
                             refreshGrid();
                         });
                     }
                     else {
-                        top.messageAlert("提醒", data.msg, "error");
+                        top.messageAlert("提醒", res.msg, "error");
                     }
 
                 });
-                return false;
+               
             });
         }
 

@@ -38,7 +38,7 @@
                 order by ${sidx} ${order}
             </when>
 			<otherwise>
-                order by row_id desc
+                order by eventTime desc,row_id desc
 			</otherwise>
         </choose>
 		<if test="offset != null and limit != null">
@@ -195,6 +195,7 @@
 	</delete> 
 	
 	<delete id="deleteSevenBe">
+
 	    delete from fb_doorevents where substring(eventTime,1,10) <![CDATA[ <= ]]> DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 7 DAY)
 	</delete>
 
@@ -214,7 +215,7 @@
 	<select id="getEventListByRu" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
 			select distinct a.personId,b.personName,b.orgName from fb_doorevents a left join fb_renyuaninfo b on a.personId=b.personId where doorIndexCode in
 		(select doorIndexCode from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='入')
-		and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10)
+		and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10) 	and b.personName is not null
 		<if test="isCBS!='' and isCBS!=null">
 			and b.orgPath like '%承包商%'
 		</if>
@@ -240,11 +241,11 @@
 		select distinct a.personId,b.personName,b.orgName from fb_doorevents a left join fb_renyuaninfo b on a.personId=b.personId
 		 where doorIndexCode in
 (select doorIndexCode from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='出')
-and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10)
+and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10) 	and b.personName is not null
 and a.personId  in
 (select distinct personId from fb_doorevents where doorIndexCode in
 (select doorIndexCode from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='入')
-and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10))
+and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10) 	and b.personName is not null)
 		<if test="isCBS!='' and isCBS!=null">
 			and b.orgPath like '%承包商%'
 		</if>

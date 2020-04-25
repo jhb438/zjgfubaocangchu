@@ -1,10 +1,19 @@
 package com.basic.zjgfbcc.controller;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
+
+import com.alibaba.fastjson.JSONObject;
+import com.basic.zjgfbcc.common.ScheduledService.ScheduledTask;
+import com.basic.zjgfbcc.common.exception.MyException;
 import com.basic.zjgfbcc.common.utils.DateUtil;
 import com.basic.zjgfbcc.common.utils.LayuiUtil;
+import com.basic.zjgfbcc.thread.HkThread;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +41,11 @@ import com.basic.zjgfbcc.common.utils.R;
 @CrossOrigin
 @RequestMapping("sys/fbdoorevents")
 public class FbDooreventsController {
+	private static final Logger logger = LoggerFactory.getLogger(FbDooreventsController.class);
 	@Autowired
 	private FbDooreventsService fbDooreventsService;
-	
+	@Autowired
+	HkThread HkThread;
 	/**
 	 * 列表数据
 	 */
@@ -57,9 +68,33 @@ public class FbDooreventsController {
     @ApiOperation(value="")
     @ResponseBody
     @RequestMapping(value="/add",produces="application/json;charset=utf-8",method=RequestMethod.POST)
-    public R add(FbDoorevents fbDoorevents){
-		fbDooreventsService.save(fbDoorevents);
-        return R.ok();  
+    public void add(String startTime,String endTime){
+		//获取上次时间作开始
+		try {
+			Future<String> res = null;
+			try {
+				startTime= DateUtil.getS(DateUtil.changeStrToTime(startTime))+"+08:00";
+				endTime= DateUtil.getS(DateUtil.changeStrToTime(endTime))+"+08:00";
+				res = HkThread.doorEvents(startTime,endTime);
+
+				JSONObject obj = JSONObject.parseObject(res.get());
+				if(obj.getIntValue("code") == 0){
+					logger.info("获取当天门禁进出成功");
+				}else{
+					throw new MyException("获取门禁进出异常");
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
     }
 
 	/**

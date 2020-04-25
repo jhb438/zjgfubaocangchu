@@ -61,6 +61,7 @@
             <if test="createTime != null">`create_time` = #{createTime}, </if>
             <if test="delFlag != null">`del_flag` = #{delFlag}, </if>
             <if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="areaName != null">`areaName` = #{areaName} </if>
 		</set>
         where row_guid = #{rowGuid}
 	</update>

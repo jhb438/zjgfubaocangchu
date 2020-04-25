@@ -37,9 +37,8 @@ public class ScheduledTask extends BaseController {
     RedisService redisService;
     
 
-//   @Scheduled(cron = "*/30  *  *  *  *  ?")//代表每30秒执行一次
 //    @Scheduled(cron = "0 0 23 * * ?")   //每天23点执行
-//    @Scheduled(cron = "*/10  *  *  *  *  ?")
+    @Scheduled(cron = "*/20  *  *  *  *  ?")
     public void getDeviceLoaction() {
     	String lastTime = (String) redisService.get("fbcc_nowDate");
     	if(lastTime == null){
@@ -49,9 +48,15 @@ public class ScheduledTask extends BaseController {
         try {
         	Future<String> res = null;
     		try {
-    			Date time = DateUtil.timeCalculation(DateUtil.changeStrToTime(lastTime),Calendar.SECOND,+10);
-    			redisService.set("fbcc_nowDate", DateUtil.getYmdhms(time));
+    			Date time = DateUtil.timeCalculation(DateUtil.changeStrToTime(lastTime),Calendar.SECOND,+20);
+    			Date nowTime=new Date();
+    			if(time.after(nowTime)) {
+					time=nowTime;
+				}
+				redisService.set("fbcc_nowDate", DateUtil.getYmdhms(time));
+				logger.info("开始获取数据，时间范围："+DateUtil.getS(DateUtil.changeStrToTime(lastTime))+"+08:00"+"-"+DateUtil.getS(time)+"+08:00");
     			res = HkThread.doorEvents(DateUtil.getS(DateUtil.changeStrToTime(lastTime))+"+08:00",DateUtil.getS(time)+"+08:00");
+
     			JSONObject obj = JSONObject.parseObject(res.get());
     			if(obj.getIntValue("code") == 0){
     				logger.info("获取当天门禁进出成功");

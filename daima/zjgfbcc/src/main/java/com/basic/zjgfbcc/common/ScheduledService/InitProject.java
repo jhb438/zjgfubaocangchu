@@ -33,13 +33,14 @@ public class InitProject implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
     	
     	System.out.println(DateUtil.getS(new Date()));
-    	
+
     	//第一次运行 获取当天至现在时间的
     	Future<String> res = null;
 		try {
 			//存储当前时间
 			Date now = new Date();
 			RedisService.set("fbcc_nowDate", DateUtil.getYmdhms(now));
+			logger.info("程序开始执行，第一次时间为："+DateUtil.getYmdhms(now));
 			res = HkThread.doorEventsDel(DateUtil.getY_m_d(new Date())+"T00:00:00+08:00",DateUtil.getS(now)+"+08:00");
 			JSONObject obj = JSONObject.parseObject(res.get());
 			if(obj.getIntValue("code") == 0){
@@ -47,12 +48,12 @@ public class InitProject implements ApplicationRunner {
 			}else{
 				throw new MyException("获取门禁进出异常");
 			}
-			
+
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
+
     	
     	
     }

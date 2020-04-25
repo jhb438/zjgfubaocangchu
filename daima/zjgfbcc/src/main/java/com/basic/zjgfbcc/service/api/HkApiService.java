@@ -133,6 +133,7 @@ public class HkApiService extends BaseApiController{
 		String body=JSONObject.toJSONString(params);
 		String result =ArtemisHttpUtil.doPostStringArtemis(path,body,null,null,"application/json");
 		JSONObject obj = JSONObject.parseObject(result);
+		logger.info("获取到的数据为:"+obj);
 		if(obj != null && "0".equals(obj.getString("code")) && "success".equals(obj.getString("msg"))){
 			JSONObject reso = obj.getJSONObject("data");
 			JSONArray list = reso.getJSONArray("list");

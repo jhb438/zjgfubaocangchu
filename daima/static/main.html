@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8">
-    <title>张家港仓储有线公司人员统计表</title>
+    <title>张家港仓储有限公司人员统计表</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -69,15 +69,21 @@
                 <!-- VTZ总人数 -->
                 <div class="swcllxzb">
                     <div class="zoneTitle">VTZ总人数</div>
-                    <div class="zoneNum" style="height:90%">
+                    <div class="zoneNum" >
                         <span id="vtzzrs" onclick="changePage('vtzzrs', '')">0</span>
                     </div>
                 </div>
                 <!-- 承包商总人数 -->
                 <div class="jdswclfive">
                     <div class="zoneTitle">承包商总人数</div>
-                    <div class="zoneNum" style="height:90%">
+                    <div class="zoneNum" >
                         <span id="cbsrs" onclick="changePage('cbszrs', '')">0</span>
+                    </div>
+                </div>
+                <div class="ydfx">
+                    <div class="zoneTitle">卡车司机总人数</div>
+                    <div class="zoneNum">
+                        <span id="kcsjrs" onclick="changePage('kcsjrs', '生产区域')">0</span>
                     </div>
                 </div>
             </div>
@@ -140,6 +146,14 @@
             if (res.code == '0') {
                 var data = res.data == "" ? "0" : res.data.length;
                 $("#vtzzrs").text(data);
+
+            }
+        });
+        //获取卡车司机总人数
+        SendAjax("/sys/common/StatisticsKCSJZRS", { areaName: "生产区域" }, function (res) {
+            if (res.code == '0') {
+                var data = res.data == "" ? "0" : res.data.length;
+                $("#kcsjrs").text(data);
 
             }
         });

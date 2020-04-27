@@ -42,7 +42,7 @@
             <tr>
                 <td style="padding:5px">
                     <input type="button" value="查询" onclick="search()" class="layui-btn layui-btn-sm layui-btn-normal" />
-
+                    <input type="button" value="导出Excel" onclick="doExport()" class="layui-btn layui-btn-sm layui-btn-normal" />
                 </td>
             </tr>
         </table>
@@ -100,6 +100,12 @@
             initData(data);
         }
 
+        function doExport()
+        {
+            var data = $("#SearchForm").serialize();
+
+            window.open(window.serverUrl + "/sys/common/userInfoToExcel?" + data, "_blank");
+        }
       
     </script>
 </body>

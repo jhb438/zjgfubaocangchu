@@ -195,8 +195,8 @@
 	</delete> 
 	
 	<delete id="deleteSevenBe">
-
-	    delete from fb_doorevents where substring(eventTime,1,10) <![CDATA[ <= ]]> DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 7 DAY)
+        delete from fb_doorevents where personId is null and doorIndexCode is null;
+	    delete from fb_doorevents where substring(eventTime,1,10) <![CDATA[ <= ]]> DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 3 DAY)
 	</delete>
 
     <select id="getDetailByGuid" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
@@ -221,6 +221,9 @@
 		</if>
 		<if test="isVTZ!='' and isVTZ!=null">
 			and (b.orgPath like '%罐区运营%' or b.orgPath like '%办公室%' or b.orgPath like '%苏城孚宝%' or b.orgPath like '%保安%')
+		</if>
+		<if test="isKCSJ!='' and isKCSJ!=null">
+			and b.personName like '%司机%'
 		</if>
 		<if test="personName!='' and personName!=null">
 			and b.personName like concat('%',#{personName},'%')
@@ -251,6 +254,9 @@ and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> sub
 		</if>
 		<if test="isVTZ!='' and isVTZ!=null">
 			and (b.orgPath like '%罐区运营%' or b.orgPath like '%办公室%' or b.orgPath like '%苏城孚宝%' or b.orgPath like '%保安%')
+		</if>
+		<if test="isKCSJ!='' and isKCSJ!=null">
+			and b.personName like '%司机%'
 		</if>
 		<if test="personName!='' and personName!=null">
 			and b.personName like concat('%',#{personName},'%')

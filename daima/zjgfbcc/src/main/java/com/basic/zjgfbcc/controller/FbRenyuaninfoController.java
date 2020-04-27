@@ -1,24 +1,26 @@
 package com.basic.zjgfbcc.controller;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.basic.zjgfbcc.common.utils.DateUtil;
-import com.basic.zjgfbcc.common.utils.LayuiUtil;
+
+import com.basic.zjgfbcc.common.utils.*;
+import com.basic.zjgfbcc.entity.Frame_User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import com.basic.zjgfbcc.common.customclass.PassToken;
 import com.basic.zjgfbcc.entity.FbRenyuaninfo;
 import com.basic.zjgfbcc.service.FbRenyuaninfoService;
-import com.basic.zjgfbcc.common.utils.PageUtils;
-import com.basic.zjgfbcc.common.utils.Query;
-import com.basic.zjgfbcc.common.utils.R;
 
 
 /**
@@ -97,5 +99,5 @@ public class FbRenyuaninfoController {
 		FbRenyuaninfo model = fbRenyuaninfoService.getDetailByGuid(rowGuid);
         return R.ok().put("data",model);
     }
-	
+
 }

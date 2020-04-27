@@ -16,6 +16,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,11 +84,11 @@ public class CommonController extends BaseController {
      */
     public List<FbDoorevents> getQYRS(String areaName,String personName,String orgName)
     {
-        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "", "",personName,orgName);
+        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "", "","",personName,orgName);
         System.out.println(JSONObject.toJSONString(ruList));
 
         //获取额外的出
-        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "", "",personName,orgName);
+        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "", "","",personName,orgName);
         System.out.println(JSONObject.toJSONString(chuList));
 
 
@@ -118,16 +121,51 @@ public class CommonController extends BaseController {
         return R.ok().put("data", ruList);
     }
 
-
+    /**
+     * 统计区域卡车司机人数
+     * <p>Title: getUser</p>
+     * <p>Description: 用户</p>
+     *
+     * @param areaName
+     * @return
+     * @author
+     */
+    @PassToken
+    @ResponseBody
+    @RequestMapping(value = "/StatisticsKCSJZRS", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
+    public R StatisticsKCSJZRS(String areaName) {
+        List<FbDoorevents> ruList=getKCSJList(areaName,"","");
+        return R.ok().put("data", ruList);
+    }
 
 
     public List<FbDoorevents> getCBSList(String areaName,String personName,String orgName) {
         //生产区域
         //获取今天与昨天的所有入
-        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "1", "",personName,orgName);
+        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "1", "","",personName,orgName);
 
         //获取额外的出
-        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "1", "",personName,orgName);
+        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "1", "","",personName,orgName);
+
+        for (FbDoorevents chu : chuList) {
+            for(int i=0;i<ruList.size();i++){
+                FbDoorevents f = ruList.get(i);
+                if(chu.getPersonId().equals(f.getPersonId())){
+                    ruList.remove(i);
+                    continue;
+                }
+            }
+        }
+        return ruList;
+    }
+
+    public List<FbDoorevents> getKCSJList(String areaName,String personName,String orgName) {
+        //生产区域
+        //获取今天与昨天的所有入
+        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "", "","1",personName,orgName);
+
+        //获取额外的出
+        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "", "","1",personName,orgName);
 
         for (FbDoorevents chu : chuList) {
             for(int i=0;i<ruList.size();i++){
@@ -198,10 +236,10 @@ public class CommonController extends BaseController {
     public List<FbDoorevents> getVTZList(String areaName,String personName,String orgName) {
         //生产区域
         //获取今天与昨天的所有入
-        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "", "1",personName,orgName);
+        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "", "1","",personName,orgName);
 
         //获取额外的出
-        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "", "1",personName,orgName);
+        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "", "1","",personName,orgName);
 
         for (FbDoorevents chu : chuList) {
             for(int i=0;i<ruList.size();i++){
@@ -237,6 +275,10 @@ public class CommonController extends BaseController {
         {
             ruList=getCBSList(areaName,personName,orgName);
         }
+        else if(type.equals("kcsjrs"))
+        {
+            ruList=getKCSJList(areaName,personName,orgName);
+        }
         else if(type.equals("cbszrs"))
         {
             Map map=new HashMap();
@@ -263,5 +305,68 @@ public class CommonController extends BaseController {
     }
 
 
+    /**
+     * excel导出
+     *
+     * @param @param request
+     * @param @param response    设定文件
+     * @return void    返回类型
+     * @throws
+     * @Title: exportExcel
+     * @Description: excel导出
+     */
+    @PassToken
+    @ApiOperation(value = "人员信息导出Excel")
+    @RequestMapping(value = "/userInfoToExcel")
+    public void userInfoToExcel(@RequestParam Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+        try {
+
+            String type=params.get("type").toString();
+            String areaName=params.get("areaName").toString();
+            String personName=params.get("personName").toString();
+            String orgName=params.get("orgName").toString();
+            List<FbDoorevents> ruList = new ArrayList<>();
+            if(type.equals("qyrs"))
+            {
+                ruList=getQYRS(areaName,personName,orgName);
+            }
+            else if(type.equals("cbsrs"))
+            {
+                ruList=getCBSList(areaName,personName,orgName);
+            }
+            else if(type.equals("kcsjrs"))
+            {
+                ruList=getKCSJList(areaName,personName,orgName);
+            }
+            else if(type.equals("cbszrs"))
+            {
+                Map map=new HashMap();
+                List<FbAreainfo> areaList=fbAreainfoService.getQueryList(map);
+                for(FbAreainfo model: areaList)
+                {
+                    List<FbDoorevents> list=getCBSList(model.getAreaName(),personName,orgName);
+                    ruList.addAll(list);
+                }
+            }
+            else
+            {
+                Map map=new HashMap();
+                List<FbAreainfo> areaList=fbAreainfoService.getQueryList(map);
+                for(FbAreainfo model: areaList)
+                {
+                    List<FbDoorevents> list=getVTZList(model.getAreaName(),personName,orgName);
+                    ruList.addAll(list);
+                }
+            }
+
+
+
+            Map<String, Object> map1 = new HashMap<>();
+            map1.put("data", ruList);
+            ExcelUtil.exportExcel("人员信息表", "人员信息", map1, response, request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

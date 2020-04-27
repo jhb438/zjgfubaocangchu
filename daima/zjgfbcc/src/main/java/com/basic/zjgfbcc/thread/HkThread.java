@@ -158,7 +158,7 @@ public class HkThread {
 		logger.info("doorEvents started---");
 		long start = System.currentTimeMillis();
 		
-		//删除7天之前的记录
+		//删除3天之前的记录
 		FbDooreventsService.deleteSevenBe();
 		
 		JSONArray arr = hkApiService.doorEvents(startTime,endTime);

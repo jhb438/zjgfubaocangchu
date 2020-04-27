@@ -65,24 +65,24 @@ import com.basic.zjgfbcc.common.exception.MyException;
 import net.sf.jxls.transformer.XLSTransformer;
 
 /**
-  * Excel 工具类
-  * @ClassName: ExcelUtil 
-  * @Description: Excel 工具类 
-  * @author keeny
-  * @date 2018年9月28日 下午3:21:19 
-  *
+ * Excel 工具类
+ * @ClassName: ExcelUtil
+ * @Description: Excel 工具类
+ * @author keeny
+ * @date 2018年9月28日 下午3:21:19
+ *
  */
 public class ExcelUtil {
-	public static final String OFFICE_EXCEL_2003_POSTFIX = "xls";
+    public static final String OFFICE_EXCEL_2003_POSTFIX = "xls";
 
-	public static final String OFFICE_EXCEL_2010_POSTFIX = "xlsx";
-	
-	public static final String EMPTY = "";
-	
-	public static final String POINT = ".";
-	
-	public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-	
+    public static final String OFFICE_EXCEL_2010_POSTFIX = "xlsx";
+
+    public static final String EMPTY = "";
+
+    public static final String POINT = ".";
+
+    public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
 //    /**
 //     * 导出excel头部标题
 //     * @param title
@@ -116,15 +116,15 @@ public class ExcelUtil {
 //        // 创建用户属性栏
 //        HSSFSheet sheet = workbook.getSheetAt(0);
 //        HSSFRow rowField = sheet.createRow(1);
-//        HSSFCellStyle styleField = createStyle(workbook, (short)13);        
+//        HSSFCellStyle styleField = createStyle(workbook, (short)13);
 //        for (int i = 0; i < secondTitles.length; i++) {
 //            HSSFCell cell = rowField.createCell(i);
 //            cell.setCellValue(secondTitles[i]);
-//            cell.setCellStyle(styleField);            
+//            cell.setCellStyle(styleField);
 //        }
 //        return workbook;
 //    }
-//    
+//
 //    /**
 //       * 设定一级级标题
 //     * @param workbook
@@ -175,10 +175,10 @@ public class ExcelUtil {
 //        font.setFontHeightInPoints((short) 12);
 //        font.setFontName("仿宋");
 //        styleData.setFont(font);
-//        HSSFDataFormat df = workbook.createDataFormat(); 
+//        HSSFDataFormat df = workbook.createDataFormat();
 //        styleData.setDataFormat(df.getFormat("yyyy-MM-dd"));
 //        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//        
+//
 //        for (int j = 0; j < dataList.size(); j++) {
 //            HSSFRow rowData = sheet.createRow(j + 2);
 ////            rowData.setHeight((short)500);
@@ -199,7 +199,7 @@ public class ExcelUtil {
 //				}
 //				//判断是否为日期
 //				 HSSFCell cellData = rowData.createCell(k);
-//				if (com.basic.zjgfbcc.common.utils.DateUtil.isValidDate(value)) {
+//				if (com.basic.xszfbdc.common.utils.DateUtil.isValidDate(value)) {
 //					try {
 //						cellData.setCellValue(format.format(new Date(value)));
 //					} catch (Exception e) {
@@ -211,26 +211,26 @@ public class ExcelUtil {
 //					cellData.setCellValue(value);
 //	                cellData.setCellStyle(styleData);
 //				}
-//            }            
+//            }
 //        }
 //        return workbook;
 //    }
-/**
- * 使用批量导入方法时，请注意需要导入的Bean的字段和excel的列一一对应
- * @param clazz
- * @param file
- * @param beanPropertys
- * @return
- */
+    /**
+     * 使用批量导入方法时，请注意需要导入的Bean的字段和excel的列一一对应
+     * @param clazz
+     * @param file
+     * @param beanPropertys
+     * @return
+     */
     public static <T> List<T> parserExcel(Class<T> clazz, File file, String[] beanPropertys) {
         // 得到workbook
         List<T> list = new ArrayList<T>();
         try {
-			Workbook workbook = WorkbookFactory.create(file);
+            Workbook workbook = WorkbookFactory.create(file);
             Sheet sheet = workbook.getSheetAt(0);
             // 直接从第三行开始获取数据
             int rowSize = sheet.getPhysicalNumberOfRows();
-            if(rowSize > 1){                
+            if(rowSize > 1){
                 for (int i = 1; i < rowSize; i++) {
                     T t = clazz.newInstance();
                     Row row = sheet.getRow(i);
@@ -238,12 +238,12 @@ public class ExcelUtil {
                     for(int j=0; j<cellSize; j++){
                         Object cellValue = getCellValue(row.getCell(j));
                         BeanUtils.copyProperty(t, beanPropertys[j], cellValue);
-                        }                        
-                                    
+                    }
+
                     list.add(t);
 
                 }
-            }            
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -251,7 +251,7 @@ public class ExcelUtil {
         return list;
 
     }
-    
+
     /**
      * MultipartFile 转 File
      *
@@ -259,7 +259,7 @@ public class ExcelUtil {
      * @throws Exception
      */
     public static File multipartFileToFile(MultipartFile file) throws Exception {
- 
+
         File toFile = null;
         if (file.equals("") || file.getSize() <= 0) {
             file = null;
@@ -272,7 +272,7 @@ public class ExcelUtil {
         }
         return toFile;
     }
-    
+
     //获取流文件
     private static void inputStreamToFile(InputStream ins, File file) {
         try {
@@ -288,16 +288,16 @@ public class ExcelUtil {
             e.printStackTrace();
         }
     }
- 
+
     /**
      * 删除本地临时文件
      * @param file
      */
     public static void delteTempFile(File file) {
-	    if (file != null) {
-	        File del = new File(file.toURI());
-	        del.delete();
-	    }
+        if (file != null) {
+            File del = new File(file.toURI());
+            del.delete();
+        }
     }
 
 
@@ -310,32 +310,32 @@ public class ExcelUtil {
         Object result = null;
         if (cell != null) {
             switch (cell.getCellType()) {
-            case STRING:
-                result = cell.getStringCellValue();
-                break;
-            case NUMERIC:
-                //对日期进行判断和解析
-                if(HSSFDateUtil.isCellDateFormatted(cell)){
-                    double cellValue = cell.getNumericCellValue();
-                    result = HSSFDateUtil.getJavaDate(cellValue);
-                }else {
-                	cell.setCellType(CellType.STRING);
-					result = cell.getStringCellValue();
-				}
-                break;
-            case BOOLEAN:
-                result = cell.getBooleanCellValue();
-                break;
-            case FORMULA:
-                result = cell.getCellFormula();
-                break;
-            case ERROR:
-                result = cell.getErrorCellValue();
-                break;
-            case BLANK:
-                break;
-            default:
-                break;
+                case STRING:
+                    result = cell.getStringCellValue();
+                    break;
+                case NUMERIC:
+                    //对日期进行判断和解析
+                    if(HSSFDateUtil.isCellDateFormatted(cell)){
+                        double cellValue = cell.getNumericCellValue();
+                        result = HSSFDateUtil.getJavaDate(cellValue);
+                    }else {
+                        cell.setCellType(CellType.STRING);
+                        result = cell.getStringCellValue();
+                    }
+                    break;
+                case BOOLEAN:
+                    result = cell.getBooleanCellValue();
+                    break;
+                case FORMULA:
+                    result = cell.getCellFormula();
+                    break;
+                case ERROR:
+                    result = cell.getErrorCellValue();
+                    break;
+                case BLANK:
+                    break;
+                default:
+                    break;
             }
         }
         return result;
@@ -348,7 +348,7 @@ public class ExcelUtil {
 //     * @return
 //     */
 //    private static HSSFCellStyle createStyle(HSSFWorkbook workbook, short fontSize){
-//        HSSFCellStyle style = workbook.createCellStyle();        
+//        HSSFCellStyle style = workbook.createCellStyle();
 //        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 //        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 //        // 创建一个字体样式
@@ -358,75 +358,75 @@ public class ExcelUtil {
 //        style.setFont(font);
 //        return style;
 //    }
-//    
-	/**
-	 * 获得path的后缀名
-	 * @param path
-	 * @return
-	 */
-	public static String getPostfix(String path){
-		if(path==null || EMPTY.equals(path.trim())){
-			return EMPTY;
-		}
-		if(path.contains(POINT)){
-			return path.substring(path.lastIndexOf(POINT)+1,path.length());
-		}
-		return EMPTY;
-	}
-	/**
-	 * 单元格格式
-	 * @param hssfCell
-	 * @return
-	 */
-	@SuppressWarnings({ "static-access", "deprecation" })
-	public static String getHValue(HSSFCell hssfCell){
-		 if (hssfCell.getCellType() == CellType.BOOLEAN) {
-			 return String.valueOf(hssfCell.getBooleanCellValue());
-		 } else if (hssfCell.getCellType() == CellType.NUMERIC) {
-			 String cellValue = "";
-			 if(HSSFDateUtil.isCellDateFormatted(hssfCell)){				
-				 Date date = HSSFDateUtil.getJavaDate(hssfCell.getNumericCellValue());
-				 cellValue = sdf.format(date);
-			 }else{
-				 DecimalFormat df = new DecimalFormat("#.##");
-				 cellValue = df.format(hssfCell.getNumericCellValue());
-				 String strArr = cellValue.substring(cellValue.lastIndexOf(POINT)+1,cellValue.length());
-				 if(strArr.equals("00")){
-					 cellValue = cellValue.substring(0, cellValue.lastIndexOf(POINT));
-				 }	
-			 }
-			 return cellValue;
-		 } else {
-			return String.valueOf(hssfCell.getStringCellValue());
-		 }
-	}
-	/**
-	 * 单元格格式
-	 * @param xssfCell
-	 * @return
-	 */
-	public static String getXValue(XSSFCell xssfCell){
-		 if (xssfCell.getCellType() == CellType.BOOLEAN) {
-			 return String.valueOf(xssfCell.getBooleanCellValue());
-		 } else if (xssfCell.getCellType() == CellType.NUMERIC) {
-			 String cellValue = "";
-			 if(XSSFDateUtil.isCellDateFormatted(xssfCell)){
-				 Date date = XSSFDateUtil.getJavaDate(xssfCell.getNumericCellValue());
-				 cellValue = sdf.format(date);
-			 }else{
-				 DecimalFormat df = new DecimalFormat("#.##");
-				 cellValue = df.format(xssfCell.getNumericCellValue());
-				 String strArr = cellValue.substring(cellValue.lastIndexOf(POINT)+1,cellValue.length());
-				 if(strArr.equals("00")){
-					 cellValue = cellValue.substring(0, cellValue.lastIndexOf(POINT));
-				 }	
-			 }
-			 return cellValue;
-		 } else {
-			return String.valueOf(xssfCell.getStringCellValue());
-		 }
-	}
-	
+//
+    /**
+     * 获得path的后缀名
+     * @param path
+     * @return
+     */
+    public static String getPostfix(String path){
+        if(path==null || EMPTY.equals(path.trim())){
+            return EMPTY;
+        }
+        if(path.contains(POINT)){
+            return path.substring(path.lastIndexOf(POINT)+1,path.length());
+        }
+        return EMPTY;
+    }
+    /**
+     * 单元格格式
+     * @param hssfCell
+     * @return
+     */
+    @SuppressWarnings({ "static-access", "deprecation" })
+    public static String getHValue(HSSFCell hssfCell){
+        if (hssfCell.getCellType() == CellType.BOOLEAN) {
+            return String.valueOf(hssfCell.getBooleanCellValue());
+        } else if (hssfCell.getCellType() == CellType.NUMERIC) {
+            String cellValue = "";
+            if(HSSFDateUtil.isCellDateFormatted(hssfCell)){
+                Date date = HSSFDateUtil.getJavaDate(hssfCell.getNumericCellValue());
+                cellValue = sdf.format(date);
+            }else{
+                DecimalFormat df = new DecimalFormat("#.##");
+                cellValue = df.format(hssfCell.getNumericCellValue());
+                String strArr = cellValue.substring(cellValue.lastIndexOf(POINT)+1,cellValue.length());
+                if(strArr.equals("00")){
+                    cellValue = cellValue.substring(0, cellValue.lastIndexOf(POINT));
+                }
+            }
+            return cellValue;
+        } else {
+            return String.valueOf(hssfCell.getStringCellValue());
+        }
+    }
+    /**
+     * 单元格格式
+     * @param xssfCell
+     * @return
+     */
+    public static String getXValue(XSSFCell xssfCell){
+        if (xssfCell.getCellType() == CellType.BOOLEAN) {
+            return String.valueOf(xssfCell.getBooleanCellValue());
+        } else if (xssfCell.getCellType() == CellType.NUMERIC) {
+            String cellValue = "";
+            if(XSSFDateUtil.isCellDateFormatted(xssfCell)){
+                Date date = XSSFDateUtil.getJavaDate(xssfCell.getNumericCellValue());
+                cellValue = sdf.format(date);
+            }else{
+                DecimalFormat df = new DecimalFormat("#.##");
+                cellValue = df.format(xssfCell.getNumericCellValue());
+                String strArr = cellValue.substring(cellValue.lastIndexOf(POINT)+1,cellValue.length());
+                if(strArr.equals("00")){
+                    cellValue = cellValue.substring(0, cellValue.lastIndexOf(POINT));
+                }
+            }
+            return cellValue;
+        } else {
+            return String.valueOf(xssfCell.getStringCellValue());
+        }
+    }
+
 //    public void excelTempExport(List<Object> list,String count,String exportExcelName,String templateName, HttpServletRequest request,HttpServletResponse response) throws Exception {
 //     // 表格使用的数据
 //        Map map = new HashMap();
@@ -453,8 +453,8 @@ public class ExcelUtil {
 //        os.flush();
 //        os.close();
 //    }
-    
-    
+
+
 //    /***
 //     * excel导出公共方法
 //     * @param fileName      导出文件名
@@ -471,35 +471,35 @@ public class ExcelUtil {
 //        try {
 //            // 解决各浏览器的中文乱码问题
 //            String userAgent = request.getHeader("User-Agent");
-// 
+//
 //            // fileName.getBytes("UTF-8")处理safari的乱码问题
 //            byte[] bytes = userAgent.contains("MSIE") ? fileName.getBytes() : fileName.getBytes("UTF-8");
-// 
+//
 //            // 各浏览器基本都支持ISO编码
 //            fileName = new String(bytes, "ISO-8859-1");
 //            response.setHeader("Content-disposition", String.format("attachment; filename=\"%s\"", fileName+".xlsx"));
 //            response.setContentType("application/octet-stream;charset=UTF-8");
-// 
+//
 //            Context context = new Context();
-// 
+//
 //            //设置参数变量
 //            context.putVar("list", list);
-// 
+//
 //            Map<String , Object> myFunction = new HashMap<>();
 //            myFunction.put("my", new ExcelUtil());
-// 
+//
 //            os = response.getOutputStream();
-// 
+//
 //            // 启动新的jxls-api 加载自定义方法
 //            String path = Thread.currentThread().getContextClassLoader().getResource("").getPath()+"templates/excelTemplate/"+templateName+".xlsx";
 //            InputStream is = new FileInputStream(new File(path));
 //            System.out.println(is+" >>>"+os);
 ////            InputStream is = this.getClass().getClassLoader().getResourceAsStream("templates/excelTemplate/"+templateName+".xlsx");
 //            Transformer trans = TransformerFactory.createTransformer(is, os);
-//            
+//
 //            JexlExpressionEvaluator evaluator = (JexlExpressionEvaluator) trans.getTransformationConfig().getExpressionEvaluator();
 //            evaluator.getJexlEngine().setFunctions(myFunction);
-// 
+//
 //            // 载入模板、处理导出
 //            AreaBuilder areaBuilder = new XlsCommentAreaBuilder(trans);
 //            List<Area> areaList = areaBuilder.build();
@@ -508,7 +508,7 @@ public class ExcelUtil {
 //            trans.write();
 //            is.close();
 //        } catch (Exception e) {
-//           
+//
 //        } finally {
 //            try {
 //                if (os != null) {
@@ -520,7 +520,7 @@ public class ExcelUtil {
 //            }
 //        }
 //    }
-// 
+//
 //    // 格式化时间
 //    public Object formatDate(Long time){
 //        if(time != null){
@@ -530,7 +530,7 @@ public class ExcelUtil {
 //        }
 //        return "--";
 //    }
-// 
+//
 //    // 时延-处理执行时间 ms -> s 且保留两位
 //    public Object timeChange(Long time){
 //        if(time != null){
@@ -540,12 +540,12 @@ public class ExcelUtil {
 //        }
 //        return "--";
 //    }
-// 
+//
 //    // 超链接方法
 //    public WritableCellValue myLink(String address, String title) {
 //        return new WritableHyperlink(address, title);
 //    }
- 
+
 //    // 告警类型转换 -> MonitorTypeEnum枚举类
 //    public Object alarmType(Integer type){
 //        if(type != null){
@@ -553,7 +553,7 @@ public class ExcelUtil {
 //        }
 //        return "--";
 //    }
- 
+
 //    // 告警状态转换 -> AlarmStatusEnum枚举类
 //    public Object statusType(Integer type){
 //        if(type != null){
@@ -561,36 +561,36 @@ public class ExcelUtil {
 //        }
 //        return "--";
 //    }
-	
-	public static void exportExcel(String fileName, String templateName, Map<String, Object> model,HttpServletResponse response, HttpServletRequest request) throws IOException{
+
+    public static void exportExcel(String fileName, String templateName, Map<String, Object> model,HttpServletResponse response, HttpServletRequest request) throws IOException{
         Context context = PoiTransformer.createInitialContext();
         if (model != null) {
             for (String key : model.keySet()) {
                 context.putVar(key, model.get(key));
             }
         }
-        
+
         response.reset();
-      response.setHeader("Accept-Ranges", "bytes");
-      OutputStream os = null;
-          // 解决各浏览器的中文乱码问题
-          String userAgent = request.getHeader("User-Agent");
+        response.setHeader("Accept-Ranges", "bytes");
+        OutputStream os = null;
+        // 解决各浏览器的中文乱码问题
+        String userAgent = request.getHeader("User-Agent");
 
-          // fileName.getBytes("UTF-8")处理safari的乱码问题
-          byte[] bytes = userAgent.contains("MSIE") ? fileName.getBytes() : fileName.getBytes("UTF-8");
+        // fileName.getBytes("UTF-8")处理safari的乱码问题
+        byte[] bytes = userAgent.contains("MSIE") ? fileName.getBytes() : fileName.getBytes("UTF-8");
 
-          // 各浏览器基本都支持ISO编码
-          fileName = new String(bytes, "ISO-8859-1");
-          response.setHeader("Content-disposition", String.format("attachment; filename=\"%s\"", fileName+".xlsx"));
-          response.setContentType("application/octet-stream;charset=UTF-8");
-        
+        // 各浏览器基本都支持ISO编码
+        fileName = new String(bytes, "ISO-8859-1");
+        response.setHeader("Content-disposition", String.format("attachment; filename=\"%s\"", fileName+".xlsx"));
+        response.setContentType("application/octet-stream;charset=UTF-8");
+
         os = response.getOutputStream();
-        
+
 //      启动新的jxls-api 加载自定义方法
-      String path = Thread.currentThread().getContextClassLoader().getResource("").getPath()+"templates/excelTemplate/"+templateName+".xlsx";
-      InputStream is = new FileInputStream(new File(path));
-      System.out.println(is+" >>>"+os);
-        
+        String path = Thread.currentThread().getContextClassLoader().getResource("").getPath()+"templates/excelTemplate/"+templateName+".xlsx";
+        InputStream is = new FileInputStream(new File(path));
+        System.out.println(is+" >>>"+os);
+
         JxlsHelper jxlsHelper = JxlsHelper.getInstance();
         Transformer transformer  = jxlsHelper.createTransformer(is, os);
         //获得配置
@@ -604,27 +604,27 @@ public class ExcelUtil {
         //必须要这个，否者表格函数统计会错乱
         jxlsHelper.setUseFastFormulaProcessor(false).processTemplate(context, transformer);
     }
-	
+
 //    public static void exportExcel(File xls, File out, Map<String, Object> model) throws FileNotFoundException, IOException {
 //            exportExcel(new FileInputStream(xls), new FileOutputStream(out), model);
 //    }
-//    
+//
 //    public static void exportExcel(String templatePath, OutputStream os, Map<String, Object> model) throws Exception {
 //        File template = getTemplate(templatePath);
 //        if(template != null){
-//            exportExcel(new FileInputStream(template), os, model);    
+//            exportExcel(new FileInputStream(template), os, model);
 //        } else {
 //            throw new Exception("Excel 模板未找到。");
 //        }
 //    }
-	
-	//单元格合并
-	static{ 
-		//添加自定义指令（可覆盖jxls原指令） 
-		//合并单元格(模板已经做过合并单元格操作的单元格无法再次合并)
-		XlsCommentAreaBuilder.addCommandMapping("merge", MergeCommand.class); 
-	}
-    
+
+    //单元格合并
+    static{
+        //添加自定义指令（可覆盖jxls原指令）
+        //合并单元格(模板已经做过合并单元格操作的单元格无法再次合并)
+        XlsCommentAreaBuilder.addCommandMapping("merge", MergeCommand.class);
+    }
+
     //获取jxls模版文件
     public static File getTemplate(String path){
         File template = new File(path);
@@ -632,8 +632,8 @@ public class ExcelUtil {
             return template;
         }
         return null;
-    }    
-    
+    }
+
     // 日期格式化
     public String dateFmt(Date date, String fmt) {
         if (date == null) {
@@ -647,12 +647,12 @@ public class ExcelUtil {
         }
         return "";
     }
-    
+
     // if判断
     public Object ifelse(boolean b, Object o1, Object o2) {
         return b ? o1 : o2;
     }
-    
+
 }
 
 /**
@@ -661,7 +661,7 @@ public class ExcelUtil {
  *
  */
 class XSSFDateUtil extends DateUtil{
-	protected static int absoluteDay(Calendar cal, boolean use1904windowing) {  
-        return DateUtil.absoluteDay(cal, use1904windowing);  
-    } 
+    protected static int absoluteDay(Calendar cal, boolean use1904windowing) {
+        return DateUtil.absoluteDay(cal, use1904windowing);
+    }
 }

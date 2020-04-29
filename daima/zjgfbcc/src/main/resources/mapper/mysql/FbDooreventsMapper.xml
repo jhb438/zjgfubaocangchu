@@ -213,7 +213,7 @@
     </select>
     <!--获取今天及昨天所有的入-->
 	<select id="getEventListByRu" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
-			select distinct a.personId,b.personName,b.orgName from fb_doorevents a left join fb_renyuaninfo b on a.personId=b.personId where doorIndexCode in
+			select distinct a.personId,b.personName,b.orgName,a.eventTime from fb_doorevents a left join fb_renyuaninfo b on a.personId=b.personId where doorIndexCode in
 		(select doorIndexCode from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='入')
 		and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10) 	and b.personName is not null
 		<if test="isCBS!='' and isCBS!=null">
@@ -241,7 +241,7 @@
 	</select>
 	<!--获取今天及昨天所有实际的出-->
 	<select id="getEventListByShiJiChu" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
-		select distinct a.personId,b.personName,b.orgName from fb_doorevents a left join fb_renyuaninfo b on a.personId=b.personId
+		select distinct a.personId,b.personName,b.orgName,a.eventTime from fb_doorevents a left join fb_renyuaninfo b on a.personId=b.personId
 		 where doorIndexCode in
 (select doorIndexCode from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='出')
 and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10) 	and b.personName is not null

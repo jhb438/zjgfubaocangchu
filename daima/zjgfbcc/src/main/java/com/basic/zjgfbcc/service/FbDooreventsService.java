@@ -49,5 +49,7 @@ public interface FbDooreventsService {
 	//找出所有实际的出
 	List<FbDoorevents> getEventListByShiJiChu(String areaName,String isCBS,String isVTZ,String isKCSJ,String personName,String orgName);
 
+	FbDoorevents getLastDataById(String personId);
+
 	void deleteSevenBe();
 }

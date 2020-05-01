@@ -265,4 +265,9 @@ and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> sub
 			and b.orgName like concat('%',#{orgName},'%')
 		</if>
 	</select>
+
+	<select id="getLastDataById" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
+		select * from fb_doorevents where personId=#{personId}
+		order by eventTime desc limit 1
+	</select>
 </mapper>

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import com.alibaba.fastjson.JSON;
+import com.basic.zjgfbcc.common.utils.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +62,7 @@ public class HkThread {
 
 		String resStr = hkApiService.personList();
 		JSONObject obj = JSONObject.parseObject(resStr);
-		if(obj != null && "0".equals(obj.getString("code")) && "success".equals(obj.getString("msg"))){
+		if(obj != null && "0".equals(obj.getString("code")) && "SUCCESS".equals(obj.getString("msg"))){
 			JSONArray arr = obj.getJSONObject("data").getJSONArray("list");
 			//删除用户 再插用户
 			FbRenyuaninfoService.deleteAll();
@@ -88,7 +90,7 @@ public class HkThread {
 
 		String resStr = hkApiService.orgList();
 		JSONObject obj = JSONObject.parseObject(resStr);
-		if(obj != null && "0".equals(obj.getString("code")) && "success".equals(obj.getString("msg"))){
+		if(obj != null && "0".equals(obj.getString("code")) && "SUCCESS".equals(obj.getString("msg"))){
 			JSONArray arr = obj.getJSONObject("data").getJSONArray("list");
 			//删除再新增
 			FbDeptService.deleteAll();
@@ -115,7 +117,7 @@ public class HkThread {
 
 		String resStr = hkApiService.acsDoorList();
 		JSONObject obj = JSONObject.parseObject(resStr);
-		if(obj != null && "0".equals(obj.getString("code")) && "success".equals(obj.getString("msg"))){
+		if(obj != null && "0".equals(obj.getString("code")) && "SUCCESS".equals(obj.getString("msg"))){
 			JSONArray arr = obj.getJSONObject("data").getJSONArray("list");
 			//删除再新增
 			FbMenjindianService.deleteAll();
@@ -143,9 +145,31 @@ public class HkThread {
 		JSONArray arr = hkApiService.doorEvents(startTime,endTime);
 		//删除当天记录
 		FbDooreventsService.deleteNowDays();
-		List<FbDoorevents> list = JSONObject.parseArray(arr.toJSONString(), FbDoorevents.class);
-		if(list.size() != 0){
-			FbDooreventsService.insertAll(list);
+		//List<FbDoorevents> list = JSONObject.parseArray(arr.toJSONString(), FbDoorevents.class);
+		if(arr.size() != 0){
+			//FbDooreventsService.insertAll(list);
+			for(int i=0;i<arr.size();i++)
+			{
+				JSONObject obj=arr.getJSONObject(i);
+				//首先找出该人员最新的一条记录
+				if(obj.get("personId")!=null&&!obj.get("personId").equals("")) {
+					FbDoorevents model = FbDooreventsService.getLastDataById(obj.getString("personId"));
+					if(model!=null) {
+						Date beginDate = DateUtil.changeStrToTime(model.getEventTime().replace("T", " ").replace("+08:00", ""));
+						Date endDate = DateUtil.changeStrToTime(obj.getString("eventTime").replace("T", " ").replace("+08:00", ""));
+						if (DateUtil.calculatetimeGapSecond(beginDate, endDate) > 5) {
+							FbDoorevents event = JSONObject.parseObject(obj.toJSONString(), FbDoorevents.class);
+							FbDooreventsService.save(event);
+						}
+					}
+					else
+					{
+						FbDoorevents event = JSONObject.parseObject(obj.toJSONString(), FbDoorevents.class);
+						FbDooreventsService.save(event);
+					}
+
+				}
+			}
 		}
 		long end = System.currentTimeMillis();
         logger.info("doorEvents finished, time elapsed: {} ms.",end-start);
@@ -162,9 +186,31 @@ public class HkThread {
 		FbDooreventsService.deleteSevenBe();
 		
 		JSONArray arr = hkApiService.doorEvents(startTime,endTime);
-		List<FbDoorevents> list = JSONObject.parseArray(arr.toJSONString(), FbDoorevents.class);
-		if(list.size() != 0){
-			FbDooreventsService.insertAll(list);
+		//List<FbDoorevents> list = JSONObject.parseArray(arr.toJSONString(), FbDoorevents.class);
+		if(arr.size() != 0){
+			//FbDooreventsService.insertAll(list);
+			for(int i=0;i<arr.size();i++)
+			{
+				JSONObject obj=arr.getJSONObject(i);
+				//首先找出该人员最新的一条记录
+				if(obj.get("personId")!=null&&!obj.get("personId").equals("")) {
+					FbDoorevents model = FbDooreventsService.getLastDataById(obj.getString("personId"));
+					if(model!=null) {
+						Date beginDate = DateUtil.changeStrToTime(model.getEventTime().replace("T", " ").replace("+08:00", ""));
+						Date endDate = DateUtil.changeStrToTime(obj.getString("eventTime").replace("T", " ").replace("+08:00", ""));
+						if (DateUtil.calculatetimeGapSecond(beginDate, endDate) > 5) {
+							FbDoorevents event = JSONObject.parseObject(obj.toJSONString(), FbDoorevents.class);
+							FbDooreventsService.save(event);
+						}
+					}
+					else
+					{
+						FbDoorevents event = JSONObject.parseObject(obj.toJSONString(), FbDoorevents.class);
+						FbDooreventsService.save(event);
+					}
+
+				}
+			}
 		}
 		long end = System.currentTimeMillis();
         logger.info("doorEvents finished, time elapsed: {} ms.",end-start);

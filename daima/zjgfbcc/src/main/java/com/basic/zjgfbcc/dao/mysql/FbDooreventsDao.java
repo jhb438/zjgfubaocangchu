@@ -33,4 +33,6 @@ public interface FbDooreventsDao extends BaseDao<FbDoorevents> {
 											  @Param("personName")String personName, @Param("orgName")String orgName);
 
 	void deleteSevenBe();
+
+    FbDoorevents getLastDataById(String personId);
 }

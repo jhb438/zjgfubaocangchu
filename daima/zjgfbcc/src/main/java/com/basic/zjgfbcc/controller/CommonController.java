@@ -97,11 +97,43 @@ public class CommonController extends BaseController {
                 FbDoorevents f = ruList.get(i);
                 if(chu.getPersonId().equals(f.getPersonId())){
                     ruList.remove(i);
-                    continue;
+                    break;
                 }
             }
         }
-        return ruList;
+
+        //因为入里面有重复的，所以还得去重
+        List<FbDoorevents> realRuList=new ArrayList<FbDoorevents>();
+        for(FbDoorevents ru:ruList)
+        {
+            if(realRuList.size()==0)
+            {
+                realRuList.add(ru);
+            }
+            else
+            {
+                int num=0;
+                for(int i=0;i<realRuList.size();i++)
+                {
+
+                    FbDoorevents f = realRuList.get(i);
+                    if(ru.getPersonId().equals(f.getPersonId()))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        if((!ru.getPersonId().equals(f.getPersonId()))&&(num==realRuList.size()-1)) {
+                            realRuList.add(ru);
+                            break;
+                        }
+                    }
+                   num=num+1;
+                }
+            }
+        }
+
+        return realRuList;
     }
 
     /**
@@ -152,11 +184,42 @@ public class CommonController extends BaseController {
                 FbDoorevents f = ruList.get(i);
                 if(chu.getPersonId().equals(f.getPersonId())){
                     ruList.remove(i);
-                    continue;
+                    break;
                 }
             }
         }
-        return ruList;
+
+        //因为入里面有重复的，所以还得去重
+        List<FbDoorevents> realRuList=new ArrayList<FbDoorevents>();
+        for(FbDoorevents ru:ruList)
+        {
+            if(realRuList.size()==0)
+            {
+                realRuList.add(ru);
+            }
+            else
+            {
+                int num=0;
+                for(int i=0;i<realRuList.size();i++)
+                {
+
+                    FbDoorevents f = realRuList.get(i);
+                    if(ru.getPersonId().equals(f.getPersonId()))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        if((!ru.getPersonId().equals(f.getPersonId()))&&(num==realRuList.size()-1)) {
+                            realRuList.add(ru);
+                            break;
+                        }
+                    }
+                    num=num+1;
+                }
+            }
+        }
+        return realRuList;
     }
 
     public List<FbDoorevents> getKCSJList(String areaName,String personName,String orgName) {
@@ -172,11 +235,43 @@ public class CommonController extends BaseController {
                 FbDoorevents f = ruList.get(i);
                 if(chu.getPersonId().equals(f.getPersonId())){
                     ruList.remove(i);
-                    continue;
+                    break;
                 }
             }
         }
-        return ruList;
+
+
+        //因为入里面有重复的，所以还得去重
+        List<FbDoorevents> realRuList=new ArrayList<FbDoorevents>();
+        for(FbDoorevents ru:ruList)
+        {
+            if(realRuList.size()==0)
+            {
+                realRuList.add(ru);
+            }
+            else
+            {
+                int num=0;
+                for(int i=0;i<realRuList.size();i++)
+                {
+
+                    FbDoorevents f = realRuList.get(i);
+                    if(ru.getPersonId().equals(f.getPersonId()))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        if((!ru.getPersonId().equals(f.getPersonId()))&&(num==realRuList.size()-1)) {
+                            realRuList.add(ru);
+                            break;
+                        }
+                    }
+                    num=num+1;
+                }
+            }
+        }
+        return realRuList;
     }
 
     /**
@@ -246,11 +341,42 @@ public class CommonController extends BaseController {
                 FbDoorevents f = ruList.get(i);
                 if(chu.getPersonId().equals(f.getPersonId())){
                     ruList.remove(i);
-                    continue;
+                    break;
                 }
             }
         }
-        return ruList;
+
+        //因为入里面有重复的，所以还得去重
+        List<FbDoorevents> realRuList=new ArrayList<FbDoorevents>();
+        for(FbDoorevents ru:ruList)
+        {
+            if(realRuList.size()==0)
+            {
+                realRuList.add(ru);
+            }
+            else
+            {
+                int num=0;
+                for(int i=0;i<realRuList.size();i++)
+                {
+
+                    FbDoorevents f = realRuList.get(i);
+                    if(ru.getPersonId().equals(f.getPersonId()))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        if((!ru.getPersonId().equals(f.getPersonId()))&&(num==realRuList.size()-1)) {
+                            realRuList.add(ru);
+                            break;
+                        }
+                    }
+                    num=num+1;
+                }
+            }
+        }
+        return realRuList;
     }
 
     /**

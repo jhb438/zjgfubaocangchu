@@ -98,7 +98,13 @@ public class FbDooreventsServiceImpl implements FbDooreventsService {
 		return fbDooreventsDao.getEventListByShiJiChu(areaName,isCBS,isVTZ,isKCSJ,personName,orgName);
     }
 
-	@Override
+    @Override
+    public FbDoorevents getLastDataById(String personId) {
+
+		return fbDooreventsDao.getLastDataById(personId);
+    }
+
+    @Override
 	public void deleteSevenBe() {
 		fbDooreventsDao.deleteSevenBe();
 	}

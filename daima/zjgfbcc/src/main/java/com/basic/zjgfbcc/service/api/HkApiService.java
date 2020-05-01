@@ -43,12 +43,12 @@ public class HkApiService extends BaseApiController{
 	*/
 	
 	static {
-		ArtemisConfig.host = "10.130.115.51"; // 平台/nginx的IP和端口（https端口默认为443）
-		ArtemisConfig.appKey = "23406132"; // 合作方Key
-		ArtemisConfig.appSecret = "UsVqbwnYwCo2BC2EMzZE";// 合作方Secret
-//		ArtemisConfig.host = "10.130.115.50"; // 平台/nginx的IP和端口（https端口默认为443）
-//		ArtemisConfig.appKey = "27527251"; // 合作方Key
-//		ArtemisConfig.appSecret = "7usokZcwq1G4vExjuD7O";// 合作方Secret
+//		ArtemisConfig.host = "10.130.115.51"; // 平台/nginx的IP和端口（https端口默认为443）
+//		ArtemisConfig.appKey = "23406132"; // 合作方Key
+//		ArtemisConfig.appSecret = "UsVqbwnYwCo2BC2EMzZE";// 合作方Secret
+		ArtemisConfig.host = "10.130.115.50"; // 平台/nginx的IP和端口（https端口默认为443）
+		ArtemisConfig.appKey = "27527251"; // 合作方Key
+		ArtemisConfig.appSecret = "7usokZcwq1G4vExjuD7O";// 合作方Secret
 	}
 
 	/**

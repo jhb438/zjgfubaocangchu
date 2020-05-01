@@ -326,6 +326,14 @@ public class DateUtil {
 		minute = millisecond / (60 * 1000);
 		return minute;
 	}
+
+	/** 比较两个时间相差秒数 */
+	public static double calculatetimeGapSecond(Date date1, Date date2) {
+		double second = 0;
+		double millisecond = date2.getTime() - date1.getTime();
+		second = millisecond /1000;
+		return second;
+	}
 	
 	/**
 	 * 

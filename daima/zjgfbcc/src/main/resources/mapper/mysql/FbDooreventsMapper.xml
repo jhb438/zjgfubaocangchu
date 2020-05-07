@@ -217,13 +217,16 @@
 		(select doorIndexCode from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='入')
 		and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10) 	and b.personName is not null
 		<if test="isCBS!='' and isCBS!=null">
-			and b.orgPath like '%承包商%'
+			and (b.orgPath like '%承包商%' or b.orgPath like '%苏城孚宝%' or b.orgPath like '%保安%')
 		</if>
 		<if test="isVTZ!='' and isVTZ!=null">
-			and (b.orgPath like '%罐区运营%' or b.orgPath like '%办公室%' or b.orgPath like '%苏城孚宝%' or b.orgPath like '%保安%')
+			and (b.orgPath like '%罐区运营%' or b.orgPath like '%办公室%')
 		</if>
 		<if test="isKCSJ!='' and isKCSJ!=null">
-			and b.personName like '%司机%'
+			and b.orgPath like '%卡车司机%'
+		</if>
+		<if test="isFK!='' and isFK!=null">
+			and (b.orgPath like '%政府访客VIP%' or b.orgPath like '%访客%' or b.orgPath like '%特检院%')
 		</if>
 		<if test="personName!='' and personName!=null">
 			and b.personName like concat('%',#{personName},'%')
@@ -250,13 +253,16 @@ and a.personId  in
 (select doorIndexCode from fb_areamenjin_relation where areaName=#{areaName} and menJinGN='入')
 and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> substring(eventTime,1,10) 	and b.personName is not null)
 		<if test="isCBS!='' and isCBS!=null">
-			and b.orgPath like '%承包商%'
+			and (b.orgPath like '%承包商%' or b.orgPath like '%苏城孚宝%' or b.orgPath like '%保安%')
 		</if>
 		<if test="isVTZ!='' and isVTZ!=null">
-			and (b.orgPath like '%罐区运营%' or b.orgPath like '%办公室%' or b.orgPath like '%苏城孚宝%' or b.orgPath like '%保安%')
+			and (b.orgPath like '%罐区运营%' or b.orgPath like '%办公室%')
 		</if>
 		<if test="isKCSJ!='' and isKCSJ!=null">
-			and b.personName like '%司机%'
+			and b.orgPath like '%卡车司机%'
+		</if>
+		<if test="isFK!='' and isFK!=null">
+			and (b.orgPath like '%政府访客VIP%' or b.orgPath like '%访客%' or b.orgPath like '%特检院%')
 		</if>
 		<if test="personName!='' and personName!=null">
 			and b.personName like concat('%',#{personName},'%')

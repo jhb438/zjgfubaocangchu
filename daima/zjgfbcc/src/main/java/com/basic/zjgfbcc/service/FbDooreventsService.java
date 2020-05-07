@@ -45,9 +45,9 @@ public interface FbDooreventsService {
 
 	List<Map<String, String>> StatisticsCBS(String string);
 	//找出所有的入
-	List<FbDoorevents> getEventListByRu(String areaName,String isCBS,String isVTZ,String isKCSJ,String personName,String orgName);
+	List<FbDoorevents> getEventListByRu(String areaName,String isCBS,String isVTZ,String isKCSJ,String isFK,String personName,String orgName);
 	//找出所有实际的出
-	List<FbDoorevents> getEventListByShiJiChu(String areaName,String isCBS,String isVTZ,String isKCSJ,String personName,String orgName);
+	List<FbDoorevents> getEventListByShiJiChu(String areaName,String isCBS,String isVTZ,String isKCSJ,String isFK,String personName,String orgName);
 
 	FbDoorevents getLastDataById(String personId);
 

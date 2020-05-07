@@ -28,64 +28,86 @@
         <div class="content">
             <div class="left">
                 <!-- 办公区域 -->
+                <div class="topTitle">
+                    <div class="zoneTitle">VTZ人员</div>
+                </div>
                 <div class="dbsx">
                     <div class="zoneTitle">办公区域</div>
                     <div class="zoneNum">
-                        <span id="bgqy" onclick="changePage('qyrs', '办公区域')">0</span>
+                        <span id="bgqy_VTZ" onclick="changePage('qy_VTZ', '办公区域')">0</span>
                     </div>
                 </div>
                 <!-- 生产区域 -->
                 <div class="aqbjl">
-                    <div class="zoneTitle">生产区域（含码头）</div>
+                    <div class="zoneTitle">生产区域</div>
                     <div class="zoneNum">
-                        <span id="scqy" onclick="changePage('qyrs', '生产区域')">0</span>
+                        <span id="scqy_VTZ" onclick="changePage('qy_VTZ', '生产区域')">0</span>
                     </div>
                 </div>
                 <div class="aqbjl">
-                    <div class="zoneTitle">码头区域(预留)</div>
+                    <div class="zoneTitle">码头区域</div>
                 </div>
             </div>
             <div class="center">
+                <div class="topTitle" style="margin:10px 0px 0px 10px;width:97%">
+                    <div class="zoneTitle">承包商人员</div>
+                </div>
                 <!-- 承包商人数 -->
                 <div class="hzsj">
-                    <div class="zoneTitle">办公区承包商人数</div>
+                    <div class="zoneTitle">办公区域</div>
                     <div class="zoneNum">
-                        <span id="bgqy_cbsrs" onclick="changePage('cbsrs', '办公区域')">0</span>
+                        <span id="bgqy_cbsrs" onclick="changePage('qy_cbs', '办公区域')">0</span>
                     </div>
                 </div>
                 <!-- 承包商人数 -->
                 <div class="ydfx">
-                    <div class="zoneTitle">生产区承包商人数</div>
+                    <div class="zoneTitle">生产区域</div>
                     <div class="zoneNum">
-                        <span id="scqy_cbsrs" onclick="changePage('cbsrs', '生产区域')">0</span>
+                        <span id="scqy_cbsrs" onclick="changePage('qy_cbs', '生产区域')">0</span>
                     </div>
                 </div>
                 <div class="ydfx">
-                    <div class="zoneTitle">码头区承包商人数</div>
+                    <div class="zoneTitle">码头区域</div>
 
                 </div>
             </div>
             <div class="right">
-                <!-- VTZ总人数 -->
-                <div class="swcllxzb">
-                    <div class="zoneTitle">VTZ总人数</div>
+                <div class="topTitle" style="margin:10px 0px 0px 10px;width:97%">
+                    <div class="zoneTitle">访客</div>
+                </div>
+              
+                <div class="swcllxzb" style="width:97%">
+                    <div class="zoneTitle">办公区域</div>
                     <div class="zoneNum" >
-                        <span id="vtzzrs" onclick="changePage('vtzzrs', '')">0</span>
+                        <span id="bgqy_fkrs" onclick="changePage('qy_fkrs', '办公区域')" >0</span>
                     </div>
                 </div>
-                <!-- 承包商总人数 -->
-                <div class="jdswclfive">
-                    <div class="zoneTitle">承包商总人数</div>
-                    <div class="zoneNum" >
-                        <span id="cbsrs" onclick="changePage('cbszrs', '')">0</span>
-                    </div>
-                </div>
+              
                 <div class="ydfx">
-                    <div class="zoneTitle">卡车司机总人数</div>
+                    <div class="zoneTitle">生产区域</div>
                     <div class="zoneNum">
-                        <span id="kcsjrs" onclick="changePage('kcsjrs', '生产区域')">0</span>
+                        <span id="scqy_fkrs" onclick="changePage('qy_fkrs', '生产区域')" >0</span>
                     </div>
                 </div>
+                <div class="ydfx" >
+                    <div class="zoneTitle">码头区域</div>
+                  
+                </div>
+              
+            </div>
+            <div class="right">
+                <div class="topTitle" style="margin:10px 0px 0px 10px">
+                    <div class="zoneTitle">司机</div>
+                </div>
+                <!-- VTZ总人数 -->
+                <div class="swcllxzb" style="height:300px">
+                    <div class="zoneTitle">装车区</div>
+                    <div class="zoneNum">
+                        <span id="kcsjrs" onclick="changePage('kcsjrs', '生产区域')" >0</span>
+                    </div>
+                </div>
+              
+              
             </div>
             <div style="clear:both"></div>
         </div>
@@ -104,19 +126,19 @@
 
     function initData() {
 
-        //获取办公区域人数
-        SendAjax("/sys/common/StatisticsQYRS", { areaName: "办公区域" }, function (res) {
+        //获取办公区域VTZ人数
+        SendAjax("/sys/common/StatisticsVTZ", { areaName: "办公区域" }, function (res) {
             if (res.code == '0') {
                 var data = res.data == "" ? "0" : res.data.length;
-                $("#bgqy").text(data);
+                $("#bgqy_VTZ").text(data);
 
             }
         });
-        //获取生产区域人数
-        SendAjax("/sys/common/StatisticsQYRS", { areaName: "生产区域" }, function (res) {
+        //获取生产区域VTZ人数
+        SendAjax("/sys/common/StatisticsVTZ", { areaName: "生产区域" }, function (res) {
             if (res.code == '0') {
                 var data = res.data == "" ? "0" : res.data.length;
-                $("#scqy").text(data);
+                $("#scqy_VTZ").text(data);
             }
         });
         // 获取办公区域承包商人数
@@ -134,18 +156,18 @@
 
             }
         });
-        //获取承包商总人数
-        SendAjax("/sys/common/StatisticsCBSRSHJ", {}, function (res) {
+        //获取办公区域访客人数
+        SendAjax("/sys/common/StatisticsFKZRS", { areaName: "办公区域" }, function (res) {
             if (res.code == '0') {
                 var data = res.data == "" ? "0" : res.data.length;
-                $("#cbsrs").text(data);
+                $("#bgqy_fkrs").text(data);
             }
         });
-        //获取VTZ总人数
-        SendAjax("/sys/common/StatisticsVTZ", {}, function (res) {
+        //获取生产区域访客人数
+        SendAjax("/sys/common/StatisticsFKZRS", { areaName: "生产区域" }, function (res) {
             if (res.code == '0') {
                 var data = res.data == "" ? "0" : res.data.length;
-                $("#vtzzrs").text(data);
+                $("#scqy_fkrs").text(data);
 
             }
         });
@@ -157,6 +179,7 @@
 
             }
         });
+      
     }
 
     function changePage(type, areaName) {

@@ -70,9 +70,9 @@ table{border-collapse: collapse; border-spacing: 0;}
 /* 页面主体部分布局
 ----------------------------------*/
 .mqmain{width: 100%;} .gismain .content{width: 100%;} 
-.mqmain .content .left{float: left; width: 34%;} 
-.mqmain .content .center{float: left; width: 35%;} 
-.mqmain .content .right{float: left; width: 30%;} 
+.mqmain .content .left{float: left; width: 24%;} 
+.mqmain .content .center{float: left; width: 25%;} 
+.mqmain .content .right{float: left; width: 25%;} 
 .mqmain .bottom{width: 100%;} 
 .mqmain .bottom .left{float: left; width: 25%;} 
 .mqmain .bottom .right{float: left; width: 75%;} 
@@ -80,6 +80,7 @@ table{border-collapse: collapse; border-spacing: 0;}
 /* 待办事项
 ----------------------------------*/ 
 .mqmain .dbsx{margin: 10px 0px 0px 20px; float: left; width: 95%; height: 300px; border: 1px solid #709DF8; border-radius: 10px;} 
+.mqmain .topTitle{margin: 10px 0px 0px 20px; float: left; width: 95%; height: 70px; border: 1px solid #709DF8; border-radius: 10px;} 
 .mqmain .dbsx .title { color:white; font-size:16px;font-weight:800; margin:10px 0px 10px 40px; }
 .mqmain .dbsx .value { width:80%; color:#4EDFF5; font-size:18px;height:35px;line-height:35px;text-align:center; background-image: url(../images/numbg.png);background-size:100% 100%;}
 

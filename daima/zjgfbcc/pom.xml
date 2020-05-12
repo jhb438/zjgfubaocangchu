@@ -119,6 +119,12 @@
 			<version>2.5.0</version>
 		</dependency>
 
+		<!-- postgresql -->
+		<dependency>
+		    <groupId>org.postgresql</groupId>
+		    <artifactId>postgresql</artifactId>
+		    <scope>runtime</scope>
+		</dependency>
 		<!-- 热启动  -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

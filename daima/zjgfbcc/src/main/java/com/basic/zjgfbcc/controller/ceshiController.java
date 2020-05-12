@@ -1,10 +1,12 @@
 package com.basic.zjgfbcc.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.basic.zjgfbcc.common.customclass.PassToken;
 import com.basic.zjgfbcc.common.customclass.RedisCacheable;
 import com.basic.zjgfbcc.common.utils.LayuiUtil;
 import com.basic.zjgfbcc.common.utils.R;
+import com.basic.zjgfbcc.dao.postSql.ceshiDao;
 import com.basic.zjgfbcc.entity.Frame_Role;
 import com.basic.zjgfbcc.entity.Frame_User;
 import com.basic.zjgfbcc.service.Frame_UserService;
@@ -23,6 +25,9 @@ public class ceshiController extends BaseController {
 
     @Autowired
     private Frame_UserService userService;
+    
+    @Autowired
+    private ceshiDao ceshiDao;
 
     /**
      * 获取所有正常用户
@@ -41,4 +46,19 @@ public class ceshiController extends BaseController {
          List<Frame_User> list = userService.ceshi();
          return R.ok().put("data", list);
     }
+     
+     /**
+      * 测试
+      * @return
+      */
+     @PassToken
+     @ApiOperation(value = "测试")
+     @ResponseBody
+     @RequestMapping(value = "/ceshi", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
+     public void ceshi() {
+    	 System.out.println("11111");
+         System.out.println(JSONObject.toJSONString(ceshiDao.ceshi()));
+     }
+     
+    
 }

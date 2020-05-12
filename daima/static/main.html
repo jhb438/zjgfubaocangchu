@@ -106,7 +106,12 @@
                         <span id="kcsjrs" onclick="changePage('kcsjrs', '生产区域')" >0</span>
                     </div>
                 </div>
-              
+                <div class="swcllxzb" style="height:250px">
+                    <div class="zoneTitle">总人数</div>
+                    <div class="zoneNum">
+                        <span id="zrs" onclick="changePage('zrs', '生产区域')">0</span>
+                    </div>
+                </div>
               
             </div>
             <div style="clear:both"></div>
@@ -125,12 +130,13 @@
     })
 
     function initData() {
-
+        var totalRS = 0;
         //获取办公区域VTZ人数
         SendAjax("/sys/common/StatisticsVTZ", { areaName: "办公区域" }, function (res) {
             if (res.code == '0') {
                 var data = res.data == "" ? "0" : res.data.length;
                 $("#bgqy_VTZ").text(data);
+                totalRS += parseInt(data);
 
             }
         });
@@ -139,6 +145,7 @@
             if (res.code == '0') {
                 var data = res.data == "" ? "0" : res.data.length;
                 $("#scqy_VTZ").text(data);
+                totalRS += parseInt(data);
             }
         });
         // 获取办公区域承包商人数
@@ -146,6 +153,7 @@
             if (res.code == '0') {
                 var data = res.data == "" ? "0" : res.data.length;
                 $("#bgqy_cbsrs").text(data);
+                totalRS += parseInt(data);
             }
         });
         //获取生产区域承包商人数
@@ -153,6 +161,7 @@
             if (res.code == '0') {
                 var data = res.data == "" ? "0" : res.data.length;
                 $("#scqy_cbsrs").text(data);
+                totalRS += parseInt(data);
 
             }
         });
@@ -161,6 +170,7 @@
             if (res.code == '0') {
                 var data = res.data == "" ? "0" : res.data.length;
                 $("#bgqy_fkrs").text(data);
+                totalRS += parseInt(data);
             }
         });
         //获取生产区域访客人数
@@ -168,6 +178,7 @@
             if (res.code == '0') {
                 var data = res.data == "" ? "0" : res.data.length;
                 $("#scqy_fkrs").text(data);
+                totalRS += parseInt(data);
 
             }
         });
@@ -176,9 +187,20 @@
             if (res.code == '0') {
                 var data = res.data == "" ? "0" : res.data.length;
                 $("#kcsjrs").text(data);
+                totalRS += parseInt(data);
 
             }
         });
+
+        //获取总人数
+        $("#zrs").text(totalRS);
+        //SendAjax("/sys/common/StatisticsTotalRS", { areaName: "生产区域" }, function (res) {
+        //    if (res.code == '0') {
+        //        var data = res.data == "" ? "0" : res.data.length;
+        //        $("#zrs").text(data);
+
+        //    }
+        //});
       
     }
 

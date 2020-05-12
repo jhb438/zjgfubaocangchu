@@ -55,7 +55,7 @@ $.ajaxSetup({
     },
     complete: function (res) {
     	if (isJSON(res.responseText) && JSON.parse(res.responseText).code == "401") {
-	        window.top.location.href = window.serverUrl+"/static/login.html";
+	       // window.top.location.href = window.serverUrl+"/static/login.html";
 	    }
     }
 });

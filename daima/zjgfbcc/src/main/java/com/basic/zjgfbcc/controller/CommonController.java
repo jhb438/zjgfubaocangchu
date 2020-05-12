@@ -442,6 +442,46 @@ public class CommonController extends BaseController {
     }
 
 
+    /**
+     * 统计总人数
+     * <p>Title: getUser</p>
+     * <p>Description: 用户</p>
+     *
+     * @return
+     * @author
+     */
+    @PassToken
+    @ResponseBody
+    @RequestMapping(value = "/StatisticsTotalRS", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
+    public R StatisticsTotalRS(String areaName)
+    {
+        List<FbDoorevents> allList=new ArrayList<>();
+
+        Map map=new HashMap();
+        List<FbAreainfo> areaList=fbAreainfoService.getQueryList(map);
+        //获取所有的VTZ
+        for(FbAreainfo model: areaList)
+        {
+            List<FbDoorevents> list=getVTZList(model.getAreaName(),"","");
+            allList.addAll(list);
+        }
+         //获取所有的承包商
+        for(FbAreainfo model: areaList)
+        {
+            List<FbDoorevents> list=getCBSList(model.getAreaName(),"","");
+            allList.addAll(list);
+        }
+        //获取所有的访客
+        for(FbAreainfo model: areaList)
+        {
+            List<FbDoorevents> list=getFKList(model.getAreaName(),"","");
+            allList.addAll(list);
+        }
+
+        List<FbDoorevents> list=getKCSJList(areaName,"","");
+        allList.addAll(list);
+        return R.ok().put("data", allList);
+    }
 
     /**
      * 列表数据
@@ -468,6 +508,32 @@ public class CommonController extends BaseController {
         else if(type.equals("kcsjrs"))
         {
             ruList=getKCSJList(areaName,personName,orgName);
+        }
+        else if(type.equals("zrs"))
+        {
+            Map map=new HashMap();
+            List<FbAreainfo> areaList=fbAreainfoService.getQueryList(map);
+            //获取所有的VTZ
+            for(FbAreainfo model: areaList)
+            {
+                List<FbDoorevents> list=getVTZList(model.getAreaName(),personName,orgName);
+                ruList.addAll(list);
+            }
+            //获取所有的承包商
+            for(FbAreainfo model: areaList)
+            {
+                List<FbDoorevents> list=getCBSList(model.getAreaName(),personName,orgName);
+                ruList.addAll(list);
+            }
+            //获取所有的访客
+            for(FbAreainfo model: areaList)
+            {
+                List<FbDoorevents> list=getFKList(model.getAreaName(),personName,orgName);
+                ruList.addAll(list);
+            }
+
+            List<FbDoorevents> list=getKCSJList(areaName,personName,orgName);
+            ruList.addAll(list);
         }
         else
         {
@@ -512,6 +578,32 @@ public class CommonController extends BaseController {
             else if(type.equals("kcsjrs"))
             {
                 ruList=getKCSJList(areaName,personName,orgName);
+            }
+            else if(type.equals("zrs"))
+            {
+                Map map=new HashMap();
+                List<FbAreainfo> areaList=fbAreainfoService.getQueryList(map);
+                //获取所有的VTZ
+                for(FbAreainfo model: areaList)
+                {
+                    List<FbDoorevents> list=getVTZList(model.getAreaName(),personName,orgName);
+                    ruList.addAll(list);
+                }
+                //获取所有的承包商
+                for(FbAreainfo model: areaList)
+                {
+                    List<FbDoorevents> list=getCBSList(model.getAreaName(),personName,orgName);
+                    ruList.addAll(list);
+                }
+                //获取所有的访客
+                for(FbAreainfo model: areaList)
+                {
+                    List<FbDoorevents> list=getFKList(model.getAreaName(),personName,orgName);
+                    ruList.addAll(list);
+                }
+
+                List<FbDoorevents> list=getKCSJList(areaName,personName,orgName);
+                ruList.addAll(list);
             }
             else
             {

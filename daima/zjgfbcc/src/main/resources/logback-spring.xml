@@ -72,7 +72,7 @@
         </encoder>
         <!--日志文件最大的大小-->
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>10MB</MaxFileSize>
+            <MaxFileSize>1000MB</MaxFileSize>
         </triggeringPolicy>
         <!-- <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             路径
@@ -98,7 +98,7 @@
         </encoder>
         <!--日志文件最大的大小-->
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>10MB</MaxFileSize>
+            <MaxFileSize>1000MB</MaxFileSize>
         </triggeringPolicy>
         <!-- <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             路径
@@ -124,7 +124,7 @@
         </encoder>
         <!--日志文件最大的大小-->
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>10MB</MaxFileSize>
+            <MaxFileSize>1000MB</MaxFileSize>
         </triggeringPolicy>
         <!-- <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             路径

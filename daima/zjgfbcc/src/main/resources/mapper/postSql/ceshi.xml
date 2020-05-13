@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.zjgfbcc.dao.postSql.ceshiDao">
+
+	<!-- <select id="getList" resultType="com.basic.zjgfbcc.entity.FbAreainfo">
+		select * from fb_areainfo t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by row_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from fb_areainfo t  <include refid="where_clause" />
+	</select> -->
+	
+	<select id="ceshi" resultType="com.basic.zjgfbcc.entity.ceshi">
+	    select * from public.tb_event limit 10
+	</select>
+</mapper>

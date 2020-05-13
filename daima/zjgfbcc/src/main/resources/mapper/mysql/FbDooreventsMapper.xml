@@ -23,6 +23,10 @@
 		where a.doorIndexCode is NOT NULL and a.areaName = #{param1} and substring(d.eventTime,1,10) = CURDATE() and a.menJinGN = #{param2}
     </select>
     
+    <select id="getlastData" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
+        select * from fb_doorevents order by row_id DESC limit 1
+    </select>
+    
     <select id="StatisticsCBS" resultType="map">
 		select d.*,a.*,r.personName as userName,r.orgName as deptName,r.orgPath as deptPath from fb_doorevents d left join fb_areamenjin_relation a on d.doorIndexCode = a.doorIndexCode left join fb_renyuaninfo r on d.personId = r.personId 
 		where a.doorIndexCode is NOT NULL and a.areaName = #{value} and substring(d.eventTime,1,10) = CURDATE() and r.orgPath like '%承包商%'
@@ -276,4 +280,8 @@ and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> sub
 		select * from fb_doorevents where personId=#{personId}
 		order by eventTime desc limit 1
 	</select>
+	
+	<delete id="deleteByTowDayBefore">
+	    delete from fb_doorevents where substring(eventTime,1,10) >= DATE_SUB(curdate(),INTERVAL 1 DAY)
+	</delete>
 </mapper>

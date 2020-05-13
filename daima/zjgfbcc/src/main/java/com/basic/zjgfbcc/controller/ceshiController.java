@@ -55,10 +55,9 @@ public class ceshiController extends BaseController {
      @ApiOperation(value = "测试")
      @ResponseBody
      @RequestMapping(value = "/ceshi", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
-     public void ceshi() {
+     public R ceshi() {
     	 System.out.println("11111");
-         System.out.println(JSONObject.toJSONString(ceshiDao.ceshi()));
+         return R.ok().put("data", ceshiDao.ceshi());
      }
      
-    
 }

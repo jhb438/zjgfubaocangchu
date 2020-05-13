@@ -35,7 +35,7 @@ public class FbDoorevents extends BaseModel implements Serializable {
 	private String doorIndexCode;
 	/**门禁点名称**/
 	private String doorName;
-
+	
 	/**
 	 * 设置：姓名
 	 */

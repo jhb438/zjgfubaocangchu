@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.zjgfbcc.dao.postSql.hikKuDao">
+	<select id="getEvents" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
+	    SELECT * FROM public.tb_event WHERE CAST(event_time AS DATE) >= DATE (CURRENT_DATE-1) 
+	    ORDER BY event_time asc
+	   <!--  
+	    SELECT * FROM public.tb_event WHERE CAST(event_time AS TIMESTAMP) >= 
+	    CAST('2020-05-13 17:30:00' as TIMESTAMP) ORDER BY event_time asc -->
+	    
+	</select>
+	
+	<select id="getEventsByEventId" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
+	    SELECT * FROM public.tb_event WHERE CAST(event_time AS TIMESTAMP) >= 
+	    (select event_time from public.tb_event where event_id = #{value})
+	    ORDER BY event_time asc
+	</select>
+</mapper>

@@ -22,7 +22,7 @@
 		select count(*) from fb_areainfo t  <include refid="where_clause" />
 	</select> -->
 	
-	<select id="ceshi" resultType="com.basic.zjgfbcc.entity.ceshi">
-	    select * from public.tb_event limit 10
+	<select id="ceshi" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
+	    SELECT * FROM public.tb_event WHERE CAST(event_time AS DATE)=DATE '2020-05-13'
 	</select>
 </mapper>

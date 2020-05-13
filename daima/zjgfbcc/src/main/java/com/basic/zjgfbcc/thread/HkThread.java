@@ -19,7 +19,9 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.basic.zjgfbcc.common.utils.R;
+import com.basic.zjgfbcc.common.utils.StringUtil;
 import com.basic.zjgfbcc.controller.FbDeptController;
+import com.basic.zjgfbcc.dao.postSql.hikKuDao;
 import com.basic.zjgfbcc.entity.FbDept;
 import com.basic.zjgfbcc.entity.FbDoorevents;
 import com.basic.zjgfbcc.entity.FbMenjindian;
@@ -28,6 +30,7 @@ import com.basic.zjgfbcc.service.FbDeptService;
 import com.basic.zjgfbcc.service.FbDooreventsService;
 import com.basic.zjgfbcc.service.FbMenjindianService;
 import com.basic.zjgfbcc.service.FbRenyuaninfoService;
+import com.basic.zjgfbcc.service.RedisService;
 import com.basic.zjgfbcc.service.api.HkApiService;
 
 
@@ -54,6 +57,12 @@ public class HkThread {
 	
 	@Autowired
 	FbDooreventsService FbDooreventsService;
+	
+	@Autowired
+	hikKuDao hik;
+	
+	@Autowired
+	RedisService RedisService;
 	
 	@Async("myAsync")
 	public Future<String> personList() throws InterruptedException{
@@ -212,6 +221,58 @@ public class HkThread {
 				}
 			}
 		}
+		long end = System.currentTimeMillis();
+        logger.info("doorEvents finished, time elapsed: {} ms.",end-start);
+        Future<String> res = new AsyncResult<>(JSONObject.toJSONString(R.ok()));
+        return res;
+	}
+	
+	
+	
+	
+	@Async("myAsync")
+	public Future<String> doorEventsNew() {
+		if("false".equals(RedisService.get("timeFlag"))){
+			Future<String> res = new AsyncResult<>(JSONObject.toJSONString(R.error()));
+			return res;
+		}
+		
+		logger.info("doorEvents started---");
+		long start = System.currentTimeMillis();
+		
+		//删除3天之前的记录
+		FbDooreventsService.deleteSevenBe();
+		
+		//获取数据库最后一条数据
+    	FbDoorevents fb = FbDooreventsService.getlastData();
+    	List<FbDoorevents> list = hik.getEventsByEventId(fb.getEventId());
+    	if(list.size() > 0){
+    		for(int i=0;i<list.size();i++){
+    			FbDoorevents obj =list.get(i);
+				//首先找出该人员最新的一条记录
+				if(obj.getPersonId()!=null&&!obj.getPersonId().equals("")) {
+					FbDoorevents model = FbDooreventsService.getLastDataById(obj.getPersonId());
+					if(model!=null && !StringUtil.isNullOrEmpty(model.getEventTime()) && !StringUtil.isNullOrEmpty(obj.getEventTime())){
+						Date beginDate = DateUtil.changeStrToTime(model.getEventTime());
+						Date endDate = DateUtil.changeStrToTime(obj.getEventTime());
+						System.out.println(beginDate+"  "+endDate+ "");
+						System.out.println(DateUtil.calculatetimeGapSecond(beginDate, endDate) > 5);
+						if (DateUtil.calculatetimeGapSecond(beginDate, endDate) > 5) {
+							FbDooreventsService.save(obj);
+						}
+					}
+					else
+					{
+						FbDooreventsService.save(obj);
+					}
+
+				}
+    			
+    		}
+    		
+    	}
+		
+		
 		long end = System.currentTimeMillis();
         logger.info("doorEvents finished, time elapsed: {} ms.",end-start);
         Future<String> res = new AsyncResult<>(JSONObject.toJSONString(R.ok()));

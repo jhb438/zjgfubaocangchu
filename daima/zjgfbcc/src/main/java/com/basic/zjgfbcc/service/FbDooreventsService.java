@@ -52,4 +52,8 @@ public interface FbDooreventsService {
 	FbDoorevents getLastDataById(String personId);
 
 	void deleteSevenBe();
+
+	FbDoorevents getlastData();
+
+	void deleteByTowDayBefore();
 }

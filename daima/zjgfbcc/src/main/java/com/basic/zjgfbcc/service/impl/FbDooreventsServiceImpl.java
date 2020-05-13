@@ -109,4 +109,14 @@ public class FbDooreventsServiceImpl implements FbDooreventsService {
 		fbDooreventsDao.deleteSevenBe();
 	}
 
+	@Override
+	public FbDoorevents getlastData() {
+		return fbDooreventsDao.getlastData();
+	}
+
+	@Override
+	public void deleteByTowDayBefore() {
+		fbDooreventsDao.deleteByTowDayBefore();
+	}
+
 }

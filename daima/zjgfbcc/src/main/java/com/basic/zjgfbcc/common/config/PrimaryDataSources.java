@@ -28,12 +28,13 @@ public class PrimaryDataSources {
     public DataSource testDataSource(){
         return new DruidDataSource();
     }
+	
 	@Primary
     @Bean(name="mysqlSqlSessionFactory")
     public SqlSessionFactory testSqlSessionFactory(@Qualifier("mysqlDataSource") DataSource dataSource,org.apache.ibatis.session.Configuration configuration)throws Exception{
         SqlSessionFactoryBean bean=new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
-        bean.setConfiguration(configuration);
+        bean.setConfiguration(globalConfiguration());
         bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/mysql/*.xml"));
         return bean.getObject();
     }

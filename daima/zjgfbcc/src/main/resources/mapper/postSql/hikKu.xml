@@ -11,6 +11,26 @@
 	    
 	</select>
 	
+	<!-- 获取今天到目前的所有数据 -->
+	<select id="getEventsNow" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
+	    SELECT * FROM public.tb_event WHERE CAST(event_time AS DATE) = DATE (CURRENT_DATE) 
+	    ORDER BY event_time asc
+	   <!--  
+	    SELECT * FROM public.tb_event WHERE CAST(event_time AS TIMESTAMP) >= 
+	    CAST('2020-05-13 17:30:00' as TIMESTAMP) ORDER BY event_time asc -->
+	    
+	</select>
+	
+	<!-- 获取昨天的所有数据 -->
+	<select id="getEventsYestDay" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
+	    SELECT * FROM public.tb_event WHERE CAST(event_time AS DATE) = DATE (CURRENT_DATE-1) 
+	    ORDER BY event_time asc
+	   <!--  
+	    SELECT * FROM public.tb_event WHERE CAST(event_time AS TIMESTAMP) >= 
+	    CAST('2020-05-13 17:30:00' as TIMESTAMP) ORDER BY event_time asc -->
+	    
+	</select>
+	
 	<select id="getEventsByEventId" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
 	    SELECT * FROM public.tb_event WHERE CAST(event_time AS TIMESTAMP) >= 
 	    (select event_time from public.tb_event where event_id = #{value})

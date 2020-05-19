@@ -39,4 +39,6 @@ public interface FbDooreventsDao extends BaseDao<FbDoorevents> {
 	FbDoorevents getlastData();
 
 	void deleteByTowDayBefore();
+
+	void deleteYestDay();
 }

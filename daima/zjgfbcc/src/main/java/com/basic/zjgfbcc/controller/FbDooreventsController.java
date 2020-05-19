@@ -131,5 +131,27 @@ public class FbDooreventsController {
 		FbDoorevents model = fbDooreventsService.getDetailByGuid(rowGuid);
         return R.ok().put("data",model);
     }
+    
+    /**
+	 * 获取当天数据
+	 */
+	@ApiOperation(value="")
+    @ResponseBody
+	@RequestMapping(value="/getCurrentDay", produces = "application/json; charset=utf-8", method=RequestMethod.POST)
+	public R getCurrentDay(){
+		fbDooreventsService.getCurrentDay();
+		return R.ok();
+	}
+	
+	/**
+	 * 获取昨日数据
+	 */
+	@ApiOperation(value="")
+    @ResponseBody
+	@RequestMapping(value="/getYestDay", produces = "application/json; charset=utf-8", method=RequestMethod.POST)
+	public R getYestDay(){
+		fbDooreventsService.getYestDay();
+		return R.ok();
+	}
 	
 }

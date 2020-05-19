@@ -3,10 +3,15 @@ package com.basic.zjgfbcc.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.basic.zjgfbcc.common.utils.DateUtil;
+import com.basic.zjgfbcc.common.utils.StringUtil;
 import com.basic.zjgfbcc.dao.mysql.FbDooreventsDao;
+import com.basic.zjgfbcc.dao.postSql.hikKuDao;
 import com.basic.zjgfbcc.entity.FbDoorevents;
 import com.basic.zjgfbcc.service.FbDooreventsService;
 
@@ -18,6 +23,12 @@ import com.basic.zjgfbcc.service.FbDooreventsService;
 public class FbDooreventsServiceImpl implements FbDooreventsService {
 	@Autowired
 	private FbDooreventsDao fbDooreventsDao;
+	
+	@Autowired
+	com.basic.zjgfbcc.service.RedisService RedisService;
+	
+	@Autowired
+	hikKuDao hik;
 
 	@Override
 	public List<FbDoorevents> getList(Map<String, Object> map){
@@ -117,6 +128,88 @@ public class FbDooreventsServiceImpl implements FbDooreventsService {
 	@Override
 	public void deleteByTowDayBefore() {
 		fbDooreventsDao.deleteByTowDayBefore();
+	}
+	
+	
+	
+	@Override
+	public void getCurrentDay() {
+    	//删除今天的数据
+    	RedisService.set("timeFlag", "false");
+//    	FbDooreventsService.deleteByTowDayBefore();
+    	deleteNowDays();
+    	
+    	List<FbDoorevents> list = hik.getEventsNow();
+    	if(list.size() > 0){
+    		FbDoorevents model = null;
+    		FbDoorevents obj = null;
+    		Date beginDate = null;
+    		Date endDate = null;
+    		for(int i=0;i<list.size();i++){
+    			obj =list.get(i);
+				//首先找出该人员最新的一条记录
+				if(obj.getPersonId()!=null&&!obj.getPersonId().equals("")) {
+					model = getLastDataById(obj.getPersonId());
+					if(model!=null && !StringUtil.isNullOrEmpty(model.getEventTime()) && !StringUtil.isNullOrEmpty(obj.getEventTime())) {
+						beginDate = DateUtil.changeStrToTime(model.getEventTime());
+						endDate = DateUtil.changeStrToTime(obj.getEventTime());
+						if (DateUtil.calculatetimeGapSecond(beginDate, endDate) > 5) {
+							save(obj);
+						}
+					}
+					else
+					{
+						save(obj);
+					}
+
+				}
+    			
+    		}
+    		RedisService.set("timeFlag", "true");
+    	}
+		
+	}
+
+	@Override
+	public void getYestDay() {
+		//第一次运行 获取昨天到至今的所有数据（success数据）
+    	//删除昨天到现在的数据
+    	RedisService.set("timeFlag", "false");
+    	deleteYestDay();
+    	
+    	List<FbDoorevents> list = hik.getEventsYestDay();
+    	if(list.size() > 0){
+    		FbDoorevents model = null;
+    		FbDoorevents obj = null;
+    		Date beginDate = null;
+    		Date endDate = null;
+    		for(int i=0;i<list.size();i++){
+    			obj =list.get(i);
+				//首先找出该人员最新的一条记录
+				if(obj.getPersonId()!=null&&!obj.getPersonId().equals("")) {
+					model = getLastDataById(obj.getPersonId());
+					if(model!=null && !StringUtil.isNullOrEmpty(model.getEventTime()) && !StringUtil.isNullOrEmpty(obj.getEventTime())) {
+						beginDate = DateUtil.changeStrToTime(model.getEventTime());
+						endDate = DateUtil.changeStrToTime(obj.getEventTime());
+						if (DateUtil.calculatetimeGapSecond(beginDate, endDate) > 5) {
+							save(obj);
+						}
+					}
+					else
+					{
+						save(obj);
+					}
+
+				}
+    			
+    		}
+    		RedisService.set("timeFlag", "true");
+    	}
+		
+	}
+
+	private void deleteYestDay() {
+		fbDooreventsDao.deleteYestDay();
 	}
 
 }

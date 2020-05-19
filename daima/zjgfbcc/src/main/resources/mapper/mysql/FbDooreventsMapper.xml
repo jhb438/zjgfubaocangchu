@@ -198,6 +198,10 @@
 	    delete from fb_doorevents where substring(eventTime,1,10) = date_format(now(), '%Y-%m-%d')
 	</delete> 
 	
+	<delete id="deleteYestDay">
+	    delete from fb_doorevents where substring(eventTime,1,10) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+	</delete>
+	
 	<delete id="deleteSevenBe">
         delete from fb_doorevents where personId is null and doorIndexCode is null;
 	    delete from fb_doorevents where substring(eventTime,1,10) <![CDATA[ <= ]]> DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 3 DAY)

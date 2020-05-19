@@ -55,7 +55,8 @@
                 <td style="padding:5px">
                     <input type="button" value="查询" onclick="search()" class="layui-btn layui-btn-sm layui-btn-normal" />
                    
-                    <input type="button" value="获取选定时间的出入记录" onclick="deleteRow()" class="layui-btn layui-btn-sm layui-btn-normal" />
+                    <input type="button" value="获取当天数据" onclick="getCurrentDay()" class="layui-btn layui-btn-sm layui-btn-normal" />
+                    <input type="button" value="获取昨日数据" onclick="getYestDay()" class="layui-btn layui-btn-sm layui-btn-normal" />
                 </td>
             </tr>
         </table>
@@ -63,8 +64,10 @@
     <table id="layuiTable"></table>
     <script>
         var table;//将table暴露出来
-        layui.use(["table"], function () {
+        var layer;
+        layui.use(["table","layer"], function () {
             table = layui.table;
+            layer = layui.layer;
             search();//执行查询
         })
 
@@ -136,6 +139,38 @@
 
         function addRow() {
             OpenWin('/static/pages/fbDoorevents/add.html', 800, 600, '新增', refreshGrid)
+        }
+        
+        function getCurrentDay(){
+        	var loading = layer.load(0,{});
+        	SendAjax("/sys/fbdoorevents/getCurrentDay", "", function (res) {
+        		layer.close(loading);
+                    if (res.code == '0') {
+                        top.messageAlert("提醒", "获取成功", "info", function () {
+                            refreshGrid();
+                        });
+                    }
+                    else {
+                        top.messageAlert("提醒", res.msg, "error");
+                    }
+
+                });
+        }
+        
+        function getYestDay(){
+        	var loading = layer.load(0,{});
+        	SendAjax("/sys/fbdoorevents/getYestDay", "", function (res) {
+        		layer.close(loading);
+                    if (res.code == '0') {
+                        top.messageAlert("提醒", "获取成功", "info", function () {
+                            refreshGrid();
+                        });
+                    }
+                    else {
+                        top.messageAlert("提醒", res.msg, "error");
+                    }
+
+                });
         }
     </script>
 </body>

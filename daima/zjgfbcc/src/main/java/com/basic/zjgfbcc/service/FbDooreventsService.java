@@ -56,4 +56,8 @@ public interface FbDooreventsService {
 	FbDoorevents getlastData();
 
 	void deleteByTowDayBefore();
+
+	void getCurrentDay();
+
+	void getYestDay();
 }

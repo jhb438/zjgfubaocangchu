@@ -10,4 +10,8 @@ public interface hikKuDao {
 
 	List<FbDoorevents> getEventsByEventId(String eventId);
 
+	List<FbDoorevents> getEventsNow();
+
+	List<FbDoorevents> getEventsYestDay();
+
 }

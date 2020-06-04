@@ -135,7 +135,8 @@ public class FbDooreventsController {
     /**
 	 * 获取当天数据
 	 */
-	@ApiOperation(value="")
+    @PassToken
+	@ApiOperation(value="/getCurrentDay")
     @ResponseBody
 	@RequestMapping(value="/getCurrentDay", produces = "application/json; charset=utf-8", method=RequestMethod.POST)
 	public R getCurrentDay(){
@@ -146,7 +147,8 @@ public class FbDooreventsController {
 	/**
 	 * 获取昨日数据
 	 */
-	@ApiOperation(value="")
+    @PassToken
+	@ApiOperation(value="/getYestDay")
     @ResponseBody
 	@RequestMapping(value="/getYestDay", produces = "application/json; charset=utf-8", method=RequestMethod.POST)
 	public R getYestDay(){

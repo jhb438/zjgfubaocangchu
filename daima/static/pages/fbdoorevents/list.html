@@ -142,25 +142,28 @@
         }
         
         function getCurrentDay(){
-        	var loading = layer.load(0,{});
-        	SendAjax("/sys/fbdoorevents/getCurrentDay", "", function (res) {
-        		layer.close(loading);
-                    if (res.code == '0') {
-                        top.messageAlert("提醒", "获取成功", "info", function () {
-                            refreshGrid();
-                        });
-                    }
-                    else {
-                        top.messageAlert("提醒", res.msg, "error");
-                    }
-
-                });
+        	var loading = layer.load(1);
+        	setTimeout(function () {
+        		SendAjax("/sys/fbdoorevents/getCurrentDay", "", function (res) {
+	        		layer.close(loading);
+	                    if (res.code == '0') {
+	                        top.messageAlert("提醒", "获取成功", "info", function () {
+	                            refreshGrid();
+	                        });
+	                    }
+	                    else {
+	                        top.messageAlert("提醒", res.msg, "error");
+	                    }
+	
+	                });
+        	},300)
         }
         
         function getYestDay(){
-        	var loading = layer.load(0,{});
-        	SendAjax("/sys/fbdoorevents/getYestDay", "", function (res) {
-        		layer.close(loading);
+        	var loading = layer.load(1);
+        	setTimeout(function () {
+        		SendAjax("/sys/fbdoorevents/getYestDay", "", function (res) {
+        			layer.close(loading);
                     if (res.code == '0') {
                         top.messageAlert("提醒", "获取成功", "info", function () {
                             refreshGrid();
@@ -171,6 +174,8 @@
                     }
 
                 });
+        	},300)
+        	
         }
     </script>
 </body>

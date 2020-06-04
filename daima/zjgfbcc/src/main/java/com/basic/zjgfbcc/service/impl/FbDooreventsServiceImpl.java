@@ -165,8 +165,8 @@ public class FbDooreventsServiceImpl implements FbDooreventsService {
 				}
     			
     		}
-    		RedisService.set("timeFlag", "true");
     	}
+    	RedisService.set("timeFlag", "true");
 		
 	}
 
@@ -203,9 +203,8 @@ public class FbDooreventsServiceImpl implements FbDooreventsService {
 				}
     			
     		}
-    		RedisService.set("timeFlag", "true");
     	}
-		
+    	RedisService.set("timeFlag", "true");
 	}
 
 	private void deleteYestDay() {

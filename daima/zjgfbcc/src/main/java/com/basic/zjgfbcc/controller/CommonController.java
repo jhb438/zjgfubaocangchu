@@ -19,10 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -132,7 +129,6 @@ public class CommonController extends BaseController {
                 }
             }
         }
-
         return realRuList;
     }
 
@@ -172,6 +168,82 @@ public class CommonController extends BaseController {
 
 
     public List<FbDoorevents> getCBSList(String areaName,String personName,String orgName) {
+        //生产区域
+        //获取今天与昨天的所有入
+        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "1", "","","",personName,orgName);
+
+        //获取额外的出
+        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "1", "","","",personName,orgName);
+
+        for (FbDoorevents chu : chuList) {
+            for(int i=0;i<ruList.size();i++){
+                FbDoorevents f = ruList.get(i);
+                if(chu.getPersonId().equals(f.getPersonId())){
+                    ruList.remove(i);
+                    break;
+                }
+            }
+        }
+
+        //因为入里面有重复的，所以还得去重
+        List<FbDoorevents> realRuList=new ArrayList<FbDoorevents>();
+        for(FbDoorevents ru:ruList)
+        {
+            if(realRuList.size()==0)
+            {
+                realRuList.add(ru);
+            }
+            else
+            {
+                int num=0;
+                for(int i=0;i<realRuList.size();i++)
+                {
+
+                    FbDoorevents f = realRuList.get(i);
+                    if(ru.getPersonId().equals(f.getPersonId()))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        if((!ru.getPersonId().equals(f.getPersonId()))&&(num==realRuList.size()-1)) {
+                            realRuList.add(ru);
+                            break;
+                        }
+                    }
+                    num=num+1;
+                }
+            }
+        }
+
+        //有这样一种情况，由于刷卡原因，导致两个区域都有同一个人，其实这个人只在一个区域中
+
+        List<FbDoorevents> areaRuList=new ArrayList<FbDoorevents>();
+        if(areaName.equals("办公区域"))
+        {
+            areaRuList=getAreaCBSList("生产区域",personName,orgName);
+        }
+        else
+        {
+            areaRuList=getAreaCBSList("办公区域",personName,orgName);
+        }
+
+        for (int j=0;j<realRuList.size();j++) {
+            FbDoorevents real = realRuList.get(j);
+            for(int i=0;i<areaRuList.size();i++){
+                FbDoorevents f = areaRuList.get(i);
+                if(real.getPersonId().equals(f.getPersonId())){
+                    if(DateUtil.changeStrToTime(real.getEventTime()).getTime()<DateUtil.changeStrToTime(f.getEventTime()).getTime()) {
+                        realRuList.remove(j);
+                        break;
+                    }
+                }
+            }
+        }
+        return realRuList;
+    }
+
+    public List<FbDoorevents> getAreaCBSList(String areaName,String personName,String orgName) {
         //生产区域
         //获取今天与昨天的所有入
         List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "1", "","","",personName,orgName);
@@ -314,15 +386,89 @@ public class CommonController extends BaseController {
     @RequestMapping(value = "/StatisticsVTZ", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
     public R StatisticsVTZ(String areaName) {
 
-
         List<FbDoorevents> list=getVTZList(areaName,"","");
-
-
         return R.ok().put("data", list);
 
     }
 
     public List<FbDoorevents> getVTZList(String areaName,String personName,String orgName) {
+        //生产区域
+        //获取今天与昨天的所有入
+        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "", "1","","",personName,orgName);
+
+        //获取额外的出
+        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "", "1","","",personName,orgName);
+
+        for (FbDoorevents chu : chuList) {
+            for(int i=0;i<ruList.size();i++){
+                FbDoorevents f = ruList.get(i);
+                if(chu.getPersonId().equals(f.getPersonId())){
+                    ruList.remove(i);
+                    break;
+                }
+            }
+        }
+
+        //因为入里面有重复的，所以还得去重
+        List<FbDoorevents> realRuList=new ArrayList<FbDoorevents>();
+        for(FbDoorevents ru:ruList)
+        {
+            if(realRuList.size()==0)
+            {
+                realRuList.add(ru);
+            }
+            else
+            {
+                int num=0;
+                for(int i=0;i<realRuList.size();i++)
+                {
+
+                    FbDoorevents f = realRuList.get(i);
+                    if(ru.getPersonId().equals(f.getPersonId()))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        if((!ru.getPersonId().equals(f.getPersonId()))&&(num==realRuList.size()-1)) {
+                            realRuList.add(ru);
+                            break;
+                        }
+                    }
+                    num=num+1;
+                }
+            }
+        }
+
+        //有这样一种情况，由于刷卡原因，导致两个区域都有同一个人，其实这个人只在一个区域中
+
+        List<FbDoorevents> areaRuList=new ArrayList<FbDoorevents>();
+        if(areaName.equals("办公区域"))
+        {
+            areaRuList=getAreaVTZList("生产区域",personName,orgName);
+        }
+        else
+        {
+            areaRuList=getAreaVTZList("办公区域",personName,orgName);
+        }
+
+        for (int j=0;j<realRuList.size();j++) {
+            FbDoorevents real = realRuList.get(j);
+            for(int i=0;i<areaRuList.size();i++){
+                FbDoorevents f = areaRuList.get(i);
+                if(real.getPersonId().equals(f.getPersonId())){
+                    if(DateUtil.changeStrToTime(real.getEventTime()).getTime()<DateUtil.changeStrToTime(f.getEventTime()).getTime()) {
+                        realRuList.remove(j);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return realRuList;
+    }
+
+    public List<FbDoorevents> getAreaVTZList(String areaName,String personName,String orgName) {
         //生产区域
         //获取今天与昨天的所有入
         List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "", "1","","",personName,orgName);
@@ -391,6 +537,82 @@ public class CommonController extends BaseController {
     }
 
     public List<FbDoorevents> getFKList(String areaName,String personName,String orgName) {
+        //生产区域
+        //获取今天与昨天的所有入
+        List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "", "","","1",personName,orgName);
+
+        //获取额外的出
+        List<FbDoorevents> chuList = fbDooreventsService.getEventListByShiJiChu(areaName, "", "","","1",personName,orgName);
+
+        for (FbDoorevents chu : chuList) {
+            for(int i=0;i<ruList.size();i++){
+                FbDoorevents f = ruList.get(i);
+                if(chu.getPersonId().equals(f.getPersonId())){
+                    ruList.remove(i);
+                    break;
+                }
+            }
+        }
+
+        //因为入里面有重复的，所以还得去重
+        List<FbDoorevents> realRuList=new ArrayList<FbDoorevents>();
+        for(FbDoorevents ru:ruList)
+        {
+            if(realRuList.size()==0)
+            {
+                realRuList.add(ru);
+            }
+            else
+            {
+                int num=0;
+                for(int i=0;i<realRuList.size();i++)
+                {
+
+                    FbDoorevents f = realRuList.get(i);
+                    if(ru.getPersonId().equals(f.getPersonId()))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        if((!ru.getPersonId().equals(f.getPersonId()))&&(num==realRuList.size()-1)) {
+                            realRuList.add(ru);
+                            break;
+                        }
+                    }
+                    num=num+1;
+                }
+            }
+        }
+
+        //有这样一种情况，由于刷卡原因，导致两个区域都有同一个人，其实这个人只在一个区域中
+
+        List<FbDoorevents> areaRuList=new ArrayList<FbDoorevents>();
+        if(areaName.equals("办公区域"))
+        {
+            areaRuList=getAreaFKList("生产区域",personName,orgName);
+        }
+        else
+        {
+            areaRuList=getAreaFKList("办公区域",personName,orgName);
+        }
+
+        for (int j=0;j<realRuList.size();j++) {
+            FbDoorevents real = realRuList.get(j);
+            for(int i=0;i<areaRuList.size();i++){
+                FbDoorevents f = areaRuList.get(i);
+                if(real.getPersonId().equals(f.getPersonId())){
+                    if(DateUtil.changeStrToTime(real.getEventTime()).getTime()<DateUtil.changeStrToTime(f.getEventTime()).getTime()) {
+                        realRuList.remove(j);
+                        break;
+                    }
+                }
+            }
+        }
+        return realRuList;
+    }
+
+    public List<FbDoorevents> getAreaFKList(String areaName,String personName,String orgName) {
         //生产区域
         //获取今天与昨天的所有入
         List<FbDoorevents> ruList = fbDooreventsService.getEventListByRu(areaName, "", "","","1",personName,orgName);

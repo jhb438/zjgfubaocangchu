@@ -242,6 +242,7 @@
 		<if test="orgName!='' and orgName!=null">
 			and b.orgName like concat('%',#{orgName},'%')
 		</if>
+		order by a.personId,a.eventTime
 	</select>
 
 	<!--获取今天及昨天所有的出-->
@@ -278,6 +279,7 @@ and DATE_SUB(date_format(now(), '%Y-%m-%d'),INTERVAL 1 DAY) <![CDATA[ <= ]]> sub
 		<if test="orgName!='' and orgName!=null">
 			and b.orgName like concat('%',#{orgName},'%')
 		</if>
+		order by a.personId,a.eventTime
 	</select>
 
 	<select id="getLastDataById" resultType="com.basic.zjgfbcc.entity.FbDoorevents">
